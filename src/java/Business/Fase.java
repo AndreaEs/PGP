@@ -78,6 +78,5 @@ public class Fase implements Serializable{
     public static void actualizarFase(Fase f) {
         FaseDB.updateFase(f);
     }
-
     
 }
