@@ -106,7 +106,7 @@
                                 <div class="col-md-6">
                                     <%
                                         int idFase = (Integer) session.getAttribute("idFase");
-                                        String usuario = (String) session.getAttribute("usuario");
+                                        String user = (String) session.getAttribute("user");
                                         boolean actualizar = (Boolean) session.getAttribute("actualizar");
                                         int idActividad;
                                         if (!actualizar) {

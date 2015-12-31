@@ -35,23 +35,23 @@ public class Proyectos extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
-        String usuario = (String) sesion.getAttribute("user");
+        String user = (String) sesion.getAttribute("user");
         String url = null;
-        if (usuario != null) {
+        if (user != null) {
             String accion = request.getParameter("proyecto");
             if (accion != null) {
                 if (accion.equals("crearProyecto")) {
-                    Proyecto.guardarNuevoProyecto(getProyectoFromParameters(request, 0, usuario));
-                    url = getProyectos(usuario, sesion);
+                    Proyecto.guardarNuevoProyecto(getProyectoFromParameters(request, 0, user));
+                    url = getProyectos(user, sesion);
                 } else if (accion.equals("verProyectos")) {
-                    url = getProyectos(usuario, sesion);
+                    url = getProyectos(user, sesion);
                 } else if (accion.equals("crearNuevoProyecto")) {
-                    sesion.setAttribute("usuario", usuario);
+                    sesion.setAttribute("user", user);
                     sesion.setAttribute("actualizar", false);
                     url = "/proyecto.jsp";
                 } else if(accion.equals("actualizarUnProyecto")){
                     int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
-                    sesion.setAttribute("usuario", usuario);
+                    sesion.setAttribute("user", user);
                     sesion.setAttribute("actualizar", true);
                     sesion.setAttribute("idProyecto", idProyecto);
                     Proyecto p = Proyecto.getProject(idProyecto);
@@ -59,8 +59,8 @@ public class Proyectos extends HttpServlet {
                     url = "/proyecto.jsp";
                 }else if(accion.equals("actualizarProyecto")){
                     int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
-                    Proyecto.actualizarProyecto(getProyectoFromParameters(request, idProyecto, usuario));
-                    url = getProyectos(usuario, sesion);
+                    Proyecto.actualizarProyecto(getProyectoFromParameters(request, idProyecto, user));
+                    url = getProyectos(user, sesion);
                 }
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
                 respuesta.forward(request, response);
@@ -68,7 +68,7 @@ public class Proyectos extends HttpServlet {
         }
     }
 
-    private Proyecto getProyectoFromParameters(HttpServletRequest request, int idProyecto, String usuario) {
+    private Proyecto getProyectoFromParameters(HttpServletRequest request, int idProyecto, String user) {
         String nombre = request.getParameter("nombre");
         String fechaInicioyFin = request.getParameter("fechaInicioyFin");
         String fechaInicio = "";
@@ -86,15 +86,15 @@ public class Proyectos extends HttpServlet {
 
         char estado = request.getParameter("estado").charAt(0);
         if (idProyecto == 0) {
-            return new Proyecto(nombre, fechaInicio, fechaFin, estado, usuario);
+            return new Proyecto(nombre, fechaInicio, fechaFin, estado, user);
         } else {
-            return new Proyecto(idProyecto, nombre, fechaInicio, fechaFin, estado, usuario);
+            return new Proyecto(idProyecto, nombre, fechaInicio, fechaFin, estado, user);
         }
     }
 
-    private String getProyectos(String usuario, HttpSession sesion) {
-        ArrayList<Proyecto> proyectos = Proyecto.getProyectos(usuario);
-        sesion.setAttribute("usuario", usuario);
+    private String getProyectos(String user, HttpSession sesion) {
+        ArrayList<Proyecto> proyectos = Proyecto.getProyectos(user);
+        sesion.setAttribute("user", user);
         sesion.setAttribute("proyectos", proyectos);
         return "/vistaProyectos.jsp";
     }

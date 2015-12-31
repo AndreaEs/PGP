@@ -36,7 +36,7 @@ public class Fases extends HttpServlet {
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
         int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
-        String usuario = /*(String) sesion.getAttribute("usuario")*/ "jefe_1";
+        String user = /*(String) sesion.getAttribute("user")*/ "jefe_1";
         String url = null;
         if (idProyecto != 0) {
             String accion = request.getParameter("fase");

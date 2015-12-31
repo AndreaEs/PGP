@@ -96,12 +96,12 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <%
-                                        String usuario = (String) session.getAttribute("usuario");
+                                        String user = (String) session.getAttribute("user");
                                         boolean actualizar = (Boolean) session.getAttribute("actualizar");
                                         int idProyecto;
                                         if (!actualizar) {
                                     %>
-                                    <form role="form" action="Proyectos?proyecto=crearProyecto&usuario=<%= usuario%>" name="proyecto" value="crearProyecto" method="post">
+                                    <form role="form" action="Proyectos?proyecto=crearProyecto&user=<%= user%>" name="proyecto" value="crearProyecto" method="post">
                                         <div class="box-body">
                                             <div class="form-group">
                                                 <label for="nombreProyecto">Nombre del proyecto</label>
@@ -137,7 +137,7 @@
                                         idProyecto = (Integer) session.getAttribute("idProyecto");
                                         Proyecto p = (Proyecto) session.getAttribute("proyecto");
                                     %> 
-                                    <form role="form" action="Proyectos?proyecto=actualizarProyecto&usuario=<%= usuario%>&idProyecto=<%= idProyecto%>" name="proyecto" value="actualizarProyecto" method="post">
+                                    <form role="form" action="Proyectos?proyecto=actualizarProyecto&user=<%= user%>&idProyecto=<%= idProyecto%>" name="proyecto" value="actualizarProyecto" method="post">
                                         <div class="box-body">
                                             <div class="form-group">
                                                 <label for="nombreProyecto">Nombre del proyecto</label>

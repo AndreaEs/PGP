@@ -36,20 +36,20 @@ public class Actividades extends HttpServlet {
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
         int idFase = Integer.parseInt(request.getParameter("idFase"));
-        String usuario = /*(String) sesion.getAttribute("usuario")*/ "jefe_1";
+        String user = /*(String) sesion.getAttribute("user")*/ "jefe_1";
         String url = null;
         if (idFase != 0) {
             String accion = request.getParameter("actividad");
             if (accion != null) {
                 if (accion.equals("crearActividad")) {
-                    Actividad.guardarNuevaActividad(getActividadFromParameters(request, 0, idFase, usuario));
-                    url = getActividades(idFase, sesion, usuario);
+                    Actividad.guardarNuevaActividad(getActividadFromParameters(request, 0, idFase, user));
+                    url = getActividades(idFase, sesion, user);
                 } else if (accion.equals("verActividades")) {
-                    url = getActividades(idFase, sesion, usuario);
+                    url = getActividades(idFase, sesion, user);
                 } else if (accion.equals("crearNuevaActividad")) {
                     sesion.setAttribute("idFase", idFase);
                     sesion.setAttribute("actualizar", false);
-                    sesion.setAttribute("usuario", usuario);
+                    sesion.setAttribute("user", user);
                     url = "/actividad.jsp";
                 } else if (accion.equals("actualizarUnaActividad")) {
                     int idActividad = Integer.parseInt(request.getParameter("idActividad"));
@@ -58,12 +58,12 @@ public class Actividades extends HttpServlet {
                     sesion.setAttribute("idActividad", idActividad);
                     Actividad a = Actividad.getActivity(idActividad);
                     sesion.setAttribute("actividad", a);
-                    sesion.setAttribute("usuario", usuario);
+                    sesion.setAttribute("user", user);
                     url = "/actividad.jsp";
                 } else if(accion.equals("actualizarActividad")){
                     int idActividad = Integer.parseInt(request.getParameter("idActividad"));
-                    Actividad.actualizarActividad(getActividadFromParameters(request, idActividad, idFase, usuario));
-                    url = getActividades(idFase, sesion, usuario);
+                    Actividad.actualizarActividad(getActividadFromParameters(request, idActividad, idFase, user));
+                    url = getActividades(idFase, sesion, user);
                 }
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
                 respuesta.forward(request, response);
@@ -72,7 +72,7 @@ public class Actividades extends HttpServlet {
 
     }
 
-    private Actividad getActividadFromParameters(HttpServletRequest request, int idActividad, int idFase, String usuario) {
+    private Actividad getActividadFromParameters(HttpServletRequest request, int idActividad, int idFase, String user) {
         String descripcion = request.getParameter("descripcion");
         String rol = request.getParameter("rol");
         int duracionEstimada = Integer.parseInt(request.getParameter("duracionEstimada"));
@@ -95,17 +95,17 @@ public class Actividades extends HttpServlet {
             duracionReal = Integer.parseInt(request.getParameter("duracionReal"));
         }
         if(idActividad == 0){
-            return new Actividad(usuario, descripcion, rol, duracionEstimada, fechaInicio, fechaFin, duracionReal, estado, idFase);
+            return new Actividad(user, descripcion, rol, duracionEstimada, fechaInicio, fechaFin, duracionReal, estado, idFase);
         }else{
-            return new Actividad(idActividad, usuario, descripcion, rol, duracionEstimada, fechaInicio, fechaFin, duracionReal, estado, idFase);
+            return new Actividad(idActividad, user, descripcion, rol, duracionEstimada, fechaInicio, fechaFin, duracionReal, estado, idFase);
         }
     }
 
-    private String getActividades(int idFase, HttpSession sesion, String usuario) {
+    private String getActividades(int idFase, HttpSession sesion, String user) {
         ArrayList<Actividad> actividades = Actividad.getFase(idFase);
         sesion.setAttribute("idFase", idFase);
         sesion.setAttribute("actividades", actividades);
-        sesion.setAttribute("usuario", usuario);
+        sesion.setAttribute("user", user);
         return "/vistaActividades.jsp";
     }
 
