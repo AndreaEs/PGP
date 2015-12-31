@@ -73,12 +73,14 @@
                 
             </select>
         </div>
-        <div> <% if(request.getParameter("msg")!=null) {
-            request.getParameter("msg");
-        }%> </div>
+        <div> <%if(session.getAttribute("msg")!=null){%>
+         <%=session.getAttribute("msg")%>   
+        <%}%>
+        </div>
         <button type="submit" class="float">Login</button>
        </form>
  		
- </div>
+        </div>
+        </div>
     </body>
 </html>

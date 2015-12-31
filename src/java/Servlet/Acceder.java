@@ -5,9 +5,14 @@
  */
 package Servlet;
 
+import Business.Proyecto;
+import Business.TareaPersonal;
+import Business.User;
+import Data.TareaDB;
 import Data.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -84,32 +89,38 @@ public class Acceder extends HttpServlet {
         System.out.println(rol);
         HttpSession sesion = request.getSession();
         
-        String url="", msg="";
+        String url="", msg=" ";
         
-        /*if(UserDB.exist(user)){
-            if(UserDB.comprobarPassword(password)){
-                sesion.setAttribute("user", user);
-                url="/index1.html";
-            } else {
-                msg="El password no es correcto.";
-            }
-        } else {
-            System.out.println("hola caracola");
-            msg = "El usuario no existe.";
-        }*/
         if(UserDB.identificar(user, password, rol)){
-            url = "/index1.html";
+            msg=" ";
+            url = "/indexUsuario.jsp";
             sesion.setAttribute("user", user);
             sesion.setAttribute("pass", password);
             sesion.setAttribute("tipo", rol);
+            
+            if(rol.equals("D")){
+                ArrayList<TareaPersonal> tareas = TareaDB.findAll(user);
+                sesion.setAttribute("tareas", tareas);
+            } else {
+                if(rol.equals("J")){
+                    ArrayList<Proyecto> proyectos = Proyecto.getProyectos(user);
+                    sesion.setAttribute("proyectos", proyectos);
+                } else {
+                    if(rol.equals("A")){
+                        ArrayList<User> usuarios = UserDB.findAll();
+                        sesion.setAttribute("usuarios", usuarios);
+                    }
+                }
+            }
         }else{
-            //Se puede poner una pagina igual que la inicial de login añadiendo 
+            //Se puede poner una pagina igual que la inicial de login aÃ±adiendo 
             //un mensaje que ponga algun dato esta mal , es mas sencillo de momento
             //que mirar campo por campo
+            msg = "El usuario, el rol y/o password no son correctos";
             url= "/index.jsp";
         }
         
-        request.setAttribute("msg", msg);
+        sesion.setAttribute("msg", msg);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
         dispatcher.forward(request, response);
     }

@@ -124,5 +124,8 @@ public class Actividad implements Serializable{
         return ActividadBD.selectActividad(idActividad);
     }
 
+    public static ArrayList<Actividad> getActividades(String usuario){
+        return ActividadBD.selectActividades(usuario);
+    }
     
 }

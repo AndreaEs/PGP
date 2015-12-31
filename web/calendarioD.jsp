@@ -23,7 +23,7 @@
             </select>
             </br>
             <label>Tipo de tarea</label>
-            <select name="tipoT">
+            <select name="tipo">
                 <option value="TU"> Trato con Usuarios </option>
                 <option value="RE"> Reuniones Externas </option>
                 <option value="RI"> Reuniones Internas </option>
@@ -35,9 +35,6 @@
                 <option value="FU"> Formación de Usuarios </option>
                 <option value="FA"> Formación de Otras Actividades </option>
             </select>
-            </br>
-            <label>Duración</label>
-            <input type="number" name="duracion">
             </br>
             <!--Añadir comprobador de que la fecha de Inicio va antes que la del Fin-->
             <label>Fecha de inicio</label>

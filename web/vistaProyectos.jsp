@@ -91,6 +91,7 @@
                                                                 colorClase = "text-muted";
                                                             }
                                                         %>
+                                                    </a>
                                                         <div class="<%=colorClase%>">
                                                             <i class="fa fa-file-text-o"></i> <b><%= p.getNombre()%></b>
                                                             <small> <%= p.getFechaInicio()%> - <%= p.getFechaFin()%>  </small>

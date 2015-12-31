@@ -33,11 +33,10 @@ public class User implements Serializable{
         this.pass=pass;
         this.tipo=tipo;
         this.nif=nif;
-        infoGeneral="";
+        this.infoGeneral="";
     }
     
-    public User(String login, String pass, char tipo, String nif,
-            String infoGeneral){
+    public User(String login, String pass, char tipo, String nif, String infoGeneral){
         this.login=login;
         this.pass=pass;
         this.tipo=tipo;
@@ -60,9 +59,15 @@ public class User implements Serializable{
     public String getNif(){
         return nif;
     }
+     public void setNif(String nif){
+        this.nif = nif;
+    }
     
     public int getMaxProy(){
         return maxProy;
+    }
+    public void setMaxProy(int maxProy){
+        this.maxProy= maxProy;
     }
     
     public String getInfoGeneral(){

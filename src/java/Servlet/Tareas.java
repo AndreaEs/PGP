@@ -5,7 +5,7 @@
  */
 package Servlet;
 
-import Business.Proyecto;
+import Business.TareaPersonal;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
@@ -18,10 +18,10 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author andreaescribano
+ * @author Jennifer
  */
-@WebServlet(name = "Proyectos", urlPatterns = {"/Proyectos"})
-public class Proyectos extends HttpServlet {
+@WebServlet(name = "Tareas", urlPatterns = {"/Tareas"})
+public class Tareas extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,67 +37,52 @@ public class Proyectos extends HttpServlet {
         HttpSession sesion = request.getSession();
         String usuario = (String) sesion.getAttribute("user");
         String url = null;
-        if (usuario != null) {
-            String accion = request.getParameter("proyecto");
-            if (accion != null) {
-                if (accion.equals("crearProyecto")) {
-                    Proyecto.guardarNuevoProyecto(getProyectoFromParameters(request, 0, usuario));
-                    url = getProyectos(usuario, sesion);
-                } else if (accion.equals("verProyectos")) {
-                    url = getProyectos(usuario, sesion);
-                } else if (accion.equals("crearNuevoProyecto")) {
-                    sesion.setAttribute("usuario", usuario);
+        if(usuario!=null){
+            String accion = request.getParameter("tarea");
+            if(accion!=null){
+                if(accion.equals("crearTarea")){
+                    TareaPersonal.guardarNuevaTarea(getTareaFromParameter(request, 0, usuario));
+                    url=getTareas(usuario, sesion);
+                } else if (accion.equals("verTareas")){
+                    url = getTareas(usuario, sesion);
+                } else if (accion.equals("crearNuevaTarea")) {
                     sesion.setAttribute("actualizar", false);
-                    url = "/proyecto.jsp";
-                } else if(accion.equals("actualizarUnProyecto")){
-                    int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
-                    sesion.setAttribute("usuario", usuario);
+                    url="/tarea.jsp";
+                } else if(accion.equals("actualizarUnaTarea")){
+                    int idTarea = Integer.parseInt(request.getParameter("idTarea"));
                     sesion.setAttribute("actualizar", true);
-                    sesion.setAttribute("idProyecto", idProyecto);
-                    Proyecto p = Proyecto.getProject(idProyecto);
-                    sesion.setAttribute("proyecto", p);
-                    url = "/proyecto.jsp";
-                }else if(accion.equals("actualizarProyecto")){
-                    int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
-                    Proyecto.actualizarProyecto(getProyectoFromParameters(request, idProyecto, usuario));
-                    url = getProyectos(usuario, sesion);
+                    sesion.setAttribute("idTarea", idTarea);
+                    TareaPersonal t = TareaPersonal.getTarea(idTarea);
+                    sesion.setAttribute("tarea", t);
+                    url="/tarea.jsp";
+                } else if (accion.equals("actualizarTarea")){
+                    int idTarea = Integer.parseInt(request.getParameter("idTarea"));
+                    TareaPersonal.actualizarTarea(getTareaFromParameter(request,idTarea, usuario));
+                    url = getTareas(usuario, sesion);
                 }
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
                 respuesta.forward(request, response);
             }
         }
     }
-
-    private Proyecto getProyectoFromParameters(HttpServletRequest request, int idProyecto, String usuario) {
-        String nombre = request.getParameter("nombre");
-        String fechaInicioyFin = request.getParameter("fechaInicioyFin");
-        String fechaInicio = "";
-        boolean encontrado = false;
-        int i = 0;
-        while (i < fechaInicioyFin.length() && !encontrado) {
-            if (fechaInicioyFin.charAt(i) != ' ') {
-                fechaInicio += fechaInicioyFin.charAt(i);
-            } else {
-                encontrado = true;
-            }
-            i++;
-        }
-        String fechaFin = fechaInicioyFin.substring(i + 2);
-
-        char estado = request.getParameter("estado").charAt(0);
-        if (idProyecto == 0) {
-            return new Proyecto(nombre, fechaInicio, fechaFin, estado, usuario);
+    
+    private TareaPersonal getTareaFromParameter(HttpServletRequest request, int idTarea, String usuario){
+        String tipo = request.getParameter("tipoTarea");
+        String fecha = request.getParameter("fecha");
+        int actividad = Integer.parseInt(request.getParameter("actividad"));
+        if(idTarea==0){
+            return new TareaPersonal(tipo, usuario, fecha, actividad);
         } else {
-            return new Proyecto(idProyecto, nombre, fechaInicio, fechaFin, estado, usuario);
+            return new TareaPersonal(idTarea,tipo, usuario,fecha,actividad);
         }
     }
 
-    private String getProyectos(String usuario, HttpSession sesion) {
-        ArrayList<Proyecto> proyectos = Proyecto.getProyectos(usuario);
-        sesion.setAttribute("usuario", usuario);
-        sesion.setAttribute("proyectos", proyectos);
-        return "/vistaProyectos.jsp";
+    private String getTareas(String usuario, HttpSession sesion){
+        ArrayList<TareaPersonal> tareas = TareaPersonal.getTareas(usuario);
+        sesion.setAttribute("tareas", tareas);
+        return "/vistaTareas.jsp";
     }
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

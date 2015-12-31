@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -117,5 +119,140 @@ public class UserDB {
         }
     }
 
+    public static ArrayList<User> findAll(){
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM Usuarios";
+        ArrayList<User> usuarios = new ArrayList<User>();
+        
+        try {
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                User u = new User(rs.getString(1), rs.getString(2), rs.getString(3).charAt(0), rs.getString(4), rs.getString(6));
+                usuarios.add(u);
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        
+        return usuarios;
+    }
+
+    public static ArrayList<String> getLoginUsuarios() throws SQLException{
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        String query = "SELECT login FROM usuarios ";
+        ResultSet rs = null; 
+        Statement st = connection.createStatement();
+         //ResultSet rs = st.executeQuery("select * from contacto" );
+        ArrayList<String> usuarios = new ArrayList();
+        try {
+            //ps = connection.prepareStatement(query); 
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                usuarios.add(rs.getString("login"));
+            }
+                
+           
+            rs.close(); 
+            st.close(); 
+            pool.freeConnection(connection);
+            return usuarios;
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            return usuarios;
+        }
+        
+       
+    }
     
+    public static User getUsuario(String login){
+        User usuario = new User();
+        ConnectionPool pool = ConnectionPool.getInstance(); 
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null; 
+        String query = "SELECT * FROM Usuarios " 
+                + "WHERE login = ?"; 
+        try {
+            ps = connection.prepareStatement(query); 
+            ps.setString(1, login); 
+            
+            rs = ps.executeQuery();
+           while(rs.next()){
+            usuario.setLogin(login);
+            usuario.setPass(rs.getString("pass"));
+            usuario.setNif(rs.getString("nif"));
+            usuario.setInfoGeneral(rs.getString("infogeneral"));
+            usuario.setMaxProy(rs.getInt("maxproy"));
+            usuario.setTipo(rs.getString("tipo").charAt(0));
+           }
+            rs.close(); 
+            ps.close(); 
+            pool.freeConnection(connection);
+            return usuario;
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            return usuario;
+        }
+    }
+    
+    public static void delete(User user){
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        String query="DELETE FROM Usuarios WHERE login = ?";
+                
+                
+        try {
+            
+            ps = connection.prepareStatement(query);
+            ps.setString(1, user.getLogin());
+            int res = ps.executeUpdate();
+            ps.close();
+            pool.freeConnection(connection);
+            
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            
+        }
+    }
+
+   
+  public static void update(User user){
+       ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        String query="UPDATE Usuarios SET login = ? , pass = ? ,"
+                + "tipo = ? , infoGeneral = ? WHERE nif = ?";
+                
+                
+        try {
+            
+            ps = connection.prepareStatement(query);
+            ps.setString(1, user.getLogin());
+            ps.setString(2,user.getPass() );
+            ps.setString(3,String.valueOf(user.getTipo() ));
+            ps.setString(4, user.getInfoGeneral());
+            ps.setString(5, user.getNif() );
+            
+            
+            int res = ps.executeUpdate();
+            ps.close();
+            pool.freeConnection(connection);
+            
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            
+        }
+  }
+
+
 }
