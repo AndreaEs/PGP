@@ -5,50 +5,34 @@
  */
 package Business;
 
-import Data.TareaDB;
-import java.io.Serializable;
-import java.util.ArrayList;
-
 /**
  *
  * @author gil
  */
-public class TareaPersonal implements Serializable{
+public class TareaPersonal {
     
-    private int id;
     private String tipo;
     private String login;
     private String fecha;
-    private int actividad;
-
+    private Actividad actividad;
+    private int duracion;
     
     public TareaPersonal(){
-        this.id=0;
         this.tipo="";
         this.login="";
         this.fecha="";
-        this.actividad=0;
+        this.actividad=null;
+        this.duracion=0;
     }
     
-    public TareaPersonal(String tipo, String login, String fecha, int actividad){
+    public TareaPersonal(String tipo, String login, String fecha, Actividad actividad, int duracion){
         this.tipo=tipo;
         this.login=login;
         this.fecha=fecha;
         this.actividad=actividad;
-    }
-    
-    public TareaPersonal(int id, String tipo, String login, String fecha, int actividad){
-        this.id=id;
-        this.tipo=tipo;
-        this.login=login;
-        this.fecha=fecha;
-        this.actividad=actividad;
+        this.duracion=duracion;
     }
 
-    public int getId(){
-        return id;
-    }
-    
     public String getTipo() {
         return tipo;
     }
@@ -73,28 +57,20 @@ public class TareaPersonal implements Serializable{
         this.fecha = fecha;
     }
     
-    public int getActividad() {
+    public Actividad getActividad() {
         return actividad;
     }
 
-    public void setActividad(int actividad) {
+    public void setActividad(Actividad actividad) {
         this.actividad = actividad;
     }
-    
-    public static void guardarNuevaTarea(TareaPersonal tp){
-        TareaDB.insert(tp);
+
+    public int getDuracion() {
+        return duracion;
     }
-    
-    public static ArrayList<TareaPersonal> getTareas(String usuario){
-        return TareaDB.findAll(usuario);
-    }
-    
-    public static TareaPersonal getTarea(int idTarea){
-        return TareaDB.find(idTarea);
-    }
-    
-    public static void actualizarTarea(TareaPersonal tp){
-        TareaDB.updateTarea(tp);
+
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
     }
     
 }

@@ -7,6 +7,8 @@ package Business;
 
 import Data.ActividadBD;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -123,9 +125,26 @@ public class Actividad implements Serializable{
     public static Actividad getActivity(int idActividad) {
         return ActividadBD.selectActividad(idActividad);
     }
-
-    public static ArrayList<Actividad> getActividades(String usuario){
-        return ActividadBD.selectActividades(usuario);
+    
+    /*date1.comparetp(date2) > 0 --> date1 esta después de date2
+     date1.comparetp(date2) < 0 --> date1 esta antes de date2*/
+    public boolean comprobarFechaEntreFechas(String fecha, Actividad a) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            java.util.Date fechaI = formatter.parse(a.getFechaInicio());
+            java.util.Date fechaF = formatter.parse(a.getFechaFin());
+            java.util.Date fechaTP = formatter.parse(fecha);
+            if (fechaI.compareTo(fechaTP)==0)
+                return true;
+            if (fechaF.compareTo(fechaTP)==0)
+                return true;
+            if (fechaI.compareTo(fechaTP) < 0 && fechaF.compareTo(fechaTP) > 0)
+                return true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
+
     
 }

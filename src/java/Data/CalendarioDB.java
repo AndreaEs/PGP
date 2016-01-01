@@ -35,7 +35,7 @@ public class CalendarioDB {
             ps.setString(1, login);
             rs = ps.executeQuery();
             while (rs.next()) {
-                    Calendario cal = new Calendario(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4));
+                    Calendario cal = new Calendario(rs.getString(1),rs.getString(2),login,rs.getString(4));
                     calendario.add(cal);
             }
             rs.close();
@@ -47,6 +47,23 @@ public class CalendarioDB {
         
         return calendario;
         
+    }
+    
+    /*Terminar la función para insertar vacaciones --> Cambiar tabla de calendario a vacaciones*/
+    public static void insertVacaciones(Calendario v) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        String query = "";
+
+        try {
+            ps = connection.prepareStatement(query);
+            ps.executeUpdate();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     
 }

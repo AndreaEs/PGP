@@ -50,9 +50,9 @@ public class TareaDB {
             rs = ps.executeQuery();
             
             while(rs.next()){
-                TareaPersonal t = new TareaPersonal(rs.getInt(1), rs.getString(2), rs.getString(3),
-                rs.getString(5), rs.getInt(4));
-                tmp.add(t);
+                //TareaPersonal t = new TareaPersonal(rs.getInt(1), rs.getString(2), rs.getString(3),
+                //rs.getString(5), rs.getInt(4));
+                //tmp.add(t);
             }
             
             rs.close();
@@ -77,7 +77,7 @@ public class TareaDB {
              ps.setInt(1, idTarea);		
              rs = ps.executeQuery();		
              if (rs.next()) {		
-                  tp = new TareaPersonal(idTarea,rs.getString(2), rs.getString(3), rs.getString(5), rs.getInt(4));		
+                  //tp = new TareaPersonal(idTarea,rs.getString(2), rs.getString(3), rs.getString(5), rs.getInt(4));		
              }		
              rs.close();		
              ps.close();		
@@ -97,9 +97,9 @@ public class TareaDB {
               ps = connection.prepareStatement(query);
               ps.setString(1, tp.getTipo());
               ps.setString(2, tp.getLogin());
-              ps.setInt(3, tp.getActividad());
+              //ps.setInt(3, tp.getActividad());
               ps.setString(4, tp.getFecha());
-              ps.setInt(5, tp.getId());
+              //ps.setInt(5, tp.getId());
             ps.executeUpdate();		
              ps.close();		
              pool.freeConnection(connection);		

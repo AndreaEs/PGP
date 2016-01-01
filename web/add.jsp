@@ -253,7 +253,7 @@
                         </div>
                     
                       <div class="form-group">
-                      <label class="col-sm-2 control-label">InformaciÃ³n general</label>
+                      <label class="col-sm-2 control-label">Información general</label>
                       <textarea class="form-control-static" rows="3" placeholder="Enter ..." name="informacion"></textarea>
                     </div>
                   </div><!-- /.box-body -->
