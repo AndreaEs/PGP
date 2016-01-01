@@ -39,6 +39,8 @@
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 
+
+    <link rel="stylesheet" href="login.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -117,7 +119,12 @@
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
           <div class="administrador-usuarios">
-              <table style="position: relative">
+          <br>
+              <a id ="nuevo-usuario" href="add.jsp">
+              <span>Añadir nuevo usuario</span>  <i class="fa fa-user-plus"></i>
+          </a>
+              <br><br>
+              <table id="tabla-usuarios">
                   <% ArrayList array = UserDB.getLoginUsuarios();
                   session.setAttribute("todosUsuarios", array);
                   %>
@@ -131,7 +138,7 @@
                       //session.setAttribute("usuario"+u, array.get(u).toString());
                       //out.println("<button>"+array.get(u)+"</button> <i class=\"fa fa-file-text\"> </i>");
                       out.println("<a>");
-                      out.println("<input type=\"submit\"  name=\"usuario" + u + "\" value=\"" +array.get(u) + "\"  > <i class=\"fa fa-file-text\"></i>");
+                      out.println("<input id=\"user\" style=\"border: none; background:none; width:200px;  height:50px \" type=\"submit\"  name=\"usuario" + u + "\" value=\"" +array.get(u) + "\"  > <i class=\"fa fa-file-text\"></i>");
                       out.println("</a>");
                       out.println("</form>");
                       out.println("</td>");
@@ -139,13 +146,7 @@
                        
                   } %>
                       
-                  <tr>
-                      <td>
-          <a href="add.jsp">
-              <span>Añadir nuevo usuario</span>  <i class="fa fa-user-plus"></i>
-          </a>
-                      </td>
-                  </tr>
+                 
               </table>
           </div>
       </div><!-- /.content-wrapper -->
