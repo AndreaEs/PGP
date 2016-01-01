@@ -174,7 +174,7 @@
                                                 <div class="form-group">
                                                     <label for="inputUser3" class="col-sm-2 control-label">NIF</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" class="form-control" id="inputEmail3" name="nif" value= <%= usuario.getNif() %> />
+                                                        <input readonly type="text" class="form-control" id="inputEmail3" name="nif" value= <%= usuario.getNif() %> />
                                                         <!-- incluir javascript que compruebe que es un nif-->
                                                     </div>
                                                 </div>
