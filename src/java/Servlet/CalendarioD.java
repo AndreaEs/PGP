@@ -144,7 +144,7 @@ public class CalendarioD extends HttpServlet {
                 if(a.comprobarFechaEntreFechas(fechaI, a)){
                     mensaje="Hay una actividad en esa fecha";
                     //Asignar actividad
-                    tp.setActividad(a);
+                    tp.setActividad(a.getIdentificador());
                 }
             }
             

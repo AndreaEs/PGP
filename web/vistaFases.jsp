@@ -75,7 +75,7 @@
                                 <div class="box-body no-padding">
                                     <%
                                         int idProyecto = (Integer) session.getAttribute("idProyecto");
-                                        String usuario = (String) session.getAttribute("usuario");
+                                        String usuario = (String) session.getAttribute("user");
                                         ArrayList<Fase> fases = (ArrayList<Fase>) session.getAttribute("fases");
                                         String colorClase = "";
                                         for (Fase f : fases) {

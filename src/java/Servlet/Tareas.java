@@ -41,7 +41,7 @@ public class Tareas extends HttpServlet {
             String accion = request.getParameter("tarea");
             if(accion!=null){
                 if(accion.equals("crearTarea")){
-                    //TareaPersonal.guardarNuevaTarea(getTareaFromParameter(request, 0, usuario));
+                    TareaPersonal.guardarNuevaTarea(getTareaFromParameter(request, 0, usuario));
                     url=getTareas(usuario, sesion);
                 } else if (accion.equals("verTareas")){
                     url = getTareas(usuario, sesion);
@@ -52,12 +52,12 @@ public class Tareas extends HttpServlet {
                     int idTarea = Integer.parseInt(request.getParameter("idTarea"));
                     sesion.setAttribute("actualizar", true);
                     sesion.setAttribute("idTarea", idTarea);
-                    //TareaPersonal t = TareaPersonal.getTarea(idTarea);
-                    //sesion.setAttribute("tarea", t);
+                    TareaPersonal t = TareaPersonal.getTarea(idTarea);
+                    sesion.setAttribute("tarea", t);
                     url="/tarea.jsp";
                 } else if (accion.equals("actualizarTarea")){
                     int idTarea = Integer.parseInt(request.getParameter("idTarea"));
-                    //TareaPersonal.actualizarTarea(getTareaFromParameter(request,idTarea, usuario));
+                    TareaPersonal.actualizarTarea(getTareaFromParameter(request,idTarea, usuario));
                     url = getTareas(usuario, sesion);
                 }
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
@@ -70,17 +70,17 @@ public class Tareas extends HttpServlet {
         String tipo = request.getParameter("tipoTarea");
         String fecha = request.getParameter("fecha");
         int actividad = Integer.parseInt(request.getParameter("actividad"));
+        int duracion = Integer.parseInt(request.getParameter("duracion"));
         if(idTarea==0){
-            //return new TareaPersonal(tipo, usuario, fecha, actividad);
+            return new TareaPersonal(tipo, usuario, fecha, actividad, duracion);
         } else {
-            //return new TareaPersonal(idTarea,tipo, usuario,fecha,actividad);
+            return new TareaPersonal(idTarea,tipo, usuario,fecha,actividad, duracion);
         }
-        return null;
     }
 
     private String getTareas(String usuario, HttpSession sesion){
-        //ArrayList<TareaPersonal> tareas = TareaPersonal.getTareas(usuario);
-        //sesion.setAttribute("tareas", tareas);
+        ArrayList<TareaPersonal> tareas = TareaPersonal.getTareas(usuario);
+        sesion.setAttribute("tareas", tareas);
         return "/vistaTareas.jsp";
     }
     

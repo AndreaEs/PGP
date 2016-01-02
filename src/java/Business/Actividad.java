@@ -29,7 +29,7 @@ public class Actividad implements Serializable{
     private int idFase;
 
 
-    public Actividad(String descripcion, String login, String rolNecesario, int duracionEstimada, String fechaInicio, String fechaFin, int duracionReal, boolean estado, int idFase) {
+    public Actividad(String login, String descripcion , String rolNecesario, int duracionEstimada, String fechaInicio, String fechaFin, int duracionReal, boolean estado, int idFase) {
 
         this.descripcion = descripcion;
         this.rolNecesario = rolNecesario;

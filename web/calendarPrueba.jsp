@@ -18,6 +18,8 @@
         <!-- fullCalendar 2.2.5-->
         <link rel="stylesheet" href="plugins/fullcalendar/fullcalendar.min.css">
         <link rel="stylesheet" href="plugins/fullcalendar/fullcalendar.print.css" media="print">
+        <!-- daterange picker -->
+        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker-bs3.css">
 
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -37,6 +39,21 @@
             <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <style>
+            body { font-size: 62.5%; }
+            label, input { display:block; }
+            input.text { margin-bottom:12px; width:95%; padding: .4em; }
+            fieldset { padding:0; border:0; margin-top:25px; }
+            h1 { font-size: 1.2em; margin: .6em 0; }
+            div#users-contain { width: 350px; margin: 20px 0; }
+            div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+            div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+            .ui-dialog .ui-state-error { padding: .3em; }
+            .validateTips { border: 1px solid transparent; padding: 0.3em; }
+        </style>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
@@ -57,7 +74,6 @@
                 <!-- Main content -->
                 <section class="content">
                     <div class="row">
-
                         <div class="col-md-9">
                             <div class="box box-primary">
                                 <div class="box-body no-padding">
@@ -66,6 +82,40 @@
                                     </div>
                                     <!-- THE CALENDAR -->
                                     <div id="calendar"></div>
+                                    <div id="dialog-form" title="Create new user">
+                                        <p class="validateTips">All form fields are required.</p>
+
+                                        <form>
+                                            <fieldset>
+                                                <label for="titulo">Titulo</label>
+                                                <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" placeholder="Título del evento">
+                                                <label for="tE" >Tipo de evento</label>
+                                                <select class="text ui-widget-content ui-corner-all" style="width: 100%;" name="tipoEvento" id="tipoEvento">
+                                                    <option value="V"> Vacaciones </option>
+                                                    <option value="T"> Tarea personal </option>
+                                                </select>
+                                                <label for="tT" >Tipo de tarea</label>
+                                                <select class="text ui-widget-content ui-corner-all" style="width: 100%;" name="tipoTarea" id="tipoTarea">
+                                                    <option value="TU"> Trato con Usuarios </option>
+                                                    <option value="RE"> Reuniones Externas </option>
+                                                    <option value="RI"> Reuniones Internas </option>
+                                                    <option value="LD"> Lectura de Documentación </option>
+                                                    <option value="RV"> Revisión de documentación </option>
+                                                    <option value="ED"> Elaboración de documentación </option>
+                                                    <option value="DP"> Desarrollo de Programas </option>
+                                                    <option value="VP"> Verificación de Programas </option>
+                                                    <option value="FU"> Formación de Usuarios </option>
+                                                    <option value="FA"> Formación de Otras Actividades </option>
+                                                </select>
+                                                <label for="duracion">Duración</label>
+                                                <input type="number" name="duracion" id="duracion" class="text ui-widget-content ui-corner-all">
+                                                <input type="hidden" id="apptStartTime"/>
+                                                <input type="date" id="apptEndTime"/>
+                                                <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+
+                                            </fieldset>
+                                        </form>
+                                    </div>
                                 </div><!-- /.box-body -->
                             </div><!-- /. box -->
                         </div><!-- /.col -->
@@ -85,8 +135,7 @@
         <script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
         <!-- date-range-picker -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
-        <script src="plugins/daterangepicker/daterangepicker.js"></script>
-        <!-- bootstrap time picker -->
+        <script src="plugins/daterangepicker/daterangepicker.js"></script>        <!-- bootstrap time picker -->
         <script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
         <!-- jQuery UI 1.11.4 -->
         <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -104,46 +153,69 @@
         <!-- Page specific script -->
         <script>
             $(function () {
-                //Date range picker with time picker
-                $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 1, format: 'MM/DD/YYYY hh:mm A'});
+                var dialog, form,
+                        // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+                        title = $("#title"),
+                        tipoEvento = $("#tipoEvento"),
+                        tipoTarea = $("#tipoTarea"),
+                        duracion = $("#duracion"),
+                        allFields = $([]).add(title).add(tipoEvento).add(tipoTarea).add(duracion);
+                        
+                $('#apptEndTime').daterangepicker({singleDatePicker: true, format: 'ddd MMM DD YYYY 00:00:00 [GMT]ZZ'});
+                function crearEvento() {
+                    var valid = true;
+                    allFields.removeClass("ui-state-error");
+                    if (valid) {
+                        $("#calendar").fullCalendar('renderEvent',
+                                {
+                                    title: $('#title').val(),
+                                    start: $('#apptStartTime').val(),
+                                    end: $('#apptEndTime').val(),
+                                    editable: true
+                                },
+                        true);
+                        dialog.dialog("close");
+                    }
+                    return valid;
+
+                }
+                dialog = $("#dialog-form").dialog({
+                    autoOpen: false,
+                    height: 300,
+                    width: 350,
+                    modal: true,
+                    buttons: {
+                        "Create an account": crearEvento,
+                        Cancel: function () {
+                            dialog.dialog("close");
+                        }
+                    },
+                    close: function () {
+                        form[ 0 ].reset();
+                        allFields.removeClass("ui-state-error");
+                    }
+                });
+                form = dialog.find("form").on("submit", function (event) {
+                    event.preventDefault();
+                    crearEvento();
+                });
                 $('#calendar').fullCalendar({
                     header: {
                         left: 'prev,next today',
                         center: 'title',
                         right: 'month,agendaWeek,agendaDay'
                     },
-                    defaultDate: '2015-12-12',
                     selectable: true,
                     selectHelper: true,
                     select: function (start, end) {
-                        var title = prompt('Event Title:');
-                        var eventData;
-                        if (title) {
-                            eventData = {
-                                title: title,
-                                start: start,
-                                end: end
-                            }
-                            var xhttp = new XMLHttpRequest();
-                            xhttp.open("GET", "Prueba?accion=crearEvento&titulo=" + title + "&empieza=" + start.format('DD/MM/YYYY').toString() + "&acaba=" + end.format('DD/MM/YYYY').toString(), true);
-                            xhttp.send();
-
-                            $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-                        }
+                        $('#dialog-form #apptStartTime').val(start);
+                        $('#dialog-form #apptEndTime').val(end);
+                        dialog.dialog("open");
                         $('#calendar').fullCalendar('unselect');
                     },
                     editable: true,
                     eventLimit: true, // allow "more" link when too many events
                     events: [],
-                    eventClick: function (event) {
-                        var antiguoTitulo = event.title;
-                        event.title = prompt('Change Event Title:');
-                        $('#calendar').fullCalendar('updateEvent', event);
-                        var xhttp = new XMLHttpRequest();
-                        xhttp.open("GET", "Prueba?accion=actualizarTitulo&titulo=" + event.title + "&empieza=" + event.start.format('DD/MM/YYYY').toString() + "&acaba=" + event.end.format('DD/MM/YYYY').toString() + "&antiguoTitulo=" + antiguoTitulo, true);
-                        xhttp.send();
-
-                    },
                     eventDrop: function (event, delta, revertFunc) {
                         alert(event.title + " was dropped on " + event.start.format('DD/MM/YYYY'));
                         if (!confirm("Are you sure about this change?")) {
@@ -152,6 +224,15 @@
                         var xhttp = new XMLHttpRequest();
                         xhttp.open("GET", "Prueba?accion=actualizarFecha&titulo=" + event.title + "&empieza=" + event.start.format('DD/MM/YYYY').toString() + "&acaba=" + event.end.format('DD/MM/YYYY').toString(), true);
                         xhttp.send();
+                    },
+                    eventResize: function (event, delta, revertFunc) {
+
+                        alert(event.title + " end is now " + event.end.format());
+
+                        if (!confirm("is this okay?")) {
+                            revertFunc();
+                        }
+
                     }
                 });
                 var cars = [
@@ -205,7 +286,8 @@
                         url: 'http://google.com/',
                         start: '2015-12-28'
                     }];
-                $('#calendar').fullCalendar('addEventSource', cars)
+                $('#calendar').fullCalendar('addEventSource', cars);
+
             });
         </script>
     </body>

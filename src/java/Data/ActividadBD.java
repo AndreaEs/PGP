@@ -48,7 +48,6 @@ public class ActividadBD {
                 + actividad.getDuracionReal() + ",'"
                 + actividad.getEstado() + "',"
                 + actividad.getIdFase() + ")";
-
         try {
             ps = connection.prepareStatement(query);
             ps.executeUpdate();

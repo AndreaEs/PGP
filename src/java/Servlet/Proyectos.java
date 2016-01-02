@@ -35,7 +35,7 @@ public class Proyectos extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
-        String user = (String) sesion.getAttribute("user");
+        String user = /*(String) sesion.getAttribute("user")*/"jefe_1";
         String url = null;
         if (user != null) {
             String accion = request.getParameter("proyecto");

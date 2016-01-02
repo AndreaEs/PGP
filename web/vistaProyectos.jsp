@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="box-body no-padding">
                                     <%
-                                        String usuario = (String) session.getAttribute("usuario");
+                                        String usuario = (String) session.getAttribute("user");
                                         ArrayList<Proyecto> proyectos = (ArrayList<Proyecto>) session.getAttribute("proyectos");
                                         String colorClase = "";
                                         for (Proyecto p : proyectos) {
@@ -91,7 +91,6 @@
                                                                 colorClase = "text-muted";
                                                             }
                                                         %>
-                                                    </a>
                                                         <div class="<%=colorClase%>">
                                                             <i class="fa fa-file-text-o"></i> <b><%= p.getNombre()%></b>
                                                             <small> <%= p.getFechaInicio()%> - <%= p.getFechaFin()%>  </small>
