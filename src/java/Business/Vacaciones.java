@@ -14,38 +14,22 @@ import java.util.concurrent.TimeUnit;
  *
  * @author gil
  */
-public class Calendario {
+public class Vacaciones {
 
     private String fechaInicio;
     private String fechaFin;
     private String usuario;
-    private String tipo;
-    private String tipoT;
-    private int duracion;
 
-    public Calendario() {
+    public Vacaciones() {
         this.fechaInicio = "";
         this.fechaFin = "";
         this.usuario = "";
-        this.tipo = "";
-        this.tipoT="";
-        this.duracion=0;
     }
 
-    public Calendario(String fechaInicio, String fechaFin, String usuario, String tipo) {
+    public Vacaciones(String fechaInicio, String fechaFin, String usuario) {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.usuario = usuario;
-        this.tipo = tipo;
-    }
-    
-    public Calendario(String fechaInicio, String fechaFin, String usuario, String tipo, String tipoT, int duracion) {
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.usuario = usuario;
-        this.tipo = tipo;
-        this.tipoT=tipoT;
-        this.duracion=duracion;
     }
 
     public String getFechaInicio() {
@@ -72,31 +56,7 @@ public class Calendario {
         this.usuario = usuario;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getTipoT() {
-        return tipoT;
-    }
-
-    public void setTipoT(String tipoT) {
-        this.tipoT = tipoT;
-    }
-
-    public int getDuracion() {
-        return duracion;
-    }
-
-    public void setDuracion(int duracion) {
-        this.duracion = duracion;
-    }
-
-    public long comprobarDiasVacaciones(List<Calendario> cal) {
+    public long comprobarDiasVacaciones(List<Vacaciones> cal) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         long diff = 0;
 
@@ -114,7 +74,7 @@ public class Calendario {
 
     /*date1.comparetp(date2) > 0 --> date1 esta después de date2
      date1.comparetp(date2) < 0 --> date1 esta antes de date2*/
-    public boolean comprobarRangosEntreFechas(String fechaIn, String fechaFi, Calendario cal) {
+    public boolean comprobarRangosEntreFechas(String fechaIn, String fechaFi, Vacaciones cal) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             java.util.Date fechaI = formatter.parse(cal.getFechaInicio());

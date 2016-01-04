@@ -6,9 +6,9 @@
 package Servlet;
 
 import Business.Actividad;
-import Business.Calendario;
+import Business.Vacaciones;
 import Business.TareaPersonal;
-import Data.CalendarioDB;
+import Data.VacacionesDB;
 import Data.ActividadBD;
 import Data.TareaDB;
 import java.io.IOException;
@@ -54,23 +54,21 @@ public class CalendarioD extends HttpServlet {
 
         if (tipo.equals("V")) {
 
-            Calendario c = new Calendario();
+            Vacaciones c = new Vacaciones();
             c.setUsuario(login);
-            c.setTipo(tipo);
-            c.setTipoT(tipoT);
             c.setFechaInicio(fechaI);
             c.setFechaFin(fechaF);
             
             //Comprobaciones de un evento tipo Vacaciones
             //Primero obtener de la base de datos las fechas de vacaciones del usuario
-            List<Calendario> vacaciones = new ArrayList<Calendario>();
-            vacaciones = CalendarioDB.obtenerVacaciones(login);
+            List<Vacaciones> vacaciones = new ArrayList<Vacaciones>();
+            vacaciones = VacacionesDB.obtenerVacaciones(login);
 
             //Comprobar cuantos días lleva de vacaciones
             long dias = c.comprobarDiasVacaciones(vacaciones);
 
             //Días de vacaciones que ha solicitado
-            List<Calendario> nuevo = new ArrayList<Calendario>();
+            List<Vacaciones> nuevo = new ArrayList<Vacaciones>();
             nuevo.add(c);
             long nuevos = c.comprobarDiasVacaciones(nuevo);
             if (nuevos > 14) {
@@ -98,7 +96,7 @@ public class CalendarioD extends HttpServlet {
             //Si ha superado todos los pasos --> puede asignar vacaciones en las fechas que introdujo
             if (mensaje.equals("")) {
                 mensaje = "¡Todo correcto! Asignados el rango de fechas " + fechaI + " --> " + fechaF + " como días de vacaciones";
-                CalendarioDB.insertVacaciones(c);
+                VacacionesDB.insertVacaciones(c);
             }
 
             try (PrintWriter out = response.getWriter()) {
@@ -146,9 +144,9 @@ public class CalendarioD extends HttpServlet {
             for(int i=0;i<actividades.size();i++){
                 Actividad a = actividades.get(i);
                 if(a.comprobarFechaEntreFechas(fechaI, a)){
-                    mensaje="Hay una actividad en esa fecha";
                     //Asignar actividad
                     tp.setActividad(a.getIdentificador());
+                    //Crear actividad en la BD
                 }
             }
             
