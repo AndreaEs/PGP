@@ -94,7 +94,7 @@ public class CalendarioD extends HttpServlet {
                     mensaje = "No puedes asignar vacaciones en ese día porque ya tienes vacaciones asignadas en esas fechas";
                 }
             }
-
+            
             //Si ha superado todos los pasos --> puede asignar vacaciones en las fechas que introdujo
             if (mensaje.equals("")) {
                 mensaje = "¡Todo correcto! Asignados el rango de fechas " + fechaI + " --> " + fechaF + " como días de vacaciones";
@@ -130,6 +130,10 @@ public class CalendarioD extends HttpServlet {
             
             //Comprobaciones de un evento tipo Tarea Personal
   
+            //Comprobar que no quiere asignar una tarea en fin de semana
+            if(!tp.tareaFinSemana(fechaI))
+                mensaje="No puedes asignar una tarea en fin de semana";
+            
             //Obtener actividades de ese usuario
             List<Actividad> actividades = new ArrayList<Actividad>();
             actividades = ActividadBD.selectActividades(login);

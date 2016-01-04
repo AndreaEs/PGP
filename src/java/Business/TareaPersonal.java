@@ -6,7 +6,10 @@
 package Business;
 
 import Data.TareaDB;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  *
@@ -105,6 +108,19 @@ public class TareaPersonal {
 
     public static void actualizarTarea(TareaPersonal tp) {
         TareaDB.updateTarea(tp);
+    }
+    
+    public boolean tareaFinSemana(String fecha) throws ParseException{
+        //Pasar String a Calendar
+        Calendar f = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        f.setTime(formatter.parse(fecha));
+        //Obtener semana de dicha fecha
+        int dia = f.get(Calendar.DAY_OF_WEEK);
+        if(dia==Calendar.SATURDAY || dia==Calendar.SUNDAY)
+            return false;
+        else
+            return true;
     }
 
 }
