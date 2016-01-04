@@ -161,22 +161,11 @@ public class CalendarioD extends HttpServlet {
                 TareaDB.insert(tp);
                 mensaje = "Tarea personal creada para la Actividad " + tp.getActividad();
             } else {
-                //Dar a elegir al usuario
-                try (PrintWriter out = response.getWriter()) {
-                    out.println("<!DOCTYPE html>");
-                    out.println("<html>");
-                    out.println("<head>");
-                    out.println("<title>Servlet Calendario</title>");
-                    out.println("</head>");
-                    out.println("<body>");
-                    out.println("<h1>Servlet Calendario at " + request.getContextPath() + "</h1>");
-                    out.println("<h2> Actividades encontradas en esa fecha: </h2>");
-                    for(int i=0;i<actFecha.size();i++){
-                        out.println("<h4>Identificador: " + actFecha.get(i).getIdentificador() + " </h4>");
-                    }
-                    out.println("</body>");
-                    out.println("</html>");
-                }
+                //Asignar la primera por defecto --> DISCUTIRLO CON EL GRUPO
+                tp.setActividad(actFecha.get(0).getIdentificador());
+                //Anadir tp a la bbdd
+                TareaDB.insert(tp);
+                mensaje = "Tarea personal creada para la Actividad " + tp.getActividad();
             }
 
             try (PrintWriter out = response.getWriter()) {
