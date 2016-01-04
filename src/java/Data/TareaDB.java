@@ -27,10 +27,10 @@ public class TareaDB {
         PreparedStatement ps = null;
         String query = "INSERT INTO TareasPersonales (tipo, login, actividad, fecha,duracion) VALUES ('"
                 + tarea.getTipo() + "','"
-                + tarea.getLogin() + "','"
-                + tarea.getActividad() + "','"
-                + tarea.getFecha() + "','"
-                + tarea.getDuracion()+"')";
+                + tarea.getLogin() + "',"
+                + tarea.getActividad() + ",'"
+                + tarea.getFecha() + "',"
+                + tarea.getDuracion()+")";
         try {
             ps = connection.prepareStatement(query);
             ps.executeUpdate();
