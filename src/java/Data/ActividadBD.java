@@ -245,4 +245,57 @@ public class ActividadBD {
         else
             return true;
     }
+    
+    /*Comprueba que el usuario "login" no lleva más de 40 horas asignadas  a 
+    actividades de todos los proyectos en la semana en la que se encuetra "fecha"
+    Es decir, comprueba esta parte del enunciado:
+    La suma del tiempo dedicado a todas las actividades de todos los proyectos en los
+    que puede estar implicadas no debiera superar las cuarenta horas semanales
+    PARA QUE FUNCIONE (JEFE DE PROYECTOS): Hay que pasarle un dia de la semana en la que se va a 
+    encontrar la Actividad*/
+    public static boolean horasSemana(String login, String fecha) throws ParseException{
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        //Pasar String a Calendar
+        Calendar f = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        f.setTime(formatter.parse(fecha));
+        //Obtener semana de dicha fecha
+        int semana = f.get(Calendar.WEEK_OF_YEAR);
+        //Obtener Las actividades del cliente        
+        String query = "SELECT * FROM Actividades WHERE login=?";
+        int horas=0;
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, login);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int duracion = rs.getInt(5);
+                String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt(8), rs.getInt(7),rs.getInt(6));
+                String fechaFin = String.format("%04d-%02d-%02d", rs.getInt(11), rs.getInt(10),rs.getInt(9));
+                //Pasar String a Calendar
+                Calendar fechaI = Calendar.getInstance();
+                fechaI.setTime(formatter.parse(fechaInicio));
+                Calendar fechaF = Calendar.getInstance();
+                fechaF.setTime(formatter.parse(fechaFin));
+                //Comprobar semanas de esas fechas
+                int semanaI = fechaI.get(Calendar.WEEK_OF_YEAR);
+                int semanaF = fechaF.get(Calendar.WEEK_OF_YEAR);
+                if(semanaI==semana || semanaF==semana)
+                    horas=horas+duracion;
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Horas semanales: "+horas);
+        if(horas>39)
+            return false;
+        else
+            return true;
+    }
 }
