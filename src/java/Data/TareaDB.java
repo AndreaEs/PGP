@@ -25,11 +25,12 @@ public class TareaDB {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
-        String query = "INSERT INTO TareasPersonales (tipo, login, actividad, fecha) VALUES ('"
+        String query = "INSERT INTO TareasPersonales (tipo, login, actividad, fecha,duracion) VALUES ('"
                 + tarea.getTipo() + "','"
                 + tarea.getLogin() + "','"
                 + tarea.getActividad() + "','"
-                + tarea.getFecha() + "')";
+                + tarea.getFecha() + "','"
+                + tarea.getDuracion()+"')";
         try {
             ps = connection.prepareStatement(query);
             ps.executeUpdate();
@@ -159,4 +160,5 @@ public class TareaDB {
             return true;
         }
     }
+
 }

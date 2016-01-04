@@ -58,7 +58,7 @@ public class CalendarioD extends HttpServlet {
             c.setUsuario(login);
             c.setFechaInicio(fechaI);
             c.setFechaFin(fechaF);
-            
+
             //Comprobaciones de un evento tipo Vacaciones
             //Primero obtener de la base de datos las fechas de vacaciones del usuario
             List<Vacaciones> vacaciones = new ArrayList<Vacaciones>();
@@ -92,7 +92,7 @@ public class CalendarioD extends HttpServlet {
                     mensaje = "No puedes asignar vacaciones en ese día porque ya tienes vacaciones asignadas en esas fechas";
                 }
             }
-            
+
             //Si ha superado todos los pasos --> puede asignar vacaciones en las fechas que introdujo
             if (mensaje.equals("")) {
                 mensaje = "¡Todo correcto! Asignados el rango de fechas " + fechaI + " --> " + fechaF + " como días de vacaciones";
@@ -119,37 +119,66 @@ public class CalendarioD extends HttpServlet {
             }
 
         } else {
-            
+
             TareaPersonal tp = new TareaPersonal();
             tp.setLogin(login);
             tp.setTipo(tipoT);
             tp.setFecha(fechaI);
             tp.setDuracion(Integer.parseInt(duracion));
-            
+
             //Comprobaciones de un evento tipo Tarea Personal
-  
             //Comprobar que no quiere asignar una tarea en fin de semana
-            if(!tp.tareaFinSemana(fechaI))
-                mensaje="No puedes asignar una tarea en fin de semana";
-            
+            if (!tp.tareaFinSemana(fechaI)) {
+                mensaje = "No puedes asignar una tarea en fin de semana";
+            }
+
+            //Comprobar que ese usuario tiene menos de 25 tareas asignadas para esa semana
+            if (!TareaDB.tareasPersonalesSemana(login, fechaI)) {
+                mensaje = "El usuario " + login + " ya tiene asignadas 24 tareas personales para la semana del " + fechaI;
+            }
+
             //Obtener actividades de ese usuario
             List<Actividad> actividades = new ArrayList<Actividad>();
             actividades = ActividadBD.selectActividades(login);
-            
-            //Comprobar que ese usuario tiene menos de 25 tareas asignadas para esa semana
-            if(!TareaDB.tareasPersonalesSemana(login, fechaI))
-                mensaje="El usuario "+login+" ya tiene asignadas 24 tareas personales para la semana del "+fechaI;
-            
-            //Comprobar que en esa fecha hay una actividad
-            for(int i=0;i<actividades.size();i++){
+
+            //Comprobar que en esa fecha hay al menos una actividad
+            List<Actividad> actFecha = new ArrayList<Actividad>();
+            for (int i = 0; i < actividades.size(); i++) {
                 Actividad a = actividades.get(i);
-                if(a.comprobarFechaEntreFechas(fechaI, a)){
-                    //Asignar actividad
-                    tp.setActividad(a.getIdentificador());
-                    //Crear actividad en la BD
+                if (a.comprobarFechaEntreFechas(fechaI, a)) {
+                    actFecha.add(a);
                 }
             }
-            
+
+            //Si no había ninguna actividad asignada --> avisar usuario
+            if (actFecha.isEmpty()) {
+                mensaje = "No hay ninguna actividad en esa fecha";
+            }
+            //Si solo había una actividad --> asignar tarea a esa actividad
+            if (actFecha.size() == 1) {
+                tp.setActividad(actFecha.get(0).getIdentificador());
+                //Anadir tp a la bbdd
+                TareaDB.insert(tp);
+                mensaje = "Tarea personal creada para la Actividad " + tp.getActividad();
+            } else {
+                //Dar a elegir al usuario
+                try (PrintWriter out = response.getWriter()) {
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Servlet Calendario</title>");
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1>Servlet Calendario at " + request.getContextPath() + "</h1>");
+                    out.println("<h2> Actividades encontradas en esa fecha: </h2>");
+                    for(int i=0;i<actFecha.size();i++){
+                        out.println("<h4>Identificador: " + actFecha.get(i).getIdentificador() + " </h4>");
+                    }
+                    out.println("</body>");
+                    out.println("</html>");
+                }
+            }
+
             try (PrintWriter out = response.getWriter()) {
                 out.println("<!DOCTYPE html>");
                 out.println("<html>");
