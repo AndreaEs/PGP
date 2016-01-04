@@ -10,7 +10,7 @@ import Business.Calendario;
 import Business.TareaPersonal;
 import Data.CalendarioDB;
 import Data.ActividadBD;
-import Data.TareaPersonalDB;
+import Data.TareaDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -135,7 +135,7 @@ public class CalendarioD extends HttpServlet {
             actividades = ActividadBD.selectActividades(login);
             
             //Comprobar que ese usuario tiene menos de 25 tareas asignadas para esa semana
-            if(!TareaPersonalDB.tareasPersonalesSemana(login, fechaI))
+            if(!TareaDB.tareasPersonalesSemana(login, fechaI))
                 mensaje="El usuario "+login+" ya tiene asignadas 24 tareas personales para la semana del "+fechaI;
             
             //Comprobar que en esa fecha hay una actividad
