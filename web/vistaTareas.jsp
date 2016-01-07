@@ -1,11 +1,21 @@
+<%-- 
+    Document   : vistaTareas
+    Created on : 07-ene-2016, 13:05:05
+    Author     : Jennifer
+--%>
+
 <%@page import="java.util.ArrayList"%>
-<%@page import="Business.Proyecto"%>
+<%@page import="Business.TareaPersonal"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Ver Proyectos</title>
+        <title>Ver Actividades</title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.5 -->
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
         <!-- Font Awesome -->
@@ -47,12 +57,7 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Lista de proyectos
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Proyectos</li>
-                    </ol>
+                        Lista de tareas </h1>
                 </section>
 
                 <!-- Main content -->
@@ -61,62 +66,39 @@
                         <div class="col-md-3">
                             <div class="box box-solid">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Lista de proyectos</h3>
-                                    <div class="pull-right">
-                                        <small class="text-light-blue">Sin comenzar.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-red">En curso.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-yellow">Finalizado.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-muted">Cerrado.</small>
-                                    </div>
+                                    <h3 class="box-title">Lista de Participantes</h3>
                                 </div>
                                 <div class="box-body no-padding">
                                     <%
-                                        String nif = (String) session.getAttribute("proyecto-nif");
-
                                         String usuario = (String) session.getAttribute("user");
-
-                                        ArrayList<Proyecto> proyectos = (ArrayList<Proyecto>) session.getAttribute("proyectos");
-                                        String colorClase = "";
-                                        for (Proyecto p : proyectos) {
+                                        ArrayList<TareaPersonal> tareas = (ArrayList<TareaPersonal>) session.getAttribute("tareas"); 
+                    
+                                        for (TareaPersonal a : tareas) {
                                     %>
                                     <ul class="nav nav-pills nav-stacked">
-                                        <li>
-                                            <div class="margin">
-                                                <div class="btn pull-left">
-                                                    <a href="Proyectos?proyecto=actualizarUnProyecto&usuario=<%=usuario%>&idProyecto=<%= p.getIdentificador()%>">
-                                                        <% if (p.getEstado() == 'S') {
-                                                                colorClase = "text-light-blue";
-                                                            } else if (p.getEstado() == 'E') {
-                                                                colorClase = "text-red";
-                                                            } else if (p.getEstado() == 'F') {
-                                                                colorClase = "text-yellow";
-                                                            } else if (p.getEstado() == 'C') {
-                                                                colorClase = "text-muted";
-                                                            }
-                                                        %>
-                                                        <div class="<%=colorClase%>">
-                                                            <i class="fa fa-file-text-o"></i> <b><%= p.getNombre()%></b>
-                                                            <small> <%= p.getFechaInicio()%> - <%= p.getFechaFin()%>  </small>
-                                                        </div>
+                                        
+                                        <div class="btn pull-left">
+                                                <div>
+                                                    <a href="Tareas?tarea=actualizarUnaTarea&usuario=<%=usuario%>&idTarea=<%= a.getId()%>">
+                                                    <i class="fa fa-file-text-o"></i> <b><%= a.getId()%></b>
+                                                    <i class="fa fa-file-text-o"></i> <b><%= a.getTipo()%></b>
+                                                    <i class="fa fa-file-text-o"></i> <%= a.getFecha()%>
                                                     </a>
                                                 </div>
-                                                <div class="btn pull-right">
-                                                    <a href="Fases?fase=verFases&idProyecto=<%= p.getIdentificador()%>"><button type="button" class="btn btn-default">Fases</button></a>
-                                                </div>
-                                            </div>
-                                        </li>
-
+                                        </div>
+                                        
                                     </ul>
                                     <%
                                         }
                                     %>
                                 </div><!-- /.box-body -->
                                 <div class="box-footer">
-                                    <a class="btn btn-app" href="Proyectos?proyecto=crearNuevoProyecto&usuario=<%= usuario%>">
-                                        <i class="fa fa-edit"></i> Nuevo Proyecto
+                                    <a class="btn btn-app" href="Tareas?tarea=crearNuevaTarea&usuario=<%= usuario%>">
+                                        <i class="fa fa-edit"></i> Nueva Tarea
                                     </a>
                                 </div>
                             </div><!-- /. box -->
+
                         </div><!-- /.row -->
                 </section><!-- /.content -->
             </div><!-- /.content-wrapper -->
