@@ -41,18 +41,21 @@ public class Prueba extends HttpServlet {
             throws ServletException, IOException {
         String accion = request.getParameter("accion");
         if (accion.equals("crearEvento")) {
-            String titulo = request.getParameter("titulo");
+            String titulo = request.getParameter("title");
+            String tipoEvento = request.getParameter("tipoEvento");
+            String tipoTarea = request.getParameter("tipoTarea");
+            int duracion = Integer.parseInt(request.getParameter("duracion"));
             String eventoEmpieza = request.getParameter("empieza");
             String eventoAcaba = request.getParameter("acaba");
-        }else if(accion.equals("actualizarTitulo")){
-            String titulo = request.getParameter("titulo");
+            System.out.println("titulo: "+ titulo + ", tipoEvento: " + tipoEvento + ", tipoTarea:" + tipoTarea + ", duracion: "+duracion + ", empieza: "+eventoEmpieza +", acaba: "+eventoAcaba);
+        }else if (accion.equals("actualizarEvento")){
+            String titulo = request.getParameter("title");
+            String tipoEvento = request.getParameter("tipoEvento");
+            String tipoTarea = request.getParameter("tipoTarea");
+            int duracion = Integer.parseInt(request.getParameter("duracion"));
             String eventoEmpieza = request.getParameter("empieza");
             String eventoAcaba = request.getParameter("acaba");
-            String antiguoTitulo = request.getParameter("antiguoTitulo");
-        }else if(accion.equals("actualizarFecha")){
-            String titulo = request.getParameter("titulo");
-            String eventoEmpieza = request.getParameter("empieza");
-            String eventoAcaba = request.getParameter("acaba");
+            System.out.println("titulo: "+ titulo + ", tipoEvento: " + tipoEvento + ", tipoTarea:" + tipoTarea + ", duracion: "+duracion + ", empieza: "+eventoEmpieza +", acaba: "+eventoAcaba);
         }
 
     }
