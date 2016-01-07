@@ -25,12 +25,10 @@ public class TareaDB {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
-        String query = "INSERT INTO TareasPersonales (tipo, login, actividad, fecha,duracion) VALUES ('"
+        String query = "INSERT INTO TareasPersonales (tipo, login, fecha) VALUES ('"
                 + tarea.getTipo() + "','"
                 + tarea.getLogin() + "',"
-                + tarea.getActividad() + ",'"
-                + tarea.getFecha() + "',"
-                + tarea.getDuracion()+")";
+                + tarea.getFecha() + ")";
         try {
             ps = connection.prepareStatement(query);
             ps.executeUpdate();
@@ -54,8 +52,7 @@ public class TareaDB {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                TareaPersonal t = new TareaPersonal(rs.getString(1), rs.getString(2), rs.getString(3),
-                        rs.getInt(5), rs.getInt(4));
+                TareaPersonal t = new TareaPersonal(rs.getString(2), rs.getString(3), rs.getString(4));
                 tmp.add(t);
             }
 
@@ -81,7 +78,7 @@ public class TareaDB {
             ps.setInt(1, idTarea);
             rs = ps.executeQuery();
             if (rs.next()) {
-                tp = new TareaPersonal(idTarea, rs.getString(2), rs.getString(3), rs.getString(5), rs.getInt(4), rs.getInt(6));
+                tp = new TareaPersonal(idTarea, rs.getString(2), rs.getString(3), rs.getString(4));
             }
             rs.close();
             ps.close();
@@ -101,9 +98,7 @@ public class TareaDB {
             ps = connection.prepareStatement(query);
             ps.setString(1, tp.getTipo());
             ps.setString(2, tp.getLogin());
-            ps.setInt(3, tp.getActividad());
-            ps.setString(4, tp.getFecha());
-            ps.setInt(5, tp.getId());
+            ps.setString(3, tp.getFecha());
             ps.executeUpdate();
             ps.close();
             pool.freeConnection(connection);

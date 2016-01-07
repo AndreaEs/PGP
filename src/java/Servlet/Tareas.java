@@ -69,12 +69,10 @@ public class Tareas extends HttpServlet {
     private TareaPersonal getTareaFromParameter(HttpServletRequest request, int idTarea, String usuario){
         String tipo = request.getParameter("tipoTarea");
         String fecha = request.getParameter("fecha");
-        int actividad = Integer.parseInt(request.getParameter("actividad"));
-        int duracion = Integer.parseInt(request.getParameter("duracion"));
         if(idTarea==0){
-            return new TareaPersonal(tipo, usuario, fecha, actividad, duracion);
+            return new TareaPersonal(tipo, usuario, fecha);
         } else {
-            return new TareaPersonal(idTarea,tipo, usuario,fecha,actividad, duracion);
+            return new TareaPersonal(idTarea,tipo, usuario,fecha);
         }
     }
 

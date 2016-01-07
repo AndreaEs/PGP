@@ -21,33 +21,25 @@ public class TareaPersonal {
     private String tipo;
     private String login;
     private String fecha;
-    private int idActividad;
-    private int duracion;
 
     public TareaPersonal() {
         this.id = 0;
         this.tipo = "";
         this.login = "";
         this.fecha = "";
-        this.idActividad = 0;
-        this.duracion = 0;
     }
-
-    public TareaPersonal(String tipo, String login, String fecha, int idActividad, int duracion) {
+    
+    public TareaPersonal(String tipo, String login, String fecha){
         this.tipo = tipo;
         this.login = login;
         this.fecha = fecha;
-        this.idActividad = idActividad;
-        this.duracion = duracion;
     }
 
-    public TareaPersonal(int id, String tipo, String login, String fecha, int idActividad, int duracion) {
+    public TareaPersonal(int id, String tipo, String login, String fecha) {
         this.id = id;
         this.tipo = tipo;
         this.login = login;
         this.fecha = fecha;
-        this.idActividad = idActividad;
-        this.duracion = duracion;
     }
 
     public int getId() {
@@ -76,22 +68,6 @@ public class TareaPersonal {
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
-    }
-
-    public int getActividad() {
-        return idActividad;
-    }
-
-    public void setActividad(int actividad) {
-        this.idActividad = actividad;
-    }
-
-    public int getDuracion() {
-        return duracion;
-    }
-
-    public void setDuracion(int duracion) {
-        this.duracion = duracion;
     }
 
     public static void guardarNuevaTarea(TareaPersonal tp) {
