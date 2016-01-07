@@ -25,8 +25,6 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <!-- Ionicons -->
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-        <!-- daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker-bs3.css">
         <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
         <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -81,41 +79,43 @@
                                         <h3 class="box-title">Calendario</h3>
                                     </div>
                                     <!-- THE CALENDAR -->
-                                    <div id="calendar"></div>
-                                    <div id="dialog-form" title="Create new user">
-                                        <p class="validateTips">All form fields are required.</p>
+                                    <form action="Prueba?accion=crearEvento" method="post">
+                                        <div id="calendar"></div>
+                                        <div id="dialog-form" title="Evento">
+                                            <p class="validateTips">All form fields are required.</p>
 
-                                        <form>
-                                            <fieldset>
-                                                <label for="titulo">Titulo</label>
-                                                <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" placeholder="Título del evento">
-                                                <label for="tE" >Tipo de evento</label>
-                                                <select class="text ui-widget-content ui-corner-all" style="width: 100%;" name="tipoEvento" id="tipoEvento">
-                                                    <option value="V"> Vacaciones </option>
-                                                    <option value="T"> Tarea personal </option>
-                                                </select>
-                                                <label for="tT" >Tipo de tarea</label>
-                                                <select class="text ui-widget-content ui-corner-all" style="width: 100%;" name="tipoTarea" id="tipoTarea">
-                                                    <option value="TU"> Trato con Usuarios </option>
-                                                    <option value="RE"> Reuniones Externas </option>
-                                                    <option value="RI"> Reuniones Internas </option>
-                                                    <option value="LD"> Lectura de Documentación </option>
-                                                    <option value="RV"> Revisión de documentación </option>
-                                                    <option value="ED"> Elaboración de documentación </option>
-                                                    <option value="DP"> Desarrollo de Programas </option>
-                                                    <option value="VP"> Verificación de Programas </option>
-                                                    <option value="FU"> Formación de Usuarios </option>
-                                                    <option value="FA"> Formación de Otras Actividades </option>
-                                                </select>
-                                                <label for="duracion">Duración</label>
-                                                <input type="number" name="duracion" id="duracion" class="text ui-widget-content ui-corner-all">
-                                                <input type="hidden" id="apptStartTime"/>
-                                                <input type="date" id="apptEndTime"/>
-                                                <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-
-                                            </fieldset>
-                                        </form>
-                                    </div>
+                                            <form>
+                                                <fieldset>
+                                                    <label for="titulo">Titulo</label>
+                                                    <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all">
+                                                    <label for="tE" >Tipo de evento</label>
+                                                    <select class="text ui-widget-content ui-corner-all" style="width: 100%;" name="tipoEvento" id="tipoEvento">
+                                                        <option value="V"> Vacaciones </option>
+                                                        <option value="T"> Tarea personal </option>
+                                                    </select>
+                                                    <label for="tT" >Tipo de tarea</label>
+                                                    <select class="text ui-widget-content ui-corner-all" style="width: 100%;" name="tipoTarea" id="tipoTarea">
+                                                        <option value="TU"> Trato con Usuarios </option>
+                                                        <option value="RE"> Reuniones Externas </option>
+                                                        <option value="RI"> Reuniones Internas </option>
+                                                        <option value="LD"> Lectura de Documentación </option>
+                                                        <option value="RV"> Revisión de documentación </option>
+                                                        <option value="ED"> Elaboración de documentación </option>
+                                                        <option value="DP"> Desarrollo de Programas </option>
+                                                        <option value="VP"> Verificación de Programas </option>
+                                                        <option value="FU"> Formación de Usuarios </option>
+                                                        <option value="FA"> Formación de Otras Actividades </option>
+                                                    </select>
+                                                    <label for="dur">Duración</label>
+                                                    <input type="number" name="duracion" id="duracion" class="text ui-widget-content ui-corner-all">
+                                                    <input type="hidden" id="apptStartTime" name="empieza"/>
+                                                    <label for="fin">Fecha de finalización</label>
+                                                    <input type="text" id="apptEndTime" name="acaba" class="text ui-widget-content ui-corner-all"/>
+                                                    <input type="submit"tabindex="-1" style="position:absolute; top:-1000px" action="Prueba?accion=crearEvento&title=hola">
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </form>
                                 </div><!-- /.box-body -->
                             </div><!-- /. box -->
                         </div><!-- /.col -->
@@ -135,7 +135,8 @@
         <script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
         <!-- date-range-picker -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
-        <script src="plugins/daterangepicker/daterangepicker.js"></script>        <!-- bootstrap time picker -->
+        <script src="plugins/daterangepicker/daterangepicker.js"></script>        
+        <!-- bootstrap time picker -->
         <script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
         <!-- jQuery UI 1.11.4 -->
         <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -160,9 +161,26 @@
                         tipoTarea = $("#tipoTarea"),
                         duracion = $("#duracion"),
                         allFields = $([]).add(title).add(tipoEvento).add(tipoTarea).add(duracion);
-                        
+                var ex, ey = document.getElementById("tipoEvento").options, es;
+                var tx, ty = document.getElementById("tipoTarea").options, ts;
+                var d, t;
                 $('#apptEndTime').daterangepicker({singleDatePicker: true, format: 'ddd MMM DD YYYY 00:00:00 [GMT]ZZ'});
+                function loadDoc() {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (xhttp.readyState == 4 && xhttp.status == 200) {
+                        }
+                    };
+                    xhttp.open("GET", "Prueba?accion=crearEvento", true);
+                    xhttp.send();
+                    //document.location.href = "Prueba?accion=crearEvento&title=" + document.getElementById("title").value + "&tipoEvento=" + ey[ex].value + "&tipoTarea=" + ty[tx].value + "&duracion=" + d + "&empieza=" + $('#apptStartTime').format('DD/MM/YYYY') + "&acaba=" + $('#apptEndTime').format('DD/MM/YYYY');
+                }
                 function crearEvento() {
+                    ex = document.getElementById("tipoEvento").selectedIndex;
+                    es = ey[ex].index;
+                    tx = document.getElementById("tipoTarea").selectedIndex;
+                    ts = ty[tx].index;
+                    d = document.getElementById("duracion").value;
                     var valid = true;
                     allFields.removeClass("ui-state-error");
                     if (valid) {
@@ -177,28 +195,28 @@
                         dialog.dialog("close");
                     }
                     return valid;
-
                 }
-                dialog = $("#dialog-form").dialog({
-                    autoOpen: false,
-                    height: 300,
-                    width: 350,
-                    modal: true,
-                    buttons: {
-                        "Create an account": crearEvento,
-                        Cancel: function () {
-                            dialog.dialog("close");
-                        }
-                    },
-                    close: function () {
-                        form[ 0 ].reset();
-                        allFields.removeClass("ui-state-error");
+                function actualizarEvento() {
+                    ex = document.getElementById("tipoEvento").selectedIndex;
+                    es = ey[ex].index;
+                    tx = document.getElementById("tipoTarea").selectedIndex;
+                    ts = ty[tx].index;
+                    d = document.getElementById("duracion").value;
+                    var valid = true;
+                    allFields.removeClass("ui-state-error");
+                    if (valid) {
+                        $("#calendar").fullCalendar('renderEvent',
+                                {
+                                    title: $('#title').val(),
+                                    start: $('#apptStartTime').val(),
+                                    end: $('#apptEndTime').val(),
+                                    editable: true
+                                },
+                        true);
+                        dialog.dialog("close");
                     }
-                });
-                form = dialog.find("form").on("submit", function (event) {
-                    event.preventDefault();
-                    crearEvento();
-                });
+                    return valid;
+                }
                 $('#calendar').fullCalendar({
                     header: {
                         left: 'prev,next today',
@@ -208,14 +226,97 @@
                     selectable: true,
                     selectHelper: true,
                     select: function (start, end) {
+                        document.getElementById("title").disabled = false;
                         $('#dialog-form #apptStartTime').val(start);
                         $('#dialog-form #apptEndTime').val(end);
+                        
+                        dialog = $("#dialog-form").dialog({
+                            autoOpen: false,
+                            height: 300,
+                            width: 350,
+                            modal: true,
+                            buttons: {
+                                "Create evento": crearEvento,
+                                Cancel: function () {
+                                    dialog.dialog("close");
+                                }
+                            },
+                            close: function () {
+                                form[ 0 ].reset();
+                                allFields.removeClass("ui-state-error");
+                            }
+                        });
                         dialog.dialog("open");
+                        form = dialog.find("form").on("submit", function (event) {
+                            event.preventDefault();
+                            t = document.getElementById("title").value;
+                            alert(t);
+                            ex = document.getElementById("tipoEvento").selectedIndex;
+                            es = ey[ex].index;
+                            tx = document.getElementById("tipoTarea").selectedIndex;
+                            ts = ty[tx].index;
+                            d = document.getElementById("duracion").value;
+                            var valid = true;
+                            allFields.removeClass("ui-state-error");
+                            if (valid) {
+                                $("#calendar").fullCalendar('renderEvent',
+                                        {
+                                            title: $('#title').val(),
+                                            start: $('#apptStartTime').val(),
+                                            end: $('#apptEndTime').val(),
+                                            editable: true
+                                        },
+                                true);
+                                dialog.dialog("close");
+                            }
+                        });
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function () {
+                            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                            }
+                        };
+                        xhttp.open("GET", "Prueba?accion=crearEvento&title=" + t, true);
+                        xhttp.send();
                         $('#calendar').fullCalendar('unselect');
+
                     },
                     editable: true,
                     eventLimit: true, // allow "more" link when too many events
                     events: [],
+                    eventClick: function (evento) {
+                        $('#dialog-form #title').val(evento.title);
+                        document.getElementById("title").disabled = true;
+                        document.getElementById("tipoEvento").selectedIndex = es;
+                        document.getElementById("tipoTarea").selectedIndex = ts;
+                        document.getElementById("duracion").setAttribute("value", d);
+                        $('#dialog-form #apptStartTime').val(evento.start);
+                        $('#dialog-form #apptEndTime').val(evento.end);
+                        dialog.dialog("open");
+                        $('#calendar').fullCalendar('removeEvents', function (event) {
+                            return event.title === evento.title;
+                        });
+                        dialog = $("#dialog-form").dialog({
+                            autoOpen: false,
+                            height: 300,
+                            width: 350,
+                            modal: true,
+                            buttons: {
+                                "Actualizar evento": actualizarEvento,
+                                Cancel: function () {
+                                    dialog.dialog("close");
+                                }
+                            },
+                            close: function () {
+                                form[ 0 ].reset();
+                                allFields.removeClass("ui-state-error");
+                            }
+                        });
+                        form = dialog.find("form").on("submit", function (event) {
+                            event.preventDefault();
+                            actualizarEvento();
+                        });
+                        document.location.href = "Prueba?accion=actualizarEvento&title=" + evento.title + "&tipoEvento=" + document.getElementById("tipoEvento").value + "&tipoTarea=" + document.getElementById("tipoTarea").value + "&duracion=" + document.getElementById("duracion").value + "&empieza=" + evento.start.format('DD/MM/YYYY') + "&acaba=" + evento.end.format('DD/MM/YYYY');
+                    },
                     eventDrop: function (event, delta, revertFunc) {
                         alert(event.title + " was dropped on " + event.start.format('DD/MM/YYYY'));
                         if (!confirm("Are you sure about this change?")) {
@@ -224,15 +325,6 @@
                         var xhttp = new XMLHttpRequest();
                         xhttp.open("GET", "Prueba?accion=actualizarFecha&titulo=" + event.title + "&empieza=" + event.start.format('DD/MM/YYYY').toString() + "&acaba=" + event.end.format('DD/MM/YYYY').toString(), true);
                         xhttp.send();
-                    },
-                    eventResize: function (event, delta, revertFunc) {
-
-                        alert(event.title + " end is now " + event.end.format());
-
-                        if (!confirm("is this okay?")) {
-                            revertFunc();
-                        }
-
                     }
                 });
                 var cars = [
@@ -287,7 +379,6 @@
                         start: '2015-12-28'
                     }];
                 $('#calendar').fullCalendar('addEventSource', cars);
-
             });
         </script>
     </body>
