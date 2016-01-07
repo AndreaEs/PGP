@@ -77,7 +77,14 @@
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
 
-            <%@include file="navBar.html" %>
+            <% if (session.getAttribute("tipo").equals("A")){
+             %>
+            <%@include file="administradorBar.jsp" %>
+            <% }else if(session.getAttribute("tipo").equals("D")) { %>
+            <%@include file="desarrolladorBar.jsp" %>
+            <% } else {%>
+            <%@include file="jefeProyectoBar.jsp" %>
+            <% }%>
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
@@ -255,7 +262,6 @@
                                         </div>
                                     </form>
                                         <div class="btn pull-right">
-                                            <a href="<%=session.getAttribute("urlAnterior")%>"><input type="button" class="btn btn-default" name="proyecto" value="Cancelar"/></a>
                                         
                                             <a href="Fases?fase=verFases&idProyecto=<%= p.getIdentificador()%>"><button type="button" class="btn btn-default" onclick="url()">Fases</button></a>
                                         </div>     

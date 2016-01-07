@@ -40,7 +40,14 @@
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
 
-            <%@include file="navBar.html" %>
+            <% if (session.getAttribute("tipo").equals("A")){
+             %>
+            <%@include file="administradorBar.jsp" %>
+            <% }else if(session.getAttribute("tipo").equals("D")) { %>
+            <%@include file="desarrolladorBar.jsp" %>
+            <% } else {%>
+            <%@include file="jefeProyectoBar.jsp" %>
+            <% }%>
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -98,6 +105,7 @@
                                                             <i class="fa fa-file-text-o"></i> <b><%= p.getNombre()%></b>
                                                             <small> <%= p.getFechaInicio()%> - <%= p.getFechaFin()%>  </small>
                                                         </div>
+                                                    </a>
                                                 </div>
                                                 <div class="btn pull-right">
                                                     <a href="Fases?fase=verFases&idProyecto=<%= p.getIdentificador()%>"><button type="button" class="btn btn-default">Fases</button></a>

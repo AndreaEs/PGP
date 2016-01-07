@@ -1,11 +1,19 @@
-<%@page import="Business.Fase"%>
+<%-- 
+    Document   : vistaTareas
+    Created on : 07-ene-2016, 13:05:05
+    Author     : Jennifer
+--%>
+
 <%@page import="java.util.ArrayList"%>
+<%@page import="Business.TareaPersonal"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Ver Fases</title>
+        <title>Ver Actividades</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.5 -->
@@ -38,17 +46,11 @@
             <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <script type="text/javascript">
-            function url(){
-             <% session.setAttribute("urlAnterior", "Proyectos?proyecto=actualizarUnProyecto&usuario="+session.getAttribute("user")+"&idProyecto="+session.getAttribute("idProyecto"));%>
-             
-            }
-        </script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
 
-            <% if (session.getAttribute("tipo").equals("A")){
+             <% if (session.getAttribute("tipo").equals("A")){
              %>
             <%@include file="administradorBar.jsp" %>
             <% }else if(session.getAttribute("tipo").equals("D")) { %>
@@ -56,18 +58,13 @@
             <% } else {%>
             <%@include file="jefeProyectoBar.jsp" %>
             <% }%>
+
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Lista de fases
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li><a href="vistaProyectos.jsp">Proyectos</a></li>
-                        <li class="active">Fases</li>
-                    </ol>
+                        Lista de tareas </h1>
                 </section>
 
                 <!-- Main content -->
@@ -76,61 +73,39 @@
                         <div class="col-md-3">
                             <div class="box box-solid">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Lista de fases</h3>
-                                    <div class="pull-right">
-                                        <small class="text-light-blue">Sin comenzar.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-red">En curso.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-yellow">Finalizado.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-muted">Cerrado.</small>
-                                    </div>
+                                    <h3 class="box-title">Lista de Participantes</h3>
                                 </div>
                                 <div class="box-body no-padding">
                                     <%
-                                        int idProyecto = (Integer) session.getAttribute("idProyecto");
                                         String usuario = (String) session.getAttribute("user");
-                                        ArrayList<Fase> fases = (ArrayList<Fase>) session.getAttribute("fases");
-                                        String colorClase = "";
-                                        for (Fase f : fases) {
+                                        ArrayList<TareaPersonal> tareas = (ArrayList<TareaPersonal>) session.getAttribute("tareas"); 
+                    
+                                        for (TareaPersonal a : tareas) {
                                     %>
                                     <ul class="nav nav-pills nav-stacked">
-                                        <li>
-                                            <div class="margin">
-                                                <div class="btn pull-left">
-                                                    <a href="Fases?fase=actualizarUnaFase&idProyecto=<%=idProyecto%>&idFase=<%= f.getId()%>"></a>
-                                                        <% if (f.getEstado() == 'S') {
-                                                                colorClase = "text-light-blue";
-                                                            } else if (f.getEstado() == 'E') {
-                                                                colorClase = "text-red";
-                                                            } else if (f.getEstado() == 'F') {
-                                                                colorClase = "text-yellow";
-                                                            } else if (f.getEstado() == 'C') {
-                                                                colorClase = "text-muted";
-                                                            }
-                                                        %>
-                                                        <div class="<%=colorClase%>">
-                                                            <i class="fa fa-file-text-o"></i> <%= f.getNombre()%>
-                                                            <small> <%= f.getFechaInicio()%> - <%= f.getFechaFin()%>  </small>
-                                                        </div>
+                                        
+                                        <div class="btn pull-left">
+                                                <div>
+                                                    <a href="Tareas?tarea=actualizarUnaTarea&usuario=<%=usuario%>&idTarea=<%= a.getId()%>">
+                                                    <i class="fa fa-file-text-o"></i> <b><%= a.getId()%></b>
+                                                    <i class="fa fa-file-text-o"></i> <b><%= a.getTipo()%></b>
+                                                    <i class="fa fa-file-text-o"></i> <%= a.getFecha()%>
+                                                    </a>
                                                 </div>
-                                                <div class="btn pull-right">
-                                                    <a href="Actividades?actividad=verActividades&idFase=<%= f.getId()%>"><button type="button" class="btn btn-default">Actividades</button></a>
-                                                </div>
-                                            </div>
-                                        </li>
+                                        </div>
+                                        
                                     </ul>
                                     <%
                                         }
                                     %>
                                 </div><!-- /.box-body -->
                                 <div class="box-footer">
-                                    <a class="btn btn-app" href="Fases?fase=crearNuevaFase&idProyecto=<%=idProyecto%>">
-                                        <i class="fa fa-edit"></i> Nueva Fase
-                                    </a>                           
-                                    <a href="<%=session.getAttribute("urlAnterior")%>"><input type="button" class="btn btn-default" name="fase" value="Cancelar" onclick="url()"/></a>
-
+                                    <a class="btn btn-app" href="Tareas?tarea=crearNuevaTarea&usuario=<%= usuario%>">
+                                        <i class="fa fa-edit"></i> Nueva Tarea
+                                    </a>
                                 </div>
-
                             </div><!-- /. box -->
+
                         </div><!-- /.row -->
                 </section><!-- /.content -->
             </div><!-- /.content-wrapper -->

@@ -49,8 +49,16 @@
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
-
-            <%@include file="navBar.html" %>
+            
+            
+             <% if (session.getAttribute("tipo").equals("A")){
+             %>
+            <%@include file="administradorBar.jsp" %>
+            <% }else if(session.getAttribute("tipo").equals("D")) { %>
+            <%@include file="desarrolladorBar.jsp" %>
+            <% } else {%>
+            <%@include file="jefeProyectoBar.jsp" %>
+            <% }%>
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
