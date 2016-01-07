@@ -71,7 +71,10 @@
                                 </div>
                                 <div class="box-body no-padding">
                                     <%
+                                        String nif = (String) session.getAttribute("proyecto-nif");
+
                                         String usuario = (String) session.getAttribute("user");
+
                                         ArrayList<Proyecto> proyectos = (ArrayList<Proyecto>) session.getAttribute("proyectos");
                                         String colorClase = "";
                                         for (Proyecto p : proyectos) {

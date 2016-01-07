@@ -49,7 +49,6 @@ public class ProyectoDB {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     public static ArrayList<Proyecto> selectProyectos(String usuario) {
@@ -163,6 +162,33 @@ public class ProyectoDB {
             }
         }
         return fechas;
+    }
+
+
+    public static ArrayList<Proyecto> selectTodosProyectos() {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM Proyectos  ORDER BY anoInicio, mesInicio, diaInicio ASC";
+        ArrayList<Proyecto> proyectos = new ArrayList<Proyecto>();
+        try {
+            ps = connection.prepareStatement(query);
+            
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String fechaInicio = String.format("%02d/%02d/%04d", rs.getInt(3), rs.getInt(4), rs.getInt(5));
+                String fechaFin = String.format("%02d/%02d/%04d", rs.getInt(6), rs.getInt(7), rs.getInt(8));
+                Proyecto p = new Proyecto(rs.getInt(1), rs.getString(2), fechaInicio, fechaFin, rs.getString(9).charAt(0), rs.getString("login"));
+                proyectos.add(p);
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return proyectos;
     }
 
 }

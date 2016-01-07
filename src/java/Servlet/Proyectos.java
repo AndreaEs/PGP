@@ -6,6 +6,8 @@
 package Servlet;
 
 import Business.Proyecto;
+import Business.TablaRoles;
+import Business.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
@@ -35,40 +37,52 @@ public class Proyectos extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
-        String user = /*(String) sesion.getAttribute("user")*/"jefe_1";
+        
         String url = null;
-        if (user != null) {
+        
             String accion = request.getParameter("proyecto");
             if (accion != null) {
                 if (accion.equals("crearProyecto")) {
-                    Proyecto.guardarNuevoProyecto(getProyectoFromParameters(request, 0, user));
-                    url = getProyectos(user, sesion);
+                   sesion.setAttribute("proyecto-nif",(String)request.getParameter("jefe-proyecto") );
+                    String user =  (String)request.getParameter("jefe-proyecto");
+                    String numero = (String) request.getParameter("numero-participantes");
+                    Proyecto.guardarNuevoProyecto(getProyectoFromParameters(request, 0, user,Integer.valueOf(numero)));
+                    url = getTodosProyectos(sesion);
                 } else if (accion.equals("verProyectos")) {
-                    url = getProyectos(user, sesion);
+                    url = getTodosProyectos( sesion);
                 } else if (accion.equals("crearNuevoProyecto")) {
-                    sesion.setAttribute("user", user);
                     sesion.setAttribute("actualizar", false);
                     url = "/proyecto.jsp";
                 } else if(accion.equals("actualizarUnProyecto")){
                     int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
-                    sesion.setAttribute("user", user);
+                    //sesion.setAttribute("user", user);
                     sesion.setAttribute("actualizar", true);
                     sesion.setAttribute("idProyecto", idProyecto);
                     Proyecto p = Proyecto.getProject(idProyecto);
                     sesion.setAttribute("proyecto", p);
                     url = "/proyecto.jsp";
                 }else if(accion.equals("actualizarProyecto")){
+                    String user = User.getJefe( (String)request.getParameter("jefe-proyecto"));
                     int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
-                    Proyecto.actualizarProyecto(getProyectoFromParameters(request, idProyecto, user));
-                    url = getProyectos(user, sesion);
+                    Proyecto p = Proyecto.getProject(idProyecto);
+                    Proyecto.actualizarProyecto(getProyectoFromParameters(request, idProyecto, p.getLogin(),p.getNumP()));
+                    if(!TablaRoles.exist(idProyecto)){
+                    
+                    for(int i =0; i<p.getNumP();i++){
+                        String desarrollador="desarrollador"+String.valueOf(i);
+                         String categoria= request.getParameter("categoria"+i);
+                        TablaRoles.insert(idProyecto,desarrollador,categoria);
+                    }
+                    }
+                    url = getTodosProyectos(sesion);
                 }
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
                 respuesta.forward(request, response);
             }
-        }
+        
     }
 
-    private Proyecto getProyectoFromParameters(HttpServletRequest request, int idProyecto, String user) {
+   /* private Proyecto getProyectoFromParameters(HttpServletRequest request, int idProyecto, String user) {
         String nombre = request.getParameter("nombre");
         String fechaInicioyFin = request.getParameter("fechaInicioyFin");
         String fechaInicio = "";
@@ -90,11 +104,40 @@ public class Proyectos extends HttpServlet {
         } else {
             return new Proyecto(idProyecto, nombre, fechaInicio, fechaFin, estado, user);
         }
+    }*/
+     private Proyecto getProyectoFromParameters(HttpServletRequest request, int idProyecto, String user, int numP) {
+        String nombre = request.getParameter("nombre");
+        String fechaInicioyFin = request.getParameter("fechaInicioyFin");
+        String fechaInicio = "";
+        boolean encontrado = false;
+        int i = 0;
+        while (i < fechaInicioyFin.length() && !encontrado) {
+            if (fechaInicioyFin.charAt(i) != ' ') {
+                fechaInicio += fechaInicioyFin.charAt(i);
+            } else {
+                encontrado = true;
+            }
+            i++;
+        }
+        String fechaFin = fechaInicioyFin.substring(i + 2);
+
+        char estado = request.getParameter("estado").charAt(0);
+        if (idProyecto == 0) {
+            return new Proyecto(nombre, fechaInicio, fechaFin, estado, user,numP);
+        } else {
+            return new Proyecto(idProyecto, nombre, fechaInicio, fechaFin, estado, user,numP);
+        }
     }
 
     private String getProyectos(String user, HttpSession sesion) {
         ArrayList<Proyecto> proyectos = Proyecto.getProyectos(user);
         sesion.setAttribute("user", user);
+        sesion.setAttribute("proyectos", proyectos);
+        return "/vistaProyectos.jsp";
+    }
+    
+    private String getTodosProyectos(HttpSession sesion){
+         ArrayList<Proyecto> proyectos = Proyecto.getTodosProyectos();
         sesion.setAttribute("proyectos", proyectos);
         return "/vistaProyectos.jsp";
     }

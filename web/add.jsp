@@ -180,9 +180,14 @@
               </a>
             </li>
             <li>
-                <a href="Usuarios.jsp">
+                <a href="usuarios.jsp">
                 <i class="fa fa-circle-o"></i><span>Usuarios</span> <!-- Aqui poner dependiendo el rol -->
                 </a>
+            </li>
+            <li>
+               <a href="Proyectos?proyecto=verProyectos">
+                               <i class="fa fa-book"></i> <span>Proyectos</span> 
+                            </a>
             </li>
             
         <!-- /.sidebar -->
@@ -251,6 +256,16 @@
 
                         </select>
                         </div>
+                      <div class="form-group"> 
+                          <label  class="col-sm-2 control-label">Máximo Proyectos</label>
+                         <select name="maxProy" class="form-control-static" >
+                             
+                            <option class="option-control" value="1"> 1 </option>
+                            <option class="option-control" value="2"> 2 </option>
+                            
+
+                        </select>
+                        </div>
                     
                       <div class="form-group">
                       <label class="col-sm-2 control-label">Información general</label>
@@ -259,7 +274,7 @@
                   </div><!-- /.box-body -->
                   <div class="box-footer">
                     <button type="submit" class="btn btn-default">Cancelar</button>
-                    <button type="submit" class="btn btn-info pull-right" name="Accion" value="anadir">AÃ±adir</button>
+                    <button type="submit" class="btn btn-info pull-right" name="Accion" value="anadir">Add</button>
                   </div><!-- /.box-footer -->
                 </form>
               </div><!-- /.box -->

@@ -1,11 +1,12 @@
-<%@page import="Business.Fase"%>
+
+<%@page import="Business.Participante"%>
 <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Ver Fases</title>
+        <title>Ver Actividades</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.5 -->
@@ -38,12 +39,6 @@
             <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <script type="text/javascript">
-            function url(){
-             <% session.setAttribute("urlAnterior", "Proyectos?proyecto=actualizarUnProyecto&usuario="+session.getAttribute("user")+"&idProyecto="+session.getAttribute("idProyecto"));%>
-             
-            }
-        </script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
@@ -55,12 +50,12 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Lista de fases
-                    </h1>
+                        Lista de participantes </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                         <li><a href="vistaProyectos.jsp">Proyectos</a></li>
-                        <li class="active">Fases</li>
+                        <li><a href="vistaFases.jsp">Fases</a></li>
+                        <li class="active">Actividades</li>
                     </ol>
                 </section>
 
@@ -70,61 +65,36 @@
                         <div class="col-md-3">
                             <div class="box box-solid">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Lista de fases</h3>
-                                    <div class="pull-right">
-                                        <small class="text-light-blue">Sin comenzar.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-red">En curso.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-yellow">Finalizado.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-muted">Cerrado.</small>
-                                    </div>
+                                    <h3 class="box-title">Lista de Participantes</h3>
                                 </div>
                                 <div class="box-body no-padding">
                                     <%
-                                        int idProyecto = (Integer) session.getAttribute("idProyecto");
                                         String usuario = (String) session.getAttribute("user");
-                                        ArrayList<Fase> fases = (ArrayList<Fase>) session.getAttribute("fases");
-                                        String colorClase = "";
-                                        for (Fase f : fases) {
+                                        int idActividad = (Integer) session.getAttribute("idActividad");
+                                        ArrayList<Participante> participantes = (ArrayList<Participante>) session.getAttribute("participaciones"); 
+                    
+                                        for (Participante a : participantes) {
                                     %>
                                     <ul class="nav nav-pills nav-stacked">
-                                        <li>
-                                            <div class="margin">
-                                                <div class="btn pull-left">
-                                                    <a href="Fases?fase=actualizarUnaFase&idProyecto=<%=idProyecto%>&idFase=<%= f.getId()%>"></a>
-                                                        <% if (f.getEstado() == 'S') {
-                                                                colorClase = "text-light-blue";
-                                                            } else if (f.getEstado() == 'E') {
-                                                                colorClase = "text-red";
-                                                            } else if (f.getEstado() == 'F') {
-                                                                colorClase = "text-yellow";
-                                                            } else if (f.getEstado() == 'C') {
-                                                                colorClase = "text-muted";
-                                                            }
-                                                        %>
-                                                        <div class="<%=colorClase%>">
-                                                            <i class="fa fa-file-text-o"></i> <%= f.getNombre()%>
-                                                            <small> <%= f.getFechaInicio()%> - <%= f.getFechaFin()%>  </small>
-                                                        </div>
+                                        <div class="btn pull-left">
+                                                <div>
+                                                    <i class="fa fa-file-text-o"></i> <%= a.getLogin()%>
+                                                    <small> <%= a.getRol() %>  </small>
+                                                    <small> <%= a.getIdParticipante() %> </small>
                                                 </div>
-                                                <div class="btn pull-right">
-                                                    <a href="Actividades?actividad=verActividades&idFase=<%= f.getId()%>"><button type="button" class="btn btn-default">Actividades</button></a>
-                                                </div>
-                                            </div>
-                                        </li>
+                                        </div>
                                     </ul>
                                     <%
                                         }
                                     %>
                                 </div><!-- /.box-body -->
                                 <div class="box-footer">
-                                    <a class="btn btn-app" href="Fases?fase=crearNuevaFase&idProyecto=<%=idProyecto%>">
-                                        <i class="fa fa-edit"></i> Nueva Fase
-                                    </a>                           
-                                    <a href="<%=session.getAttribute("urlAnterior")%>"><input type="button" class="btn btn-default" name="fase" value="Cancelar" onclick="url()"/></a>
-
+                                    <a class="btn btn-app" href="usuarios.jsp?participante=true&idActividad=<%=idActividad%>">
+                                        <i class="fa fa-edit"></i> Nuevo Participante
+                                    </a>
                                 </div>
-
                             </div><!-- /. box -->
+
                         </div><!-- /.row -->
                 </section><!-- /.content -->
             </div><!-- /.content-wrapper -->

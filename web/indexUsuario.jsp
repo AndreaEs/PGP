@@ -4,6 +4,7 @@
     Author     : Jennifer
 --%>
 
+<%@page import="Data.UserDB"%>
 <%@page import="Business.User"%>
 <%@page import="Business.Proyecto"%>
 <%@page import="Business.TareaPersonal"%>
@@ -196,7 +197,9 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <ul class="todo-list">
-                    <%  ArrayList<String> tmp = new ArrayList<String>();
+                    <%  
+                    session.setAttribute("urlAnterior","/PGP/indexUsuario.jsp");
+                    ArrayList<String> tmp = new ArrayList<String>();
                     String siguiente="";
                     if(session.getAttribute("tipo").equals("D")){
                           siguiente="Tareas?tarea=actualizarUnaTarea&usuario="+ session.getAttribute("user") +"&idTarea=";
@@ -280,7 +283,7 @@
                         }
                       %>
                       <a href="<%=siguiente%><%=tmp.get(i)%>">
-                      <span class="text"><%= tmp.get(i)%> : <%= res %> </span>
+                          <span class="text"><%= tmp.get(i)%> : <%= res %> </span>
                       
                       <!-- Emphasis label -->
                       <small class="label label-danger"><i class="fa fa-clock-o"></i> <%=tmp.get(i+2)%></small>
@@ -296,7 +299,7 @@
                   </ul>
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix no-border">
-                  <button class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
+                    <% if (session.getAttribute("tipo").equals("A") || session.getAttribute("tipo").equals("D")){ %><button class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button><%}%>
                 </div>
               </div><!-- /.box -->
 

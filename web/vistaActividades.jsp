@@ -38,6 +38,12 @@
             <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <script type="text/javascript">
+            function url(){
+             <% session.setAttribute("urlAnterior", "Fases?fase=verFases&idProyecto="+session.getAttribute("idProyecto"));%>
+             
+            }
+        </script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
@@ -93,6 +99,7 @@
                                                     <small> <%= a.getFechaInicio()%> - <%= a.getFechaFin()%>  </small>
                                                 </div>
                                             </a>
+                                           <a href="usuarios.jsp?participante=true&idActividad=<%=a.getIdentificador()%>"><span class="btn btn-block btn-info btn-flat">Add participantes</span></a>
                                         </div>
                                     </ul>
                                     <%
@@ -101,8 +108,9 @@
                                 </div><!-- /.box-body -->
                                 <div class="box-footer">
                                     <a class="btn btn-app" href="Actividades?actividad=crearNuevaActividad&idFase=<%=idFase%>">
-                                        <i class="fa fa-edit"></i> Nuevo Actividad
+                                        <i class="fa fa-edit"></i> Nueva Actividad
                                     </a>
+                                        <a href="<%=session.getAttribute("urlAnterior")%>"><input type="button" class="btn btn-default" name="actividad" value="Cancelar" onclick="url()"/></a>
                                 </div>
                             </div><!-- /. box -->
 

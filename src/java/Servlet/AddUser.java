@@ -37,56 +37,44 @@ public class AddUser extends HttpServlet {
             throws ServletException, IOException {
         String url = "";
         String login , nif,pass,rol,informacion;
+        int maxProy;
         HttpSession sesion = request.getSession();
 
         if (request.getParameter("Accion").equals("anadir")) {
-            System.out.println("Llegamosal post de adduser");
              login = request.getParameter("login");
-            System.out.println(login);
             nif = request.getParameter("nif");
-            System.out.println(nif);
             pass = request.getParameter("pass");
-            System.out.println(pass);
             rol = request.getParameter("rol");
-            System.out.println(rol);
             informacion = request.getParameter("informacion");
-            System.out.println(informacion);
+            maxProy = Integer.valueOf(request.getParameter("maxProy"));
+            User user = new User(login, pass, rol.charAt(0), nif, informacion,maxProy);
 
-            User user = new User(login, pass, rol.charAt(0), nif, informacion);
-
-            if (UserDB.exist(login)) {
+            if (User.exist(login)) {
                 request.setAttribute("msg", "El usuario ya existe");
+                
                 url = "/add.jsp";
             } else {
-                UserDB.insert(user);
+                User.insert(user);
                 url = "/usuarios.jsp"; //cambiar por donde tenga q ir
             }
         } else if (request.getParameter("Accion").equals("eliminar")) {
             
             User usuario = (User) sesion.getAttribute("usuario");
-            UserDB.delete(usuario);
+            User.delete(usuario);
             url = "/usuarios.jsp";
 
         }else if (request.getParameter("Accion").equals("modificar")){
-            System.out.println("Llegamos al post de adduser para modificar");
+            char rolU;
              login = request.getParameter("login");
-            System.out.println(login);
             nif = request.getParameter("nif");
-            System.out.println(nif);
             pass = request.getParameter("pass");
-            System.out.println(pass);
-            rol = request.getParameter("rol");
-            System.out.println(rol);
+            rolU = ((User)sesion.getAttribute("usuario")).getTipo();
             informacion = request.getParameter("informacion");
-            System.out.println(informacion);
-            User usuario = new User(login,pass,rol.charAt(0),nif,informacion);
-            UserDB.update(usuario);
+            maxProy = Integer.valueOf(request.getParameter("maxProy"));
+            User usuario = new User(login,pass,rolU,nif,informacion,maxProy);
+            User.update(usuario);
             url ="/usuarios.jsp";
-        } else if (request.getParameter("Accion").equals("actualizaUnUsuario")){
-            login = request.getParameter("login");
-            User u = UserDB.getUsuario(login);
-            sesion.setAttribute("usuario", u);
-            url="/vistaUsuario.jsp";
+        
         }else{
             url="/usuarios.jsp";
         }

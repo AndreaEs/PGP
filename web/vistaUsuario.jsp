@@ -107,10 +107,15 @@
                             </a>
                         </li>
                         <li>
-                            <a href="Usuarios.jsp">
+                            <a href="usuarios.jsp">
                                 <i class="fa fa-user"></i><span>Usuarios</span> <!-- Aqui poner dependiendo el rol -->
                             </a>
                         </li>
+                        <li>
+               <a href="Proyectos?proyecto=verProyectos">
+                               <i class="fa fa-book"></i> <span>Proyectos</span> 
+                            </a>
+            </li>
 
                         <!-- /.sidebar -->
                         </aside>
@@ -137,7 +142,7 @@
                                     <div class="box box-info">
                                         <div class="box-header with-border">
                                             <%
-                                                /*List usuarios;
+                                                List usuarios;
                                                 User usuario = new User();
                                                 usuarios = (List) session.getAttribute("todosUsuarios");
                                                 String login ="" ;
@@ -151,8 +156,8 @@
 
                                                 }
                                                 usuario = UserDB.getUsuario(login);
-                                                session.setAttribute("usuario", usuario);*/
-                                                User usuario = (User)session.getAttribute("usuario");
+                                                session.setAttribute("usuario", usuario);
+                                               // User usuario = (User)session.getAttribute("usuario");
                                                 
 
                                             %>
@@ -190,7 +195,7 @@
                                                 <div class="form-group"> 
                                                     <label  class="col-sm-2 control-label">Tipo de usuario</label>
                                                     
-                                                    <select name="rol" class="form-control-static"  >
+                                                    <select disabled name="rol" class="form-control-static"  >
 
                                                         <option class="option-control" value="Desarrollador" <% if(usuario.getTipo() == 'D') out.println("selected");%>> 
                                                             Desarrollador </option>
@@ -198,6 +203,20 @@
                                                             Administrador </option>
                                                         <option class="option-control" value="Jefe de Proyecto" <% if(usuario.getTipo() == 'J') out.println("selected");%>> 
                                                             Jefe Proyecto </option>
+
+                                                    </select>
+                                                </div>
+                                                            <div class="form-group"> 
+                                                    <label  class="col-sm-2 control-label">Máximo de Proyectos</label>
+                                                    
+                                                    <select name="maxProy" class="form-control-static"  >
+                                                       
+
+                                                        <option class="option-control" value="1" <% if(usuario.getMaxProy() == 1) out.println("selected");%>> 
+                                                            1 </option>
+                                                        <option class="option-control" value="2" <% if(usuario.getMaxProy() == 2) out.println("selected");%>>
+                                                            2 </option>
+                                                        
 
                                                     </select>
                                                 </div>

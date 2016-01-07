@@ -4,8 +4,10 @@
     Author     : Sandra
 --%>
 
+<%@page import="Business.Participante"%>
 <%@page import="Business.User"%>
 <%@page import="Data.UserDB"%>
+<%@page import="Data.ParticipantesBD" %>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html>
@@ -47,6 +49,12 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script type="text/javascript">
+            function url(){
+            <% session.setAttribute("urlAnterior", "Actividades?actividad=verActividades&idFase="+session.getAttribute("idFase"));%>
+             
+            }
+        </script>
   </head>
   <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
@@ -119,33 +127,69 @@
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
           <div class="administrador-usuarios">
-          <br>
-              <a id ="nuevo-usuario" href="add.jsp">
-              <span>Añadir nuevo usuario</span>  <i class="fa fa-user-plus"></i>
-          </a>
-              <br><br>
-              <table id="tabla-usuarios">
-                  <% ArrayList array = UserDB.getLoginUsuarios();
-                  session.setAttribute("todosUsuarios", array);
+                  <% 
+                  ArrayList<User> res = new ArrayList<User>();
+                  ArrayList<String> participantes = new ArrayList<String>();
+                  int idProyecto = (Integer)session.getAttribute("idProyecto");
+                  if(request.getParameter("participante")!=null){
+                      res = ParticipantesBD.getParticipantesDisponibles();
+                      participantes= Participante.getParticipantesDisponibles(idProyecto);
                   %>
-               
-                  
-                  <% for(int u =0; u<array.size();u++){
-                     out.println("<tr>");
-                     out.println("<td>");
-                     
-                      out.println("<form action=\"vistaUsuario.jsp\">");
-                      //session.setAttribute("usuario"+u, array.get(u).toString());
-                      //out.println("<button>"+array.get(u)+"</button> <i class=\"fa fa-file-text\"> </i>");
-                      out.println("<a>");
-                      out.println("<input id=\"user\" style=\"border: none; background:none; width:200px;  height:50px \" type=\"submit\"  name=\"usuario" + u + "\" value=\"" +array.get(u) + "\"  > <i class=\"fa fa-file-text\"></i>");
-                      out.println("</a>");
-                      out.println("</form>");
-                      out.println("</td>");
-                       out.println("</tr>");
-                       
-                  } %>
+                  <br><br>
+                  <form action="Participantes?accion=crearParticipacion&idActividad=<%=request.getParameter("idActividad")%>" method="post">
+                      <table class="table table-striped text-center">
+                      <%for(int i=0; i<res.size();i++){%>
+                      <tr>
+                  <div class="margin">
+                    <div class="btn pull-left">
+                        <td><i class="fa fa-file-text-o"></i><input type="hidden" name="login<%=i%>" value="<%= res.get(i).getLogin()%>"><b><%= res.get(i).getLogin() %></b></td>
+                        <td><div class="col-xs-4"><input type="number" class="form-control" placeholder="porcentaje" name="porcentaje<%=i%>"/></div></td>
+                        <td>
+                            <select name="idParticipante<%=i%>">
+                                <% for(int j=0; j<participantes.size(); j++) {%>
+                                <option value="<%=participantes.get(j)%>"><%=participantes.get(j)%></option>
+                                <%}%>
+                            </select>
+                        </td>
+                        <td><input type="hidden" id="boton" name="boton" value="null"><input type="submit" class="btn btn-block btn-info btn-flat" value="Add" onclick="document.getElementById('boton').value=<%=i%>"></td>
+                        <td></td>
+                            
+                   </div>
+                  </div>
+                      </tr>
+                        <%}%>
+                        </table>
                       
+                  </form>
+                        <div class="box-footer">
+                                        <a href="<%=session.getAttribute("urlAnterior")%>"><input type="button" class="btn btn-default" name="actividad" value="Cancelar" onclick="url()"/></a>
+                                </div>
+                        
+                        <table id="tabla-usuarios">
+                  <%} else { 
+                    ArrayList<String> array = new ArrayList<String>();
+                    array = UserDB.getLoginUsuarios();
+                    session.setAttribute("todosUsuarios", array);%>
+                    <br>
+                    <a id ="nuevo-usuario" href="add.jsp">
+                    <span>Añadir nuevo usuario</span>  <i class="fa fa-user-plus"></i>
+                         </a>
+                    <br><br>
+              <%
+                    for(int u =0; u<array.size();u++){
+                        out.println("<tr>");
+                        out.println("<td>");
+                     
+                        out.println("<form action=\"vistaUsuario.jsp\">");
+                        out.println("<a>");
+                        out.println("<input id=\"user\" style=\"border: none; background:none; width:200px;  height:50px \" type=\"submit\"  name=\"usuario" + u + "\" value=\"" +array.get(u) + "\"  > <i class=\"fa fa-file-text\"></i>");
+                        out.println("</a>");
+                        out.println("</form>");
+                        out.println("</td>");
+                        out.println("</tr>");
+                    
+                    }
+                  }%>
                  
               </table>
           </div>

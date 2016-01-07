@@ -104,9 +104,14 @@
               </a>
             </li>
             <li>
-                <a href="Usuarios.jsp">
+                <a href="usuarios.jsp">
                 <i class="fa fa-user"></i><span>Usuarios</span> <!-- Aqui poner dependiendo el rol -->
                 </a>
+            </li>
+            <li>
+               <a href="Proyectos?proyecto=verProyectos">
+                               <i class="fa fa-book"></i> <span>Proyectos</span> 
+                            </a>
             </li>
             
         <!-- /.sidebar -->

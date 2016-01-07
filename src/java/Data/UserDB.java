@@ -103,8 +103,8 @@ public class UserDB {
                 + user.getLogin()+"','"
                 + user.getPass()+"','"
                 + user.getTipo()+ "','"
-                + user.getNif()+"','"
-                + user.getMaxProy()+"','"
+                + user.getNif()+"',"
+                + user.getMaxProy()+",'"
                 + user.getInfoGeneral()+ "')";
                 
         try {
@@ -231,7 +231,7 @@ public class UserDB {
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         String query="UPDATE Usuarios SET login = ? , pass = ? ,"
-                + "tipo = ? , infoGeneral = ? WHERE nif = ?";
+                + " infoGeneral = ? , maxProy = ? WHERE nif = ? AND tipo = ?";
                 
                 
         try {
@@ -239,9 +239,11 @@ public class UserDB {
             ps = connection.prepareStatement(query);
             ps.setString(1, user.getLogin());
             ps.setString(2,user.getPass() );
-            ps.setString(3,String.valueOf(user.getTipo() ));
-            ps.setString(4, user.getInfoGeneral());
+            ps.setString(3, user.getInfoGeneral());
+            ps.setInt(4, user.getMaxProy());
             ps.setString(5, user.getNif() );
+            ps.setString(6,String.valueOf(user.getTipo() ));
+            
             
             
             int res = ps.executeUpdate();
@@ -254,5 +256,59 @@ public class UserDB {
         }
   }
 
+    public static ArrayList<String> getPosiblesJefes() {
+        ArrayList<String> jefes = new ArrayList();
+        ConnectionPool pool = ConnectionPool.getInstance(); 
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null; 
+        String query = "SELECT nif FROM Usuarios " 
+                + "WHERE login NOT IN (SELECT login FROM Proyectos WHERE "
+                + "estado = 'S' OR estado = 'E')"; 
+        try {
+            ps = connection.prepareStatement(query); 
+             
+            
+            rs = ps.executeQuery();
+           while(rs.next()){
+            jefes.add(rs.getString("nif"));
+           }
+            rs.close(); 
+            ps.close(); 
+            pool.freeConnection(connection);
+            return jefes;
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            return jefes;
+        }
 
+
+    }
+
+    public static String getJefe(String dni) {
+     String login="";
+        ConnectionPool pool = ConnectionPool.getInstance(); 
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null; 
+        String query = "SELECT login FROM Usuarios " 
+                + "WHERE nif = ?";
+        try {
+            ps = connection.prepareStatement(query); 
+            ps.setString(1,dni);
+            
+            rs = ps.executeQuery();
+            
+           if(rs.next()){
+            login = rs.getString("login");
+           }
+            rs.close(); 
+            ps.close(); 
+            pool.freeConnection(connection);
+            return login;
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            return login;
+        }  
+    }
 }

@@ -5,7 +5,9 @@
  */
 package Business;
 
+import Data.UserDB;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,7 +19,7 @@ public class User implements Serializable{
     private String pass;
     private char tipo;
     private String nif;
-    private int maxProy=3;
+    private int maxProy;
     private String infoGeneral;
     
     public User(){
@@ -42,6 +44,14 @@ public class User implements Serializable{
         this.tipo=tipo;
         this.nif=nif;
         this.infoGeneral=infoGeneral;
+    }
+    public User(String login, String pass, char tipo, String nif, String infoGeneral, int maxProy){
+        this.login=login;
+        this.pass=pass;
+        this.tipo=tipo;
+        this.nif=nif;
+        this.infoGeneral=infoGeneral;
+        this.maxProy = maxProy;
     }
     
     public String getLogin(){
@@ -88,5 +98,27 @@ public class User implements Serializable{
     
     public void setInfoGeneral(String infoGeneral){
         this.infoGeneral=infoGeneral;
+    }
+    
+    public static boolean exist(String login){
+        return UserDB.exist(login);
+    }
+    
+    public static void insert(User user){
+        UserDB.insert(user);
+    }
+    
+    public static void delete(User user){
+        UserDB.delete(user);
+    }
+    public static void update(User user){
+        UserDB.update(user);
+    }
+    public static ArrayList<String> getPosiblesJefes(){
+        return UserDB.getPosiblesJefes();
+    }
+    
+    public static String getJefe(String dni){
+        return UserDB.getJefe(dni);
     }
 }

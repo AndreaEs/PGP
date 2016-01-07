@@ -1,3 +1,7 @@
+<%@page import="Business.TablaRoles"%>
+<%@page import="Business.User"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="Data.UserDB"%>
 <%@page import="Business.Proyecto"%>
 <!DOCTYPE html>
 <html>
@@ -63,6 +67,11 @@
                     return true;
                 }
             }
+            function url() {
+
+            <%
+                session.setAttribute("urlAnterior", "/PGP/indexUsuario.jsp");%>
+            }
         </script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
@@ -126,8 +135,26 @@
                                                     <option disabled="disabled" value="C">Cerrado</option>
                                                 </select>
                                             </div><!-- /.form-group -->
+                                            <div class="form-group">
+                                                <label>Jefe de Proyecto</label>
+                                                <select class="form-control select2" style="width: 100%;" name="jefe-proyecto">
+
+                                                    <% ArrayList<String> posiblesJefes = new ArrayList();
+                                                        posiblesJefes = User.getPosiblesJefes();
+                                                        for (int i = 0; i < posiblesJefes.size(); i++) {
+                                                            out.println("<option class=\"option-control\" value=\"" + posiblesJefes.get(i) + "\" > " + posiblesJefes.get(i) + "</option>");
+                                                        }
+                                                    %>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Numero de participantes</label>
+                                                <input type="text" name="numero-participantes">
+                                            </div> <!-- /.box-header -->
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
+                                            <% session.setAttribute("actualizar", true); %>
+
                                             <button type="submit" class="btn btn-primary" name="crearProyecto" value="crearProyecto" onclick="return validar()">Crear Proyecto</button>
                                             <a href="vistaProyectos.jsp"><button type="button" class="btn btn-default" name="proyecto" value="cancelar">Cancelar</button></a>
                                         </div>
@@ -136,6 +163,7 @@
                                     <% } else {
                                         idProyecto = (Integer) session.getAttribute("idProyecto");
                                         Proyecto p = (Proyecto) session.getAttribute("proyecto");
+
                                     %> 
                                     <form role="form" action="Proyectos?proyecto=actualizarProyecto&user=<%= user%>&idProyecto=<%= idProyecto%>" name="proyecto" value="actualizarProyecto" method="post">
                                         <div class="box-body">
@@ -178,12 +206,59 @@
                                                         value="C">Cerrado</option>
                                                 </select>
                                             </div><!-- /.form-group -->
+                                            <div class="form-group">
+                                                <label>Jefe de Proyecto</label>
+                                                <select disabled class="form-control select2" style="width: 100%;" name="jefe-proyecto">
+
+                                                    <%
+
+                                                        out.println("<option class=\"option-control\" value=\"" + p.getLogin() + "\" > " + p.getLogin() + "</option>");
+
+                                                    %>
+                                                </select>
+                                            </div>
+                                            <% if (!TablaRoles.exist(p.getIdentificador())) {
+                                            %>
+                                            <div class="form-group">
+                                                <label>Participantes en el proyecto </label>
+                                                <br>
+                                                <%
+                                                    int num = p.getNumP();
+
+                                                    for (int i = 0; i < num; i++) {
+                                                %>
+                                                <input disabled type="text" name="desarrollador<%=i%>" value="desarrollador<%=i%>">
+                                                <select  name="categoria<%=i%>">
+
+                                                    <option class="option-control" value="AN">AN</option>
+                                                    <option class="option-control" value="DI">DI</option>
+                                                    <option class="option-control" value="AP">AP</option>
+                                                    <option class="option-control" value="RP">RP</option>
+                                                    <option class="option-control" value="PG">PG</option>
+                                                    <option class="option-control" value="PR">PR</option>
+
+
+
+                                                </select>
+
+                                                <% } %> 
+
+
+                                            </div>
+
+                                            <% } else {
+                                                }%> 
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
                                             <button type="submit" class="btn btn-primary" name="actualizarProyecto" value="actualizarProyecto" onclick="return validar()">Actualizar Proyecto</button>
                                             <a href="vistaProyectos.jsp"><button type="button" class="btn btn-default" name="proyecto" value="cancelar">Cancelar</button></a>
                                         </div>
                                     </form>
+                                        <div class="btn pull-right">
+                                            <a href="<%=session.getAttribute("urlAnterior")%>"><input type="button" class="btn btn-default" name="proyecto" value="Cancelar"/></a>
+                                        
+                                            <a href="Fases?fase=verFases&idProyecto=<%= p.getIdentificador()%>"><button type="button" class="btn btn-default" onclick="url()">Fases</button></a>
+                                        </div>     
                                     <% }%>
                                 </div><!-- /.col -->
                             </div><!-- /.row -->
