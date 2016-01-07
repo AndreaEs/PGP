@@ -5,13 +5,18 @@
  */
 package Servlet;
 
+import Business.Actividad;
+import Business.CalendarDTO;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,23 +45,49 @@ public class Prueba extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String accion = request.getParameter("accion");
-        if (accion.equals("crearEvento")) {
-            String titulo = request.getParameter("title");
-            String tipoEvento = request.getParameter("tipoEvento");
-            String tipoTarea = request.getParameter("tipoTarea");
-            int duracion = Integer.parseInt(request.getParameter("duracion"));
-            String eventoEmpieza = request.getParameter("empieza");
-            String eventoAcaba = request.getParameter("acaba");
-            System.out.println("titulo: "+ titulo + ", tipoEvento: " + tipoEvento + ", tipoTarea:" + tipoTarea + ", duracion: "+duracion + ", empieza: "+eventoEmpieza +", acaba: "+eventoAcaba);
-        }else if (accion.equals("actualizarEvento")){
-            String titulo = request.getParameter("title");
-            String tipoEvento = request.getParameter("tipoEvento");
-            String tipoTarea = request.getParameter("tipoTarea");
-            int duracion = Integer.parseInt(request.getParameter("duracion"));
-            String eventoEmpieza = request.getParameter("empieza");
-            String eventoAcaba = request.getParameter("acaba");
-            System.out.println("titulo: "+ titulo + ", tipoEvento: " + tipoEvento + ", tipoTarea:" + tipoTarea + ", duracion: "+duracion + ", empieza: "+eventoEmpieza +", acaba: "+eventoAcaba);
+        if (accion.equals("mostrarEventos")) {
+            ArrayList<Actividad> listaActividades = Actividad.getActividades();
+            List l = new ArrayList();
+
+            for (Actividad a : listaActividades) {
+                CalendarDTO c = new CalendarDTO();
+                c.setId(a.getIdentificador());
+                c.setStart(a.getFechaInicio());
+                c.setEnd(a.getFechaFin());
+                c.setTitle(a.getDescripcion());
+                if (a.getEstado() == 'A') {
+                    c.setColor("#00FF00");
+                } else if (a.getEstado() == 'R') {
+                    c.setColor("#FE2E2E");
+                } else if (a.getEstado() == 'P') {
+                    c.setColor("#FFFF00");
+                }
+                c.setTextColor("#000000");
+                l.add(c);
+            }
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            PrintWriter out = response.getWriter();
+            out.write(new Gson().toJson(l));
         }
+        /* if (accion.equals("crearEvento")) {
+         String titulo = request.getParameter("title");
+         String tipoEvento = request.getParameter("tipoEvento");
+         String tipoTarea = request.getParameter("tipoTarea");
+         int duracion = Integer.parseInt(request.getParameter("duracion"));
+         String eventoEmpieza = request.getParameter("empieza");
+         String eventoAcaba = request.getParameter("acaba");
+         System.out.println("titulo: "+ titulo + ", tipoEvento: " + tipoEvento + ", tipoTarea:" + tipoTarea + ", duracion: "+duracion + ", empieza: "+eventoEmpieza +", acaba: "+eventoAcaba);
+         }else if (accion.equals("actualizarEvento")){
+         String titulo = request.getParameter("title");
+         String tipoEvento = request.getParameter("tipoEvento");
+         String tipoTarea = request.getParameter("tipoTarea");
+         int duracion = Integer.parseInt(request.getParameter("duracion"));
+         String eventoEmpieza = request.getParameter("empieza");
+         String eventoAcaba = request.getParameter("acaba");
+         System.out.println("titulo: "+ titulo + ", tipoEvento: " + tipoEvento + ", tipoTarea:" + tipoTarea + ", duracion: "+duracion + ", empieza: "+eventoEmpieza +", acaba: "+eventoAcaba);
+         }*/
 
     }
 

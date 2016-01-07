@@ -80,8 +80,9 @@
                                 <div class="box-header with-border">
                                     <h3 class="box-title">Lista de actividades</h3>
                                     <div class="pull-right">
-                                        <small class="text-red">No realizada.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-green">Realizada.</small>
+                                        <small class="text-red">Rechazada.</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <small class="text-yellow">Pendiente.</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <small class="text-green">Aceptada.</small>
                                     </div>
                                 </div>
                                 <div class="box-body no-padding">
@@ -95,10 +96,12 @@
                                     <ul class="nav nav-pills nav-stacked">
                                         <div class="btn pull-left">
                                             <a href="Actividades?actividad=actualizarUnaActividad&idFase=<%=idFase%>&idActividad=<%=a.getIdentificador()%>">
-                                                <% if (a.getEstado()) {
+                                                <% if (a.getEstado() == 'A') {
                                                         colorClase = "text-green";
-                                                    } else {
+                                                    } else if (a.getEstado() == 'R') {
                                                         colorClase = "text-red";
+                                                    }else if (a.getEstado() == 'P'){
+                                                        colorClase = "text-yellow";
                                                     }
                                                 %>
                                                 <div class="<%=colorClase%>">

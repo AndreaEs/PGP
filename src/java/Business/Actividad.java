@@ -126,6 +126,12 @@ public class Actividad implements Serializable{
         return ActividadBD.selectActividad(idActividad);
     }
     
+    public static ArrayList<Actividad> getActividades() {
+        return ActividadBD.selectActividades();
+    }
+
+    
+    
     /*date1.comparetp(date2) > 0 --> date1 esta después de date2
      date1.comparetp(date2) < 0 --> date1 esta antes de date2*/
     public boolean comprobarFechaEntreFechas(String fecha, Actividad a) {
