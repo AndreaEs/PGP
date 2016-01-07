@@ -124,7 +124,6 @@ public class CalendarioD extends HttpServlet {
             tp.setLogin(login);
             tp.setTipo(tipoT);
             tp.setFecha(fechaI);
-            tp.setDuracion(Integer.parseInt(duracion));
 
             //Comprobaciones de un evento tipo Tarea Personal
             //Comprobar que no quiere asignar una tarea en fin de semana
@@ -156,16 +155,11 @@ public class CalendarioD extends HttpServlet {
             }
             //Si solo había una actividad --> asignar tarea a esa actividad
             if (actFecha.size() == 1) {
-                tp.setActividad(actFecha.get(0).getIdentificador());
                 //Anadir tp a la bbdd
                 TareaDB.insert(tp);
-                mensaje = "Tarea personal creada para la Actividad " + tp.getActividad();
             } else {
-                //Asignar la primera por defecto --> DISCUTIRLO CON EL GRUPO
-                tp.setActividad(actFecha.get(0).getIdentificador());
                 //Anadir tp a la bbdd
                 TareaDB.insert(tp);
-                mensaje = "Tarea personal creada para la Actividad " + tp.getActividad();
             }
 
             try (PrintWriter out = response.getWriter()) {
