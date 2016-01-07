@@ -165,7 +165,7 @@
                 var tx, ty = document.getElementById("tipoTarea").options, ts;
                 var d, t;
                 $('#apptEndTime').daterangepicker({singleDatePicker: true, format: 'ddd MMM DD YYYY 00:00:00 [GMT]ZZ'});
-                function loadDoc() {
+                /*function loadDoc() {
                     var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function () {
                         if (xhttp.readyState == 4 && xhttp.status == 200) {
@@ -216,7 +216,7 @@
                         dialog.dialog("close");
                     }
                     return valid;
-                }
+                }*/
                 $('#calendar').fullCalendar({
                     header: {
                         left: 'prev,next today',
@@ -225,7 +225,7 @@
                     },
                     selectable: true,
                     selectHelper: true,
-                    select: function (start, end) {
+                    /*select: function (start, end) {
                         document.getElementById("title").disabled = false;
                         $('#dialog-form #apptStartTime').val(start);
                         $('#dialog-form #apptEndTime').val(end);
@@ -278,12 +278,12 @@
                         xhttp.open("GET", "Prueba?accion=crearEvento&title=" + t, true);
                         xhttp.send();
                         $('#calendar').fullCalendar('unselect');
-
-                    },
+                    },*/
                     editable: true,
                     eventLimit: true, // allow "more" link when too many events
-                    events: [],
-                    eventClick: function (evento) {
+                    
+                    events: "http://localhost:8084/PGP/Prueba?accion=mostrarEventos"
+                    /*eventClick: function (evento) {
                         $('#dialog-form #title').val(evento.title);
                         document.getElementById("title").disabled = true;
                         document.getElementById("tipoEvento").selectedIndex = es;
@@ -325,60 +325,8 @@
                         var xhttp = new XMLHttpRequest();
                         xhttp.open("GET", "Prueba?accion=actualizarFecha&titulo=" + event.title + "&empieza=" + event.start.format('DD/MM/YYYY').toString() + "&acaba=" + event.end.format('DD/MM/YYYY').toString(), true);
                         xhttp.send();
-                    }
+                    }*/
                 });
-                var cars = [
-                    {
-                        title: 'Long Event',
-                        start: '2015-12-07',
-                        end: '2015-12-10'
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: '2015-12-09T16:00:00'
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: '2015-12-16T16:00:00'
-                    },
-                    {
-                        title: 'Conference',
-                        start: '2015-12-11',
-                        end: '2015-12-13'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: '2015-12-12T10:30:00',
-                        end: '2015-12-12T12:30:00'
-                    },
-                    {
-                        title: 'Lunch',
-                        start: '2015-12-12T12:00:00'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: '2015-12-12T14:30:00'
-                    },
-                    {
-                        title: 'Happy Hour',
-                        start: '2015-12-12T17:30:00'
-                    },
-                    {
-                        title: 'Dinner',
-                        start: '2015-12-12T20:00:00'
-                    },
-                    {
-                        title: 'Birthday Party',
-                        start: '2015-12-13T07:00:00'
-                    },
-                    {
-                        title: 'Click for Google',
-                        url: 'http://google.com/',
-                        start: '2015-12-28'
-                    }];
-                $('#calendar').fullCalendar('addEventSource', cars);
             });
         </script>
     </body>

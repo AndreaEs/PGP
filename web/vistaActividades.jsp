@@ -96,10 +96,12 @@
                                     <ul class="nav nav-pills nav-stacked">
                                         <div class="btn pull-left">
                                             <a href="Actividades?actividad=actualizarUnaActividad&idFase=<%=idFase%>&idActividad=<%=a.getIdentificador()%>">
-                                                <% if (a.getEstado()=='A') {
+                                                <% if (a.getEstado() == 'A') {
                                                         colorClase = "text-green";
-                                                    } else {
+                                                    } else if (a.getEstado() == 'R') {
                                                         colorClase = "text-red";
+                                                    }else if (a.getEstado() == 'P'){
+                                                        colorClase = "text-yellow";
                                                     }
                                                 %>
                                                 <div class="<%=colorClase%>">
