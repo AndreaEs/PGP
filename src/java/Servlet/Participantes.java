@@ -112,4 +112,3 @@ public class Participantes extends HttpServlet {
     }// </editor-fold>
 
 }
-
