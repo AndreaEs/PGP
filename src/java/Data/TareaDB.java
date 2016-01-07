@@ -52,7 +52,7 @@ public class TareaDB {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                TareaPersonal t = new TareaPersonal(rs.getString(2), rs.getString(3), rs.getString(4));
+                TareaPersonal t = new TareaPersonal(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4));
                 tmp.add(t);
             }
 

@@ -123,14 +123,6 @@
                                               </div><!-- /.input group -->
                                             </div><!-- /.form group -->
                                             <div class="form-group">
-                                            <label>Actividad</label>
-                                            <select name="actividad" class="form-control select2" multiple="multiple" data-placeholder="Selecciona una actividad" style="width: 100%;">
-                                                <% 
-                                                ArrayList<Actividad> actividades = Actividad.getActividades(usuario);
-                                                for(int i=0; i<actividades.size();i++){%>
-                                                <option value="<%= actividades.get(i).getIdentificador() %>"><%= actividades.get(i).getIdentificador() %></option>
-                                                <%}%>
-                                            </select>
                                           </div><!-- /.form-group -->
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
@@ -171,16 +163,6 @@
                                                 <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
                                               </div><!-- /.input group -->
                                             </div><!-- /.form group -->
-                                            <div class="form-group">
-                                            <label>Actividad</label>
-                                            <select name="actividad" class="form-control select2" multiple="multiple" data-placeholder="Selecciona una actividad" style="width: 100%;">
-                                                <% 
-                                                ArrayList<Actividad> actividades = Actividad.getActividades(usuario);
-                                                for(int i=0; i<actividades.size();i++){%>
-                                                <option value="<%= actividades.get(i).getIdentificador() %>"><%= actividades.get(i).getIdentificador() %></option>
-                                                <%}%>
-                                            </select>
-                                          </div><!-- /.form-group -->
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
                                             <button type="submit" class="btn btn-primary" name="actualizarTarea" value="actualizarTarea" onclick="return validar()">Actualizar tarea</button>
