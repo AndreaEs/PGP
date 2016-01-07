@@ -1,12 +1,12 @@
 package Business;
 
 
-import Data.ActividadBD;
-import Data.FaseDB;
 import Data.ParticipantesBD;
 import Data.TablaRolesDB;
+import Data.VacacionesDB;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,7 +28,7 @@ public class Participante implements Serializable{
     
     public Participante(int idActividad, String login, double porcentaje, String rol, String idParticipante){
         this.idActividad=idActividad;
-        if(comprobarLogin(login)) this.login=login;
+        if(comprobarLogin(login, idActividad)) this.login=login;
         if(comprobarPorcentaje(login, porcentaje)) this.porcentaje=porcentaje;
         if(comprobarRol(rol)) this.rol=rol;
         this.idParticipante=idParticipante;
@@ -59,7 +59,7 @@ public class Participante implements Serializable{
     }
     
     public void setLogin(String login){
-        if(comprobarLogin(login)) this.login=login;
+        if(comprobarLogin(login, idActividad)) this.login=login;
     }
     
     public void setPorcentaje(double porcentaje){
@@ -129,8 +129,22 @@ public class Participante implements Serializable{
         return false;
     }
     
-    private boolean comprobarLogin(String login){
+    private boolean comprobarLogin(String login, int idActividad){
         ArrayList<Proyecto> proy = Proyecto.getProyectos(login);
-        return !(ParticipantesBD.exist(login) && proy.size()>0);
+        if(ParticipantesBD.exist(login) && proy.size()>0){
+            return false;
+        }
+        return comprobarVacaciones(login, idActividad);
+    }
+    
+    private boolean comprobarVacaciones(String login, int idActividad){
+        Actividad a = Actividad.getActivity(idActividad);
+        List<Vacaciones> tmp = VacacionesDB.obtenerVacaciones(login);
+        for (Vacaciones tmp1 : tmp) {
+            if (tmp1.comprobarRangosEntreFechas(a.getFechaInicio(), a.getFechaFin(), tmp1)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
