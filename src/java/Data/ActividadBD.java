@@ -135,44 +135,7 @@ public class ActividadBD {
         return actividades;
     }
     
-    public static ArrayList<Actividad> selectActividadesInforme(String login,String fechaI, String fechaF) throws ParseException {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        
-        //Pasar String a Calendar
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        
-        String query = "SELECT * FROM Actividades WHERE login=?";
-        ArrayList<Actividad> actividades = new ArrayList<Actividad>();
-        try {
-            ps = connection.prepareStatement(query);
-            ps.setString(1, login);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt(8), rs.getInt(7),rs.getInt(6));
-                String fechaFin = String.format("%04d-%02d-%02d", rs.getInt(11), rs.getInt(10),rs.getInt(9));
-                //Pasar String a Calendar
-                Calendar fechaIA = Calendar.getInstance();
-                fechaIA.setTime(formatter.parse(fechaInicio));
-                Calendar fechaFA = Calendar.getInstance();
-                fechaFA.setTime(formatter.parse(fechaFin));
-                
-                Actividad a = new Actividad(rs.getInt(1), login, rs.getString(3), rs.getString(4), rs.getInt(5), fechaInicio, fechaFin, rs.getInt(12), rs.getString(13).charAt(0), rs.getInt(14));
-                
-                //Comprobar si la actividad obtenida está entre el rango de fechas introducido por el usuario
-                if(comprobarFechaEntreFechas(fechaI,fechaF,a))
-                    actividades.add(a);
-            }
-            rs.close();
-            ps.close();
-            pool.freeConnection(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return actividades;
-    }
+    
     
     public static void updateActividad(Actividad a) {
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -338,6 +301,45 @@ public class ActividadBD {
             return true;
     }
     
+    public static ArrayList<Actividad> selectActividadesInforme(String login,String fechaI, String fechaF) throws ParseException {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        //Pasar String a Calendar
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        
+        String query = "SELECT * FROM Actividades WHERE login=?";
+        ArrayList<Actividad> actividades = new ArrayList<Actividad>();
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, login);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt(8), rs.getInt(7),rs.getInt(6));
+                String fechaFin = String.format("%04d-%02d-%02d", rs.getInt(11), rs.getInt(10),rs.getInt(9));
+                //Pasar String a Calendar
+                Calendar fechaIA = Calendar.getInstance();
+                fechaIA.setTime(formatter.parse(fechaInicio));
+                Calendar fechaFA = Calendar.getInstance();
+                fechaFA.setTime(formatter.parse(fechaFin));
+                
+                Actividad a = new Actividad(rs.getInt(1), login, rs.getString(3), rs.getString(4), rs.getInt(5), fechaInicio, fechaFin, rs.getInt(12), rs.getString(13).charAt(0), rs.getInt(14));
+                
+                //Comprobar si la actividad obtenida está entre el rango de fechas introducido por el usuario
+                if(comprobarFechaEntreFechas(fechaI,fechaF,a))
+                    actividades.add(a);
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return actividades;
+    }
+    
      /*date1.comparetp(date2) > 0 --> date1 esta después de date2
      date1.comparetp(date2) < 0 --> date1 esta antes de date2*/
     public static boolean comprobarFechaEntreFechas(String fechaI,String fechaF, Actividad a) {
@@ -352,7 +354,13 @@ public class ActividadBD {
                 return true;
             if (fechaFU.compareTo(fechaIA)==0 || fechaFU.compareTo(fechaFA)==0)
                 return true;
-            if (fechaIU.compareTo(fechaIA) > 0 && fechaFU.compareTo(fechaFA) < 0)
+            if (fechaIU.compareTo(fechaIA)> 0 && fechaFU.compareTo(fechaFA)< 0)
+                return true;
+            if (fechaIU.compareTo(fechaIA)>0 && fechaIU.compareTo(fechaFA)<0)
+                return true;
+            if (fechaFU.compareTo(fechaIA)>0 && fechaFU.compareTo(fechaFA)<0)
+                return true;
+            if (fechaIU.compareTo(fechaIA)<0 && fechaFU.compareTo(fechaFA)>0)
                 return true;
         } catch (ParseException e) {
             e.printStackTrace();
