@@ -85,26 +85,31 @@
                   <br><br>
                   <form action="Participantes?accion=crearParticipacion&idActividad=<%=request.getParameter("idActividad")%>" method="post">
                       <table class="table table-striped text-center">
-                      <%for(int i=0; i<res.size();i++){%>
+                      
                       <tr>
                   <div class="margin">
                     <div class="btn pull-left">
-                        <td><i class="fa fa-file-text-o"></i><input type="hidden" name="login<%=i%>" value="<%= res.get(i).getLogin()%>"><b><%= res.get(i).getLogin() %></b></td>
-                        <td><div class="col-xs-4"><input type="number" class="form-control" placeholder="porcentaje" name="porcentaje<%=i%>"/></div></td>
+                        <td><select name="login" class="form-control select2 select2-hidden-accessible">
+                                <%for(int i=0; i<res.size();i++){%>
+                                <option value="<%= res.get(i).getLogin() %>"><b><%= res.get(i).getLogin() %></b></option>
+                            <%}%>
+                            </select>
+                        </td>
+
+                        <td><div class="col-xs-4"><input type="number" class="form-control" placeholder="porcentaje" name="porcentaje"/></div></td>
                         <td>
-                            <select name="idParticipante<%=i%>">
+                            <select name="idParticipante">
                                 <% for(int j=0; j<participantes.size(); j++) {%>
                                 <option value="<%=participantes.get(j)%>"><%=participantes.get(j)%></option>
                                 <%}%>
                             </select>
                         </td>
-                        <td><input type="hidden" id="boton" name="boton" value="null"><input type="submit" class="btn btn-block btn-info btn-flat" value="Add" onclick="document.getElementById('boton').value=<%=i%>"></td>
+                        <td><input type="submit" class="btn btn-block btn-info btn-flat" value="Add"></td>
                         <td></td>
                             
                    </div>
                   </div>
                       </tr>
-                        <%}%>
                         </table>
                       
                   </form>

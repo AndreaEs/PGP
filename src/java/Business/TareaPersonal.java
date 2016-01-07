@@ -6,6 +6,7 @@
 package Business;
 
 import Data.TareaDB;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.Calendar;
  *
  * @author gil
  */
-public class TareaPersonal {
+public class TareaPersonal implements Serializable{
 
     private int id;
     private String tipo;

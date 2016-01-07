@@ -5,6 +5,7 @@
  */
 package Business;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author gil
  */
-public class Vacaciones {
+public class Vacaciones implements Serializable{
 
     private String fechaInicio;
     private String fechaFin;

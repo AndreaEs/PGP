@@ -1,3 +1,4 @@
+<%@page import="Data.ParticipantesBD"%>
 <%@page import="Business.Actividad"%>
 <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
@@ -95,7 +96,7 @@
                                     <ul class="nav nav-pills nav-stacked">
                                         <div class="btn pull-left">
                                             <a href="Actividades?actividad=actualizarUnaActividad&idFase=<%=idFase%>&idActividad=<%=a.getIdentificador()%>">
-                                                <% if (a.getEstado()) {
+                                                <% if (a.getEstado()=='A') {
                                                         colorClase = "text-green";
                                                     } else {
                                                         colorClase = "text-red";
@@ -106,7 +107,15 @@
                                                     <small> <%= a.getFechaInicio()%> - <%= a.getFechaFin()%>  </small>
                                                 </div>
                                             </a>
-                                           <a href="usuarios.jsp?participante=true&idActividad=<%=a.getIdentificador()%>"><span class="btn btn-block btn-info btn-flat">Add participantes</span></a>
+                                                <% boolean b = !ParticipantesBD.exist(a.getIdentificador()); %>
+                                                    <a href="usuarios.jsp?participante=true&idActividad=<%=a.getIdentificador()%>">
+                                                        <% if(b) { %> 
+                                                        <button class="btn btn-block btn-info btn-flat">Add participantes</button>
+                                                        <%} else { %>
+                                                        <button disabled="true" class="btn btn-block btn-info btn-flat">Add participantes</button>
+                                                        <%}%>
+                                                    </a>
+
                                         </div>
                                     </ul>
                                     <%

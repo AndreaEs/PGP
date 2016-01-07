@@ -47,21 +47,20 @@ public class Participantes extends HttpServlet {
     }
 
     private Participante getParticipanteFromParameter(HttpServletRequest request){
-        int num = Integer.parseInt(request.getParameter("boton"));
         int idActividad= Integer.parseInt(request.getParameter("idActividad"));
         System.err.println(idActividad);
-        String login = request.getParameter("login"+num);
+        String login = request.getParameter("login");
         System.err.println(login);
         double porcentaje=0;
-        if(request.getParameter("porcentaje"+num).equals("")){
+        if(request.getParameter("porcentaje").equals("")){
             porcentaje=100;
         } else {
-            porcentaje = Double.parseDouble(request.getParameter("porcentaje"+num));
+            porcentaje = Double.parseDouble(request.getParameter("porcentaje"));
         }
         System.err.println(porcentaje);
         String rol = ActividadBD.selectActividad(idActividad).getRolNecesario();
         System.err.println(rol);
-        String idParticipante = request.getParameter("idParticipante"+num);
+        String idParticipante = request.getParameter("idParticipante");
         return new Participante(idActividad, login, porcentaje, rol,idParticipante);
     }
     

@@ -36,7 +36,8 @@ public class Actividades extends HttpServlet {
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
         int idFase = Integer.parseInt(request.getParameter("idFase"));
-        String user = /*(String) sesion.getAttribute("user")*/ "jefe_1";
+        String user = (String) sesion.getAttribute("user");
+        sesion.setAttribute("idFase", idFase);
         String url = null;
         if (idFase != 0) {
             String accion = request.getParameter("actividad");
@@ -47,13 +48,11 @@ public class Actividades extends HttpServlet {
                 } else if (accion.equals("verActividades")) {
                     url = getActividades(idFase, sesion, user);
                 } else if (accion.equals("crearNuevaActividad")) {
-                    sesion.setAttribute("idFase", idFase);
                     sesion.setAttribute("actualizar", false);
                     sesion.setAttribute("user", user);
                     url = "/actividad.jsp";
                 } else if (accion.equals("actualizarUnaActividad")) {
                     int idActividad = Integer.parseInt(request.getParameter("idActividad"));
-                    sesion.setAttribute("idFase", idFase);
                     sesion.setAttribute("actualizar", true);
                     sesion.setAttribute("idActividad", idActividad);
                     Actividad a = Actividad.getActivity(idActividad);

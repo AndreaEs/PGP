@@ -6,6 +6,7 @@
 package Business;
 
 import Data.ProyectoDB;
+import Data.UserDB;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -105,7 +106,8 @@ public class Proyecto implements Serializable{
     }
     
     public static ArrayList<Proyecto> getProyectos(String usuario) {
-        return ProyectoDB.selectProyectos(usuario);
+        User u = UserDB.getUsuario(usuario);
+        return ProyectoDB.selectProyectos(u.getNif());
     }
     public static ArrayList<Proyecto> getTodosProyectos() {
         return ProyectoDB.selectTodosProyectos();
