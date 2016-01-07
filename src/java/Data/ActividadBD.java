@@ -309,8 +309,8 @@ public class ActividadBD {
         
         //Pasar String a Calendar
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        
-        String query = "SELECT * FROM Actividades WHERE login=?";
+        //Selecciona actividades de fase de proyectos "En Curso" de determinado usuario;
+        String query = "SELECT * FROM Actividades a,Fases f,Proyectos p WHERE a.idFase=f.id AND f.idProyecto=p.id AND p.estado='E' AND a.login=?";
         ArrayList<Actividad> actividades = new ArrayList<Actividad>();
         try {
             ps = connection.prepareStatement(query);
