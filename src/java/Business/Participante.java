@@ -28,7 +28,7 @@ public class Participante implements Serializable{
     
     public Participante(int idActividad, String login, double porcentaje, String rol, String idParticipante){
         this.idActividad=idActividad;
-        this.login=login;
+        if(comprobarLogin(login)) this.login=login;
         if(comprobarPorcentaje(login, porcentaje)) this.porcentaje=porcentaje;
         if(comprobarRol(rol)) this.rol=rol;
         this.idParticipante=idParticipante;
@@ -59,7 +59,7 @@ public class Participante implements Serializable{
     }
     
     public void setLogin(String login){
-        this.login=login;
+        if(comprobarLogin(login)) this.login=login;
     }
     
     public void setPorcentaje(double porcentaje){
@@ -129,4 +129,8 @@ public class Participante implements Serializable{
         return false;
     }
     
+    private boolean comprobarLogin(String login){
+        ArrayList<Proyecto> proy = Proyecto.getProyectos(login);
+        return !(ParticipantesBD.exist(login) && proy.size()>0);
+    }
 }
