@@ -72,7 +72,7 @@ public class ActividadBD {
             while (rs.next()) {
                 String fechaInicio = String.format("%02d/%02d/%04d", rs.getInt(6), rs.getInt(7),rs.getInt(8));
                 String fechaFin = String.format("%02d/%02d/%04d", rs.getInt(9), rs.getInt(10),rs.getInt(11));
-                Actividad a = new Actividad(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), fechaInicio, fechaFin, rs.getInt(12), rs.getBoolean(13), idFase);
+                Actividad a = new Actividad(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), fechaInicio, fechaFin, rs.getInt(12), rs.getString(13).charAt(0), idFase);
                 actividades.add(a);
             }
             rs.close();
@@ -98,7 +98,7 @@ public class ActividadBD {
             if (rs.next()) {
                 String fechaInicio = String.format("%02d/%02d/%04d", rs.getInt(7), rs.getInt(6),rs.getInt(8));
                 String fechaFin = String.format("%02d/%02d/%04d", rs.getInt(10), rs.getInt(9),rs.getInt(11));
-                a = new Actividad(idActividad, rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), fechaInicio, fechaFin, rs.getInt(12), rs.getBoolean(13), rs.getInt(14));
+                a = new Actividad(idActividad, rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), fechaInicio, fechaFin, rs.getInt(12), rs.getString(13).charAt(0), rs.getInt(14));
             }
             rs.close();
             ps.close();
@@ -123,8 +123,47 @@ public class ActividadBD {
             while (rs.next()) {
                 String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt(8), rs.getInt(7),rs.getInt(6));
                 String fechaFin = String.format("%04d-%02d-%02d", rs.getInt(11), rs.getInt(10),rs.getInt(9));
-                Actividad a = new Actividad(rs.getInt(1), login, rs.getString(3), rs.getString(4), rs.getInt(5), fechaInicio, fechaFin, rs.getInt(12), rs.getBoolean(13), rs.getInt(14));
+                Actividad a = new Actividad(rs.getInt(1), login, rs.getString(3), rs.getString(4), rs.getInt(5), fechaInicio, fechaFin, rs.getInt(12), rs.getString(13).charAt(0), rs.getInt(14));
                 actividades.add(a);
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return actividades;
+    }
+    
+    public static ArrayList<Actividad> selectActividadesInforme(String login,String fechaI, String fechaF) throws ParseException {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        //Pasar String a Calendar
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        
+        String query = "SELECT * FROM Actividades WHERE login=?";
+        ArrayList<Actividad> actividades = new ArrayList<Actividad>();
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, login);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt(8), rs.getInt(7),rs.getInt(6));
+                String fechaFin = String.format("%04d-%02d-%02d", rs.getInt(11), rs.getInt(10),rs.getInt(9));
+                //Pasar String a Calendar
+                Calendar fechaIA = Calendar.getInstance();
+                fechaIA.setTime(formatter.parse(fechaInicio));
+                Calendar fechaFA = Calendar.getInstance();
+                fechaFA.setTime(formatter.parse(fechaFin));
+                
+                Actividad a = new Actividad(rs.getInt(1), login, rs.getString(3), rs.getString(4), rs.getInt(5), fechaInicio, fechaFin, rs.getInt(12), rs.getString(13).charAt(0), rs.getInt(14));
+                
+                //Comprobar si la actividad obtenida está entre el rango de fechas introducido por el usuario
+                if(comprobarFechaEntreFechas(fechaI,fechaF,a))
+                    actividades.add(a);
             }
             rs.close();
             ps.close();
@@ -162,7 +201,7 @@ public class ActividadBD {
             ps.setInt(9, mesFin);
             ps.setInt(10, anoFin);
             ps.setInt(11, a.getDuracionReal());
-            ps.setBoolean(12, a.getEstado());
+            ps.setString(12, String.valueOf(a.getEstado()));
             ps.setInt(13, a.getIdFase());
             ps.setInt(14, a.getIdentificador());
             ps.executeUpdate();
@@ -297,5 +336,27 @@ public class ActividadBD {
             return false;
         else
             return true;
+    }
+    
+     /*date1.comparetp(date2) > 0 --> date1 esta después de date2
+     date1.comparetp(date2) < 0 --> date1 esta antes de date2*/
+    public static boolean comprobarFechaEntreFechas(String fechaI,String fechaF, Actividad a) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            java.util.Date fechaIU = formatter.parse(fechaI);
+            java.util.Date fechaFU = formatter.parse(fechaF);
+            java.util.Date fechaIA = formatter.parse(a.getFechaInicio());
+            java.util.Date fechaFA = formatter.parse(a.getFechaFin());
+            
+            if (fechaIU.compareTo(fechaIA)==0 || fechaIU.compareTo(fechaFA)==0)
+                return true;
+            if (fechaFU.compareTo(fechaIA)==0 || fechaFU.compareTo(fechaFA)==0)
+                return true;
+            if (fechaIU.compareTo(fechaIA) > 0 && fechaFU.compareTo(fechaFA) < 0)
+                return true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

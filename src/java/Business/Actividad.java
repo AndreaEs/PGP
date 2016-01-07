@@ -25,11 +25,11 @@ public class Actividad implements Serializable{
     private String fechaInicio;
     private String fechaFin;
     private int duracionReal;
-    private boolean estado;
+    private char estado;
     private int idFase;
 
 
-    public Actividad(String login, String descripcion , String rolNecesario, int duracionEstimada, String fechaInicio, String fechaFin, int duracionReal, boolean estado, int idFase) {
+    public Actividad(String login, String descripcion , String rolNecesario, int duracionEstimada, String fechaInicio, String fechaFin, int duracionReal, char estado, int idFase) {
 
         this.descripcion = descripcion;
         this.rolNecesario = rolNecesario;
@@ -43,7 +43,7 @@ public class Actividad implements Serializable{
     }
 
 
-    public Actividad(int identificador, String login, String descripcion, String rolNecesario, int duracionEstimada, String fechaInicio, String fechaFin, int duracionReal, boolean estado, int idFase) {
+    public Actividad(int identificador, String login, String descripcion, String rolNecesario, int duracionEstimada, String fechaInicio, String fechaFin, int duracionReal, char estado, int idFase) {
 
         this.identificador = identificador;
         this.descripcion = descripcion;
@@ -81,7 +81,7 @@ public class Actividad implements Serializable{
         return fechaFin;
     }
 
-    public boolean isEstado() {
+    public char isEstado() {
         return estado;
     }
 
@@ -90,7 +90,7 @@ public class Actividad implements Serializable{
         return duracionReal;
     }
 
-    public boolean getEstado() {
+    public char getEstado() {
         return estado;
     }
 
@@ -106,7 +106,7 @@ public class Actividad implements Serializable{
         this.login = login;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(char estado) {
         this.estado = estado;
     }
 

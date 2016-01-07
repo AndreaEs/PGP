@@ -89,7 +89,7 @@ public class Actividades extends HttpServlet {
             i++;
         }
         String fechaFin = fechaInicioyFin.substring(i + 2);
-        boolean estado = Boolean.parseBoolean(request.getParameter("estado"));
+        char estado = request.getParameter("estado").charAt(0);
         int duracionReal = 0;
         if (!request.getParameter("duracionReal").equals("") && request.getParameter("duracionReal") != null) {
             duracionReal = Integer.parseInt(request.getParameter("duracionReal"));
