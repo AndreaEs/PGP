@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -50,7 +51,15 @@ public class InformeD extends HttpServlet {
         String fechaI = request.getParameter("fechaI");
         String fechaF = request.getParameter("fechaF");
         
-        //Obtener actividades del usuario login entre las fechas indicada
+        //Comprobar que la fecha de Inicio no es posterior a hoy
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date fechaIU = formatter.parse(fechaI);
+        Date hoy = Calendar.getInstance().getTime();
+        if(fechaIU.compareTo(hoy)>0){
+            System.out.println("No se pueden pedir informes posteriores a la fecha actual");
+        }         
+        
+        //Obtener actividades del usuario login entre las fechas indicadas
         ArrayList<Actividad> actividades = new ArrayList<Actividad>();
         actividades = ActividadBD.selectActividadesInforme(login, fechaI, fechaF);
         //Ordenar por semanas

@@ -24,7 +24,7 @@
             <label>Fecha de fin</label>
             <input type="text" name="fechaF" data-mask>
             </br>
-            <button type="submit" >Añadir</button>
+            <button type="submit" >Buscar</button>
         </form>
     </body>
 </html>
