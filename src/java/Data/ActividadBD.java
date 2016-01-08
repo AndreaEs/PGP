@@ -6,6 +6,7 @@
 package Data;
 
 import Business.Actividad;
+import Business.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  *
@@ -306,8 +308,6 @@ public class ActividadBD {
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
-        //Pasar String a Calendar
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         //Selecciona actividades de fase de proyectos "En Curso" de determinado usuario;
         String query = "SELECT * FROM Actividades a,Fases f,Proyectos p WHERE a.idFase=f.id AND f.idProyecto=p.id AND p.estado='E' AND a.login=?";
@@ -338,6 +338,101 @@ public class ActividadBD {
             e.printStackTrace();
         }
         return actividades;
+    }
+    
+    //TYA = Trabajadores y sus actividades
+    //Solución muy completa pero no funciona
+    /*public static HashMap<User,ArrayList<Actividad>> selectInformeTYA(String fechaI, String fechaF) throws ParseException {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        HashMap<User,ArrayList<Actividad>> inf = new HashMap<User,ArrayList<Actividad>>();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        //Selecciona actividades de fase de proyectos "En Curso" de determinado usuario;
+        String query = "SELECT * FROM Usuarios u, Actividades a WHERE a.login=u.login";
+        ArrayList<Actividad> actividades = new ArrayList<Actividad>();
+        try {
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt("anoinicio"), rs.getInt("mesinicio"),rs.getInt("diainicio"));
+                String fechaFin = String.format("%04d-%02d-%02d", rs.getInt("anofin"), rs.getInt("mesfin"),rs.getInt("diafin"));
+                //Pasar String a Calendar
+                Calendar fechaIA = Calendar.getInstance();
+                fechaIA.setTime(formatter.parse(fechaInicio));
+                Calendar fechaFA = Calendar.getInstance();
+                fechaFA.setTime(formatter.parse(fechaFin));
+                
+                User u = new User(rs.getString("login"),rs.getString("pass"),rs.getString("tipo").charAt(0),rs.getString("nif"),rs.getString("infogeneral"),rs.getInt("maxproy"));
+                Actividad a = new Actividad(rs.getInt("id"),rs.getString("login"), rs.getString("descripcion"), rs.getString("rol"), rs.getInt("duracionestimada"), fechaInicio, fechaFin, rs.getInt("duracionreal"), rs.getString("estado").charAt(0), rs.getInt("idfase"));
+                
+                //Comprobar si la actividad obtenida está entre el rango de fechas introducido por el usuario
+                if(comprobarFechaEntreFechas(fechaI,fechaF,a)){
+                    if(inf.get(u.getLogin())==null){
+                        //Esto no lo hace bien. Cree que es la 1º vez que ve ese usuario...
+                        System.out.println(u.getLogin()+" "+u.getNif());
+                        inf.put(u, new ArrayList<Actividad>());
+                    }   
+                    inf.get(u).add(a);
+                }
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return inf;
+    }*/
+    
+    //TYA = Trabajadores y sus actividades
+    //Solución alternativa
+    public static HashMap<String,ArrayList<Actividad>> selectInformeTYA(String fechaI, String fechaF, String login) throws ParseException {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        HashMap<String,ArrayList<Actividad>> inf = new HashMap<String,ArrayList<Actividad>>();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        //Selecciona actividades de fase de proyectos "En Curso" de determinado usuario;
+        String query = "SELECT * FROM Usuarios u, Actividades a,Fases f, Proyectos p WHERE a.login=u.login AND a.idfase=f.id AND f.idproyecto=p.id AND p.login=?";
+        ArrayList<Actividad> actividades = new ArrayList<Actividad>();
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, login);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt("anoinicio"), rs.getInt("mesinicio"),rs.getInt("diainicio"));
+                String fechaFin = String.format("%04d-%02d-%02d", rs.getInt("anofin"), rs.getInt("mesfin"),rs.getInt("diafin"));
+                //Pasar String a Calendar
+                Calendar fechaIA = Calendar.getInstance();
+                fechaIA.setTime(formatter.parse(fechaInicio));
+                Calendar fechaFA = Calendar.getInstance();
+                fechaFA.setTime(formatter.parse(fechaFin));
+                
+                User u = new User(rs.getString("login"),rs.getString("pass"),rs.getString("tipo").charAt(0),rs.getString("nif"),rs.getString("infogeneral"),rs.getInt("maxproy"));
+                Actividad a = new Actividad(rs.getInt("id"),rs.getString("login"), rs.getString("descripcion"), rs.getString("rol"), rs.getInt("duracionestimada"), fechaInicio, fechaFin, rs.getInt("duracionreal"), rs.getString("estado").charAt(0), rs.getInt("idfase"));
+                
+                //Comprobar si la actividad obtenida está entre el rango de fechas introducido por el usuario
+                if(comprobarFechaEntreFechas(fechaI,fechaF,a)){
+                    if(inf.get(u.getLogin())==null){
+                        //Esto no lo hace bien. Cree que es la 1º vez que ve ese usuario...
+                        System.out.println(u.getLogin()+" "+u.getNif());
+                        inf.put(u.getLogin(), new ArrayList<Actividad>());
+                    }   
+                    inf.get(u.getLogin()).add(a);
+                }
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return inf;
     }
     
      /*date1.comparetp(date2) > 0 --> date1 esta después de date2
