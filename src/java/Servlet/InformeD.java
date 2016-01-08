@@ -8,22 +8,21 @@ package Servlet;
 import Business.Actividad;
 import Data.ActividadBD;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -45,11 +44,12 @@ public class InformeD extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
-        response.setContentType("text/html;charset=UTF-8");
         
+        HttpSession sesion = request.getSession();
         String login = request.getParameter("login");
         String fechaI = request.getParameter("fechaI");
         String fechaF = request.getParameter("fechaF");
+        String url = null;
         
         //Comprobar que la fecha de Inicio no es posterior a hoy
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -58,6 +58,15 @@ public class InformeD extends HttpServlet {
         if(fechaIU.compareTo(hoy)>0){
             System.out.println("No se pueden pedir informes posteriores a la fecha actual");
         }         
+        
+        url = getInforme(sesion,login,fechaI,fechaF);
+        
+        RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
+        respuesta.forward(request, response);
+        
+    }
+    
+    private String getInforme(HttpSession sesion, String login, String fechaI, String fechaF) throws ParseException{
         
         //Obtener actividades del usuario login entre las fechas indicadas
         ArrayList<Actividad> actividades = new ArrayList<Actividad>();
@@ -81,33 +90,12 @@ public class InformeD extends HttpServlet {
                 }
         }
         
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet InformeD</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet InformeD at " + request.getContextPath() + "</h1>");
-            Iterator it = inf.entrySet().iterator();
-            while(it.hasNext()){
-                Entry par = (Entry)it.next();
-                int valor = (int) par.getKey();
-                out.println("<h3> Semana: "+valor+"</h3>");
-                out.println("<h3> Actividades </h3>");
-                if(!inf.get(valor).isEmpty())
-                    for(int i=0;i<inf.get(valor).size();i++){
-                        out.println("<h4> Descripción: "+inf.get(valor).get(i).getDescripcion()+"</h4>");
-                        out.println("<h4> Fecha Inicio: "+inf.get(valor).get(i).getFechaInicio()+"</h4>");
-                        out.println("<h4> Fecha Fin: "+inf.get(valor).get(i).getFechaFin()+"</h4>");
-                        out.println("<h4> Estado: "+inf.get(valor).get(i).getEstado()+"</h4>");
-                        out.println("<h4> Fase: "+inf.get(valor).get(i).getIdFase()+"</h4>");
-                    }
-            }
-            out.println("</body>");
-            out.println("</html>");
-        }
+        sesion.setAttribute("login", login);
+        sesion.setAttribute("fechaI", fechaI);
+        sesion.setAttribute("fechaF", fechaF);
+        sesion.setAttribute("informe", inf);
+        
+        return "/vistaInformeD.jsp";
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
