@@ -22,6 +22,7 @@
                 <option value="TA"> Trabajadores y Actividades </option>
                 <option value="APE"> Actividades Pendientes de Envío</option>
                 <option value="APA"> Actividades Pendientes de Aprobacion </option>
+                <option value="AAF"> Relación de Actividades Activas o Finalizadas </option>
             </select>
             </br>
             <label>Fecha de inicio</label>

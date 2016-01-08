@@ -50,12 +50,27 @@ public class InformeJP extends HttpServlet {
         String fechaF = request.getParameter("fechaF");
         String url = null;
         
+        if(tipoI.equals("EPA") || tipoI.equals("APA"))
+            throw new UnsupportedOperationException("Not supported yet.");
+        
+        /*Relación de trabajadores y sus actividades asignadas 
+        durante un periodo (semanal)determinado.*/
         if(tipoI.equals("TA")){
             sesion.setAttribute("fechaI", fechaI);
             sesion.setAttribute("fechaF", fechaF);
             sesion.setAttribute("login", login);
             sesion.setAttribute("tipoI", tipoI);
             url = getInformeTYA(sesion,fechaI,fechaF,login);
+        /*Relación de actividades activas o finalizadas en una fecha concreta o en un periodo
+        de tiempo, viendo el tiempo planificado y el tiempo realizado de cada una de ellas.*/
+        }else if(tipoI.equals("AAF")){
+            if(fechaF.equals(""))
+                fechaF=fechaI;
+            sesion.setAttribute("fechaI", fechaI);
+            sesion.setAttribute("fechaF", fechaF);
+            sesion.setAttribute("login", login);
+            sesion.setAttribute("tipoI", tipoI);
+            url = getInformeAAF(sesion,fechaI,fechaF,login);
         }
         
         RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
@@ -116,6 +131,14 @@ public class InformeJP extends HttpServlet {
         HashMap<String,ArrayList<Actividad>> inf = new HashMap<String,ArrayList<Actividad>>();
         User u = UserDB.getUsuario(login);
         inf = ActividadBD.selectInformeTYA(fechaI, fechaF,u.getNif());
+        sesion.setAttribute("informe", inf);
+        return "/vistaInformeJP.jsp";
+    }
+
+    private String getInformeAAF(HttpSession sesion, String fechaI, String fechaF, String login) throws ParseException {
+        ArrayList<Actividad> inf = new ArrayList<Actividad>();
+        User u = UserDB.getUsuario(login);
+        inf = ActividadBD.selectInformeAFF(fechaI,fechaF,u.getNif());
         sesion.setAttribute("informe", inf);
         return "/vistaInformeJP.jsp";
     }

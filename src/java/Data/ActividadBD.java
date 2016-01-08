@@ -398,11 +398,14 @@ public class ActividadBD {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         //Selecciona actividades de fase de proyectos "En Curso" de determinado usuario;
         String query = "SELECT * FROM Usuarios u, Actividades a,Fases f, Proyectos p WHERE a.login=u.login AND a.idfase=f.id AND f.idproyecto=p.id AND p.login=?";
+        
         ArrayList<Actividad> actividades = new ArrayList<Actividad>();
         try {
+            
             ps = connection.prepareStatement(query);
             ps.setString(1, login);
             rs = ps.executeQuery();
+            
             while (rs.next()) {
                 String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt("anoinicio"), rs.getInt("mesinicio"),rs.getInt("diainicio"));
                 String fechaFin = String.format("%04d-%02d-%02d", rs.getInt("anofin"), rs.getInt("mesfin"),rs.getInt("diafin"));
@@ -414,12 +417,10 @@ public class ActividadBD {
                 
                 User u = new User(rs.getString("login"),rs.getString("pass"),rs.getString("tipo").charAt(0),rs.getString("nif"),rs.getString("infogeneral"),rs.getInt("maxproy"));
                 Actividad a = new Actividad(rs.getInt("id"),rs.getString("login"), rs.getString("descripcion"), rs.getString("rol"), rs.getInt("duracionestimada"), fechaInicio, fechaFin, rs.getInt("duracionreal"), rs.getString("estado").charAt(0), rs.getInt("idfase"));
-                
+
                 //Comprobar si la actividad obtenida está entre el rango de fechas introducido por el usuario
                 if(comprobarFechaEntreFechas(fechaI,fechaF,a)){
                     if(inf.get(u.getLogin())==null){
-                        //Esto no lo hace bien. Cree que es la 1º vez que ve ese usuario...
-                        System.out.println(u.getLogin()+" "+u.getNif());
                         inf.put(u.getLogin(), new ArrayList<Actividad>());
                     }   
                     inf.get(u.getLogin()).add(a);
@@ -485,6 +486,43 @@ public class ActividadBD {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return actividades;
+    }
+
+    public static ArrayList<Actividad> selectInformeAFF(String fechaI, String fechaF, String login) throws ParseException {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String query = "SELECT * FROM Actividades a,Fases f, Proyectos p WHERE a.idfase=f.id AND f.idproyecto=p.id AND a.estado='F' or a.estado='E' AND p.login=?";
+        ArrayList<Actividad> actividades = new ArrayList<Actividad>();
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, login);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt("anoinicio"), rs.getInt("mesinicio"),rs.getInt("diainicio"));
+                String fechaFin = String.format("%04d-%02d-%02d", rs.getInt("anofin"), rs.getInt("mesfin"),rs.getInt("diafin"));
+                //Pasar String a Calendar
+                Calendar fechaIA = Calendar.getInstance();
+                fechaIA.setTime(formatter.parse(fechaInicio));
+                Calendar fechaFA = Calendar.getInstance();
+                fechaFA.setTime(formatter.parse(fechaFin));
+                
+                Actividad a = new Actividad(rs.getInt("id"),rs.getString("login"), rs.getString("descripcion"), rs.getString("rol"), rs.getInt("duracionestimada"), fechaInicio, fechaFin, rs.getInt("duracionreal"), rs.getString("estado").charAt(0), rs.getInt("idfase"));
+                
+                //Comprobar si la actividad obtenida está entre el rango de fechas introducido por el usuario
+                if(comprobarFechaEntreFechas(fechaI,fechaF,a))
+                    actividades.add(a);
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
         return actividades;
     }
 }
