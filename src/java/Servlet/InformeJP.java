@@ -71,6 +71,14 @@ public class InformeJP extends HttpServlet {
             sesion.setAttribute("login", login);
             sesion.setAttribute("tipoI", tipoI);
             url = getInformeAAF(sesion,fechaI,fechaF,login);
+        /*Actividades a realizar, así como los recursos asignados, durante un periodo de
+        tiempo determinado posterior a la fecha actual.*/
+        }else if(tipoI.equals("AAR")){
+            sesion.setAttribute("fechaI", fechaI);
+            sesion.setAttribute("fechaF", fechaF);
+            sesion.setAttribute("login", login);
+            sesion.setAttribute("tipoI", tipoI);
+            url = getInformeAAR(sesion,fechaI,fechaF,login);
         }
         
         RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
@@ -140,6 +148,15 @@ public class InformeJP extends HttpServlet {
         User u = UserDB.getUsuario(login);
         inf = ActividadBD.selectInformeAFF(fechaI,fechaF,u.getNif());
         sesion.setAttribute("informe", inf);
+        return "/vistaInformeJP.jsp";
+    }
+
+    private String getInformeAAR(HttpSession sesion, String fechaI, String fechaF, String login) throws ParseException {
+        ArrayList<Actividad> inf = new ArrayList<Actividad>();
+        User u = UserDB.getUsuario(login);
+        inf = ActividadBD.selectInformeAAR(fechaI,fechaF,u.getNif());
+        if(inf!=null)
+            sesion.setAttribute("informe", inf);
         return "/vistaInformeJP.jsp";
     }
 

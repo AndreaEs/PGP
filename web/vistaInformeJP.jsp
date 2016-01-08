@@ -10,7 +10,6 @@
 <%@page import="Business.User"%>
 <%@page import="Business.Actividad"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -72,7 +71,26 @@
                 <h4>Duración Real: <%= act.get(i).getDuracionReal()%></h4>
                 <%
                 }
+            }else if(tipoI.equals("AAR")){
+            %>
+                <h3>Actividades a realizar entre las fechas <%=fechaI%> y <%=fechaF%>:</h3>
+                <%
+                ArrayList<Actividad> act = (ArrayList<Actividad>)session.getAttribute("informe");
+                if(!act.isEmpty()){
+                    for(int i=0;i<act.size();i++){
+                    %>
+                        <h4>Identificador: <%= act.get(i).getIdentificador()%></h4>
+                        <h4>Fecha Inicio: <%= act.get(i).getFechaInicio()%></h4>
+                        <h4>Fecha Fin: <%= act.get(i).getFechaFin()%></h4>
+                        <h4>Estado: <%= act.get(i).getEstado()%></h4>
+                        <h4>Recursos...</h4>
+                        <h4>Duración estimada: <%= act.get(i).getDuracionEstimada()%></h4>
+                        <h4>Rol: <%= act.get(i).getRolNecesario()%></h4>
+                    <%
+                    }
+                }
             }
-        %>
+            %>
+            
     </body>
 </html>

@@ -23,6 +23,7 @@
                 <option value="APE"> Actividades Pendientes de Envío</option>
                 <option value="APA"> Actividades Pendientes de Aprobacion </option>
                 <option value="AAF"> Relación de Actividades Activas o Finalizadas </option>
+                <option value="AAR"> Actividades a realizar </option>
             </select>
             </br>
             <label>Fecha de inicio</label>
