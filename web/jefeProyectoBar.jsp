@@ -109,7 +109,7 @@
                 </a>
             </li>
             <li>
-              <a href="pages/calendar.html">
+              <a href="CalendarioD?accion=mostrarCalendario&user=<%=session.getAttribute("user")%>&tipo=<%=session.getAttribute("tipo")%>">
                 <i class="fa fa-calendar"></i> <span>Calendar</span>
               </a>
             </li>

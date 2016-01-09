@@ -1,3 +1,4 @@
+<%@page import="Data.ParticipantesBD"%>
 <%@page import="Business.Actividad"%>
 <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
@@ -39,19 +40,19 @@
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
         <script type="text/javascript">
-            function url(){
-             <% session.setAttribute("urlAnterior", "Fases?fase=verFases&idProyecto="+session.getAttribute("idProyecto"));%>
-             
+            function url() {
+            <% session.setAttribute("urlAnterior", "Fases?fase=verFases&idProyecto=" + session.getAttribute("idProyecto"));%>
+
             }
         </script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
 
-           <% if (session.getAttribute("tipo").equals("A")){
-             %>
+            <% if (session.getAttribute("tipo").equals("A")) {
+            %>
             <%@include file="administradorBar.jsp" %>
-            <% }else if(session.getAttribute("tipo").equals("D")) { %>
+            <% } else if (session.getAttribute("tipo").equals("D")) { %>
             <%@include file="desarrolladorBar.jsp" %>
             <% } else {%>
             <%@include file="jefeProyectoBar.jsp" %>
@@ -80,9 +81,10 @@
                                 <div class="box-header with-border">
                                     <h3 class="box-title">Lista de actividades</h3>
                                     <div class="pull-right">
-                                        <small class="text-red">Rechazada.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-yellow">Pendiente.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-green">Aceptada.</small>
+                                        <small class="text-light-blue">Sin comenzar.</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <small class="text-red">En curso.</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <small class="text-yellow">Finalizada.</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <small class="text-muted">Cerrada.</small>
                                     </div>
                                 </div>
                                 <div class="box-body no-padding">
@@ -96,12 +98,14 @@
                                     <ul class="nav nav-pills nav-stacked">
                                         <div class="btn pull-left">
                                             <a href="Actividades?actividad=actualizarUnaActividad&idFase=<%=idFase%>&idActividad=<%=a.getIdentificador()%>">
-                                                <% if (a.getEstado() == 'A') {
-                                                        colorClase = "text-green";
-                                                    } else if (a.getEstado() == 'R') {
+                                                <% if (a.getEstado() == 'S') {
+                                                        colorClase = "text-light-blue";
+                                                    } else if (a.getEstado() == 'E') {
                                                         colorClase = "text-red";
-                                                    }else if (a.getEstado() == 'P'){
+                                                    } else if (a.getEstado() == 'F') {
                                                         colorClase = "text-yellow";
+                                                    } else if (a.getEstado() == 'C') {
+                                                        colorClase = "text-muted";
                                                     }
                                                 %>
                                                 <div class="<%=colorClase%>">
@@ -109,7 +113,15 @@
                                                     <small> <%= a.getFechaInicio()%> - <%= a.getFechaFin()%>  </small>
                                                 </div>
                                             </a>
-                                           <a href="usuarios.jsp?participante=true&idActividad=<%=a.getIdentificador()%>"><span class="btn btn-block btn-info btn-flat">Add participantes</span></a>
+                                            <% boolean b = !ParticipantesBD.exist(a.getIdentificador());%>
+                                            <a href="usuarios.jsp?participante=true&idActividad=<%=a.getIdentificador()%>">
+                                                <% if (b) { %> 
+                                                <button class="btn btn-block btn-info btn-flat">Add participantes</button>
+                                                <%} else { %>
+                                                <button disabled="true" class="btn btn-block btn-info btn-flat">Add participantes</button>
+                                                <%}%>
+                                            </a>
+
                                         </div>
                                     </ul>
                                     <%
@@ -120,7 +132,7 @@
                                     <a class="btn btn-app" href="Actividades?actividad=crearNuevaActividad&idFase=<%=idFase%>">
                                         <i class="fa fa-edit"></i> Nueva Actividad
                                     </a>
-                                        <a href="<%=session.getAttribute("urlAnterior")%>"><input type="button" class="btn btn-default" name="actividad" value="Cancelar" onclick="url()"/></a>
+                                    <a href="<%=session.getAttribute("urlAnterior")%>"><input type="button" class="btn btn-default" name="actividad" value="Cancelar" onclick="url()"/></a>
                                 </div>
                             </div><!-- /. box -->
 

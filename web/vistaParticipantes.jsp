@@ -96,8 +96,8 @@
                                     %>
                                 </div><!-- /.box-body -->
                                 <div class="box-footer">
-                                    <a class="btn btn-app" href="usuarios.jsp?participante=true&idActividad=<%=idActividad%>">
-                                        <i class="fa fa-edit"></i> Nuevo Participante
+                                    <a class="btn btn-app" href="Actividades?actividad=verActividades&idFase=<%=session.getAttribute("idFase")%>">
+                                        Atrás
                                     </a>
                                 </div>
                             </div><!-- /. box -->

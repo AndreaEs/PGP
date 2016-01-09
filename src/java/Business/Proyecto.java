@@ -6,6 +6,7 @@
 package Business;
 
 import Data.ProyectoDB;
+import Data.UserDB;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -13,9 +14,7 @@ import java.util.ArrayList;
  *
  * @author andreaescribano
  */
-public class Proyecto implements Serializable{
-
-    
+public class Proyecto implements Serializable {
 
     private int identificador;
     private String nombre;
@@ -25,64 +24,66 @@ public class Proyecto implements Serializable{
     private String login;
     private int numP;
 
-    public Proyecto(String nombre,String fechaInicio, String fechaFin, String login) {
-       this.nombre=nombre;
-       this.fechaInicio=fechaInicio;
-       this.fechaFin=fechaFin;
-       this.login=login;
-       this.estado='S';
-       
+    public Proyecto(String nombre, String fechaInicio, String fechaFin, String login) {
+        this.nombre = nombre;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.login = login;
+        this.estado = 'S';
+
     }
-    
-    public Proyecto(String nombre,String fechaInicio, String fechaFin, char estado ,String login) {
-           this.nombre=nombre;
-           this.fechaInicio=fechaInicio;
-       this.fechaFin=fechaFin;
-           this.login=login;
-           this.estado=estado;
+
+    public Proyecto(String nombre, String fechaInicio, String fechaFin, char estado, String login) {
+        this.nombre = nombre;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.login = login;
+        this.estado = estado;
     }
-    public Proyecto(String nombre,String fechaInicio, String fechaFin, char estado ,String login,int numP) {
-           this.nombre=nombre;
-           this.fechaInicio=fechaInicio;
-       this.fechaFin=fechaFin;
-           this.login=login;
-           this.estado=estado;
-           this.numP = numP;
+
+    public Proyecto(String nombre, String fechaInicio, String fechaFin, char estado, String login, int numP) {
+        this.nombre = nombre;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.login = login;
+        this.estado = estado;
+        this.numP = numP;
     }
-    
-    public Proyecto(int identificador, String nombre,String fechaInicio, String fechaFin, char estado ,String login) {
-           this.identificador=identificador;
-            this.nombre=nombre;
-           this.fechaInicio=fechaInicio;
-       this.fechaFin=fechaFin;
-           this.login=login;
-           this.estado=estado;
+
+    public Proyecto(int identificador, String nombre, String fechaInicio, String fechaFin, char estado, String login) {
+        this.identificador = identificador;
+        this.nombre = nombre;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.login = login;
+        this.estado = estado;
     }
-     public Proyecto(int identificador, String nombre,String fechaInicio, String fechaFin, char estado ,String login,int numP) {
-           this.identificador=identificador;
-            this.nombre=nombre;
-           this.fechaInicio=fechaInicio;
-           this.fechaFin=fechaFin;
-           this.login=login;
-           this.estado=estado;
-           this.numP = numP;
+
+    public Proyecto(int identificador, String nombre, String fechaInicio, String fechaFin, char estado, String login, int numP) {
+        this.identificador = identificador;
+        this.nombre = nombre;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.login = login;
+        this.estado = estado;
+        this.numP = numP;
     }
 
     public int getIdentificador() {
         return identificador;
     }
 
-   public String getNombre(){
-       return nombre;
-   }
-   
-   public String getFechaInicio(){
-       return fechaInicio;
-   }
-   
-   public String getFechaFin(){
-       return fechaFin;
-   }
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public String getFechaFin() {
+        return fechaFin;
+    }
 
     public char getEstado() {
         return estado;
@@ -99,24 +100,31 @@ public class Proyecto implements Serializable{
     public void setNumP(int numP) {
         this.numP = numP;
     }
-    
-    public static void guardarNuevoProyecto(Proyecto p){
+
+    public static void guardarNuevoProyecto(Proyecto p) {
         ProyectoDB.insert(p);
     }
-    
+
     public static ArrayList<Proyecto> getProyectos(String usuario) {
-        return ProyectoDB.selectProyectos(usuario);
+        User u = UserDB.getUsuario(usuario);
+        return ProyectoDB.selectProyectos(u.getNif());
     }
+
     public static ArrayList<Proyecto> getTodosProyectos() {
         return ProyectoDB.selectTodosProyectos();
     }
-    public static Proyecto getProject(int idProyecto){
+
+    public static Proyecto getProject(int idProyecto) {
         return ProyectoDB.selectProyecto(idProyecto);
     }
-    
-    public static void actualizarProyecto(Proyecto p){
+
+    public static void actualizarProyecto(Proyecto p) {
         ProyectoDB.updateProyecto(p);
     }
 
-    
+    public static ArrayList<Proyecto> getProyectosSinOrdenar(String usuario) {
+        User u = UserDB.getUsuario(usuario);
+        return ProyectoDB.selectProyectosSinOrdenar(u.getNif());
+    }
+
 }

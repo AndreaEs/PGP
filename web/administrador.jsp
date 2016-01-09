@@ -97,12 +97,7 @@
                 <i class="fa fa-circle-o"></i><span>Perfil</span>
                 </a>
             </li>
-            <li>
-              <a href="pages/calendar.html">
-                <i class="fa fa-calendar"></i> <span>Calendar</span>
-                <small class="label pull-right bg-red">3</small>
-              </a>
-            </li>
+            
             <li>
                 <a href="usuarios.jsp">
                 <i class="fa fa-user"></i><span>Usuarios</span> <!-- Aqui poner dependiendo el rol -->

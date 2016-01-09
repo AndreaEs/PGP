@@ -46,7 +46,7 @@ public class Prueba extends HttpServlet {
             throws ServletException, IOException {
         String accion = request.getParameter("accion");
         if (accion.equals("mostrarEventos")) {
-            ArrayList<Actividad> listaActividades = Actividad.getActividades();
+            ArrayList<Actividad> listaActividades = Actividad.getActividades("desarrollador_1");
             List l = new ArrayList();
 
             for (Actividad a : listaActividades) {
@@ -55,13 +55,15 @@ public class Prueba extends HttpServlet {
                 c.setStart(a.getFechaInicio());
                 c.setEnd(a.getFechaFin());
                 c.setTitle(a.getDescripcion());
-                if (a.getEstado() == 'A') {
-                    c.setColor("#00FF00");
-                } else if (a.getEstado() == 'R') {
-                    c.setColor("#FE2E2E");
-                } else if (a.getEstado() == 'P') {
-                    c.setColor("#FFFF00");
-                }
+                if (a.getEstado() == 'S') {
+                            c.setColor("#81BEF7");
+                        } else if (a.getEstado() == 'E') {
+                            c.setColor("#FE2E2E");
+                        } else if (a.getEstado() == 'F') {
+                            c.setColor("#FFFF00");
+                        } else if (a.getEstado() == 'C') {
+                            c.setColor("#A4A4A4");
+                        }
                 c.setTextColor("#000000");
                 l.add(c);
             }

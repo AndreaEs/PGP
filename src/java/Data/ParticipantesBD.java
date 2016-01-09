@@ -157,6 +157,29 @@ public class ParticipantesBD {
         }
   }
   
+  public static boolean exist(int idActividad){
+      ConnectionPool pool = ConnectionPool.getInstance();
+      Connection connection = pool.getConnection();
+      PreparedStatement ps = null;
+      ResultSet rs = null;
+      String query="SELECT * FROM Participaciones WHERE idActividad=?";
+      
+      try {
+            ps = connection.prepareStatement(query); 
+            ps.setInt(1, idActividad); 
+            rs = ps.executeQuery();
+            boolean res = rs.next();
+            System.err.println(res);
+            rs.close(); 
+            ps.close(); 
+            pool.freeConnection(connection);
+            return res;
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            return false;
+        }
+  }
+  
   private static HashMap<String,Double> getParticipantes(){
       ConnectionPool pool = ConnectionPool.getInstance();
       Connection connection = pool.getConnection();

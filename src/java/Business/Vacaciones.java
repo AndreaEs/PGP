@@ -5,8 +5,11 @@
  */
 package Business;
 
+import Data.VacacionesDB;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -14,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author gil
  */
-public class Vacaciones {
+public class Vacaciones implements Serializable{
 
     private String fechaInicio;
     private String fechaFin;
@@ -93,4 +96,7 @@ public class Vacaciones {
         return false;
     }
 
+    public static ArrayList<Vacaciones> getVacaciones(String user) {
+        return (ArrayList)VacacionesDB.obtenerVacaciones(user);    
+    }
 }

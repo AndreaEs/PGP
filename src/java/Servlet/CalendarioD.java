@@ -6,23 +6,30 @@
 package Servlet;
 
 import Business.Actividad;
+import Business.CalendarDTO;
+import Business.Proyecto;
 import Business.Vacaciones;
 import Business.TareaPersonal;
 import Data.VacacionesDB;
 import Data.ActividadBD;
 import Data.TareaDB;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -42,18 +49,155 @@ public class CalendarioD extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
-        response.setContentType("text/html;charset=UTF-8");
+        String accion = request.getParameter("accion");
+        HttpSession sesion = request.getSession();
+        if (accion.equals("mostrarCalendario")) {
+            sesion.setAttribute("user", request.getParameter("user"));
+            sesion.setAttribute("tipo", request.getParameter("tipo"));
+            RequestDispatcher respuesta = getServletContext().getRequestDispatcher("/calendario.jsp");
+            respuesta.forward(request, response);
+        } else if (accion.equals("mostrarEventos")) {
+            String user = (String) sesion.getAttribute("user");
+            String tipoRol = (String) sesion.getAttribute("tipo");
+            if (tipoRol.equals("D")) {
+                ArrayList<Actividad> listaActividades = Actividad.getActividades(user);
+                List l = new ArrayList();
 
-        String mensaje = "";
-        String login = request.getParameter("login");
-        String tipo = request.getParameter("tipo");
-        String tipoT = request.getParameter("tipoT");
-        String duracion = request.getParameter("duracion");
-        String fechaI = request.getParameter("fechaI");
-        String fechaF = request.getParameter("fechaF");
+                for (Actividad a : listaActividades) {
+                    CalendarDTO c = new CalendarDTO();
+                    c.setId(a.getIdentificador());
+                    c.setStart(a.getFechaInicio());
+                    c.setEnd(a.getFechaFin());
+                    c.setTitle(a.getDescripcion());
+                    if (a.getEstado() == 'A') {
+                        c.setColor("#00FF00");
+                    } else if (a.getEstado() == 'R') {
+                        c.setColor("#FE2E2E");
+                    } else if (a.getEstado() == 'P') {
+                        c.setColor("#FFFF00");
+                    }
+                    c.setTextColor("#000000");
+                    l.add(c);
+                }
 
-        if (tipo.equals("V")) {
+                ArrayList<Vacaciones> listaVacaciones = Vacaciones.getVacaciones(user);
+                for (Vacaciones v : listaVacaciones) {
+                    CalendarDTO c = new CalendarDTO();
+                    c.setStart(v.getFechaInicio());
+                    c.setEnd(v.getFechaFin());
+                    c.setTitle("Vacaciones");
+                    c.setColor("#58FA82");
+                    c.setTextColor("#000000");
+                    l.add(c);
+                }
 
+                ArrayList<TareaPersonal> listaTareas = TareaPersonal.getTareas(user);
+                for (TareaPersonal t : listaTareas) {
+                    CalendarDTO c = new CalendarDTO();
+                    c.setId(t.getId());
+                    c.setStart(t.getFecha());
+                    c.setEnd(t.getFecha());
+                    if (null != t.getTipo()) {
+                        switch (t.getTipo()) {
+                            case "TU":
+                                c.setTitle("Trato con usuarios");
+                                break;
+                            case "RE":
+                                c.setTitle("Reuniones externas");
+                                break;
+                            case "RI":
+                                c.setTitle("Reuniones internas");
+                                break;
+                            case "LD":
+                                c.setTitle("Lectura de documentacion");
+                                break;
+                            case "RV":
+                                c.setTitle("Revision de documentacion");
+                                break;
+                            case "ED":
+                                c.setTitle("Elaboracion de documentacion");
+                                break;
+                            case "DP":
+                                c.setTitle("Desarrollo de programas");
+                                break;
+                            case "VP":
+                                c.setTitle("Verificacion de programas");
+                                break;
+                            case "FU":
+                                c.setTitle("Formacion de usuarios");
+                                break;
+                            case "FA":
+                                c.setTitle("Formacion de otras actividades");
+                                break;
+                        }
+                    }
+                    c.setColor("#58FA82");
+                    c.setTextColor("#000000");
+                    l.add(c);
+                }
+
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                PrintWriter out = response.getWriter();
+                out.write(new Gson().toJson(l));
+            } else if (tipoRol.equals("J")) {
+                ArrayList<Proyecto> listaProyectos = Proyecto.getProyectosSinOrdenar(user);
+                List l = new ArrayList();
+
+                for (Proyecto p : listaProyectos) {
+                    CalendarDTO c = new CalendarDTO();
+                    c.setId(p.getIdentificador());
+                    c.setStart(p.getFechaInicio());
+                    c.setEnd(p.getFechaFin());
+                    c.setTitle(p.getNombre());
+                    if (p.getEstado() == 'S') {
+                        c.setColor("#81BEF7");
+                    } else if (p.getEstado() == 'E') {
+                        c.setColor("#FE2E2E");
+                    } else if (p.getEstado() == 'F') {
+                        c.setColor("#FFFF00");
+                    } else if (p.getEstado() == 'C') {
+                        c.setColor("#A4A4A4");
+                    }
+
+                    c.setTextColor("#000000");
+                    l.add(c);
+                }
+                
+                ArrayList<Vacaciones> listaVacaciones = Vacaciones.getVacaciones(user);
+                for (Vacaciones v : listaVacaciones) {
+                    CalendarDTO c = new CalendarDTO();
+                    c.setStart(v.getFechaInicio());
+                    c.setEnd(v.getFechaFin());
+                    c.setTitle("Vacaciones");
+                    c.setColor("#58FA82");
+                    c.setTextColor("#000000");
+                    l.add(c);
+                }
+
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                PrintWriter out = response.getWriter();
+                out.write(new Gson().toJson(l));
+            }
+        } else if (accion.equals("anadirVacaciones")) {
+            sesion.setAttribute("user", (String) sesion.getAttribute("user"));
+            sesion.setAttribute("tipo", (String) sesion.getAttribute("tipo"));
+            RequestDispatcher respuesta = getServletContext().getRequestDispatcher("/vacaciones.jsp");
+            respuesta.forward(request, response);
+        } else if (accion.equals("anadirNuevasVacaciones")) {
+            String mensaje = "";
+            boolean correcto = false;
+            String login = (String) sesion.getAttribute("user");
+            String tipo = (String) sesion.getAttribute("tipo");
+//            String login = request.getParameter("login");
+//            String tipo = request.getParameter("tipo");
+//            String tipoT = request.getParameter("tipoT");
+//            String duracion = request.getParameter("duracion");
+            String fechaI = request.getParameter("fechaI");
+            String fechaF = request.getParameter("fechaF");
+
+            //if (tipo.equals("V")) {
             Vacaciones c = new Vacaciones();
             c.setUsuario(login);
             c.setFechaInicio(fechaI);
@@ -61,8 +205,7 @@ public class CalendarioD extends HttpServlet {
 
             //Comprobaciones de un evento tipo Vacaciones
             //Primero obtener de la base de datos las fechas de vacaciones del usuario
-            List<Vacaciones> vacaciones = new ArrayList<Vacaciones>();
-            vacaciones = VacacionesDB.obtenerVacaciones(login);
+            List<Vacaciones> vacaciones = VacacionesDB.obtenerVacaciones(login);
 
             //Comprobar cuantos días lleva de vacaciones
             long dias = c.comprobarDiasVacaciones(vacaciones);
@@ -78,8 +221,7 @@ public class CalendarioD extends HttpServlet {
             }
 
             //Comprobar que en esas fechas no tenga ya una actividad asignada
-            List<Actividad> actividades = new ArrayList<Actividad>();
-            actividades = ActividadBD.selectActividades(login);
+            List<Actividad> actividades = ActividadBD.selectActividades(login);
             for (int i = 0; i < actividades.size(); i++) {
                 if (c.comprobarRangosEntreFechas(actividades.get(i).getFechaInicio(), actividades.get(i).getFechaFin(), c)) {
                     mensaje = "No puedes asignar vacaciones en ese día porque ya tienes actividades asignadas en esas fechas";
@@ -96,88 +238,100 @@ public class CalendarioD extends HttpServlet {
             //Si ha superado todos los pasos --> puede asignar vacaciones en las fechas que introdujo
             if (mensaje.equals("")) {
                 mensaje = "¡Todo correcto! Asignados el rango de fechas " + fechaI + " --> " + fechaF + " como días de vacaciones";
+                correcto = true;
                 VacacionesDB.insertVacaciones(c);
             }
 
             try (PrintWriter out = response.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Servlet Calendario</title>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1>Servlet Calendario at " + request.getContextPath() + "</h1>");
-                out.println("<h4>Login: " + login + " </h4>");
-                out.println("<h4>Tipo de evento: " + tipo + " </h4>");
-                out.println("<h4>Fecha inicio: " + fechaI + " </h4>");
-                out.println("<h4>Fecha fin: " + fechaF + " </h4>");
-                out.println("<h3>Días que llevas asignados de vacaciones " + dias + "</h3>");
-                out.println("<h3>Días nuevos que quieres asignar de vacaciones " + nuevos + "</h3>");
-                out.println("<h2>" + mensaje + "</h2>");
-                out.println("</body>");
-                out.println("</html>");
-            }
-
-        } else {
-
-            TareaPersonal tp = new TareaPersonal();
-            tp.setLogin(login);
-            tp.setTipo(tipoT);
-            tp.setFecha(fechaI);
-
-            //Comprobaciones de un evento tipo Tarea Personal
-            //Comprobar que no quiere asignar una tarea en fin de semana
-            if (!tp.tareaFinSemana(fechaI)) {
-                mensaje = "No puedes asignar una tarea en fin de semana";
-            }
-
-            //Comprobar que ese usuario tiene menos de 25 tareas asignadas para esa semana
-            if (!TareaDB.tareasPersonalesSemana(login, fechaI)) {
-                mensaje = "El usuario " + login + " ya tiene asignadas 24 tareas personales para la semana del " + fechaI;
-            }
-
-            //Obtener actividades de ese usuario
-            List<Actividad> actividades = new ArrayList<Actividad>();
-            actividades = ActividadBD.selectActividades(login);
-
-            //Comprobar que en esa fecha hay al menos una actividad
-            List<Actividad> actFecha = new ArrayList<Actividad>();
-            for (int i = 0; i < actividades.size(); i++) {
-                Actividad a = actividades.get(i);
-                if (a.comprobarFechaEntreFechas(fechaI, a)) {
-                    actFecha.add(a);
+//
+//                out.println("<!DOCTYPE html>");
+//                out.println("<html>");
+//                out.println("<head>");
+//                out.println("<title>Servlet Calendario</title>");
+//                out.println("</head>");
+//                out.println("<body>");
+//                out.println("<h1>Servlet Calendario at " + request.getContextPath() + "</h1>");
+//                out.println("<h4>Login: " + login + " </h4>");
+//                out.println("<h4>Fecha inicio: " + fechaI + " </h4>");
+//                out.println("<h4>Fecha fin: " + fechaF + " </h4>");
+//                out.println("<h3>Días que llevas asignados de vacaciones " + dias + "</h3>");
+//                out.println("<h3>Días nuevos que quieres asignar de vacaciones " + nuevos + "</h3>");
+//                out.println("<h2>" + mensaje + "</h2>");
+//                out.println("</body>");
+//                out.println("</html>");
+                String path = "";
+                if(!correcto){
+                    path = "/CalendarioD?accion=anadirVacaciones";
+                }else{
+                    path = "/CalendarioD?accion=mostrarCalendario&user=" + login + "&tipo=" + tipo;
+                
                 }
+                request.setAttribute("mensaje", mensaje);
+                RequestDispatcher respuesta = getServletContext().getRequestDispatcher(path);
+                respuesta.forward(request, response);
             }
 
-            //Si no había ninguna actividad asignada --> avisar usuario
-            if (actFecha.isEmpty()) {
-                mensaje = "No hay ninguna actividad en esa fecha";
-            }
-            //Si solo había una actividad --> asignar tarea a esa actividad
-            if (actFecha.size() == 1) {
-                //Anadir tp a la bbdd
-                TareaDB.insert(tp);
-            } else {
-                //Anadir tp a la bbdd
-                TareaDB.insert(tp);
-            }
+            /*} else {
 
-            try (PrintWriter out = response.getWriter()) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Servlet Calendario</title>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1>Servlet Calendario at " + request.getContextPath() + "</h1>");
-                out.println("<h4>Login: " + login + " </h4>");
-                out.println("<h4>Tipo de evento: " + tipoT + " </h4>");
-                out.println("<h4>Fecha: " + fechaI + " </h4>");
-                out.println("<h4>Duración: " + duracion + " </h4>");
-                out.println("<h2>" + mensaje + "</h2>");
-                out.println("</body>");
-                out.println("</html>");
-            }
+             TareaPersonal tp = new TareaPersonal();
+             tp.setLogin(login);
+             tp.setTipo(tipoT);
+             tp.setFecha(fechaI);
+
+             //Comprobaciones de un evento tipo Tarea Personal
+             //Comprobar que no quiere asignar una tarea en fin de semana
+             if (!tp.tareaFinSemana(fechaI)) {
+             mensaje = "No puedes asignar una tarea en fin de semana";
+             }
+
+             //Comprobar que ese usuario tiene menos de 25 tareas asignadas para esa semana
+             if (!TareaDB.tareasPersonalesSemana(login, fechaI)) {
+             mensaje = "El usuario " + login + " ya tiene asignadas 24 tareas personales para la semana del " + fechaI;
+             }
+
+             //Obtener actividades de ese usuario
+             List<Actividad> actividades = new ArrayList<Actividad>();
+             actividades = ActividadBD.selectActividades(login);
+
+             //Comprobar que en esa fecha hay al menos una actividad
+             List<Actividad> actFecha = new ArrayList<Actividad>();
+             for (int i = 0; i < actividades.size(); i++) {
+             Actividad a = actividades.get(i);
+             if (a.comprobarFechaEntreFechas(fechaI, a)) {
+             actFecha.add(a);
+             }
+             }
+
+             //Si no había ninguna actividad asignada --> avisar usuario
+             if (actFecha.isEmpty()) {
+             mensaje = "No hay ninguna actividad en esa fecha";
+             }
+             //Si solo había una actividad --> asignar tarea a esa actividad
+             if (actFecha.size() == 1) {
+             //Anadir tp a la bbdd
+             TareaDB.insert(tp);
+             } else {
+             //Anadir tp a la bbdd
+             TareaDB.insert(tp);
+             }
+
+             try (PrintWriter out = response.getWriter()) {
+             out.println("<!DOCTYPE html>");
+             out.println("<html>");
+             out.println("<head>");
+             out.println("<title>Servlet Calendario</title>");
+             out.println("</head>");
+             out.println("<body>");
+             out.println("<h1>Servlet Calendario at " + request.getContextPath() + "</h1>");
+             out.println("<h4>Login: " + login + " </h4>");
+             out.println("<h4>Tipo de evento: " + tipoT + " </h4>");
+             out.println("<h4>Fecha: " + fechaI + " </h4>");
+             out.println("<h4>Duración: " + duracion + " </h4>");
+             out.println("<h2>" + mensaje + "</h2>");
+             out.println("</body>");
+             out.println("</html>");
+             }
+             }*/
         }
 
     }

@@ -75,7 +75,32 @@ public class ProyectoDB {
             e.printStackTrace();
         }
         return proyectos;
-
+    }
+    
+    public static ArrayList<Proyecto> selectProyectosSinOrdenar(String usuario) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM Proyectos WHERE login=?";
+        ArrayList<Proyecto> proyectos = new ArrayList<Proyecto>();
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, usuario);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt(5), rs.getInt(4), rs.getInt(3));
+                String fechaFin = String.format("%04d-%02d-%02d", rs.getInt(8), rs.getInt(7), rs.getInt(6));
+                Proyecto p = new Proyecto(rs.getInt(1), rs.getString(2), fechaInicio, fechaFin, rs.getString(9).charAt(0), usuario);
+                proyectos.add(p);
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return proyectos;
     }
 
     public static Proyecto selectProyecto(int idProyecto) {
