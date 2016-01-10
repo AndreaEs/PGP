@@ -27,8 +27,8 @@ public class TareaDB {
         PreparedStatement ps = null;
         String query = "INSERT INTO TareasPersonales (tipo, login, fecha) VALUES ('"
                 + tarea.getTipo() + "','"
-                + tarea.getLogin() + "',"
-                + tarea.getFecha() + ")";
+                + tarea.getLogin() + "','"
+                + tarea.getFecha() + "')";
         try {
             ps = connection.prepareStatement(query);
             ps.executeUpdate();
@@ -93,12 +93,13 @@ public class TareaDB {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
-        String query = "UPDATE TareasPersonales SET tipo=?, login=?, actividad=?, fecha=? WHERE id=?";
+        String query = "UPDATE TareasPersonales SET tipo=?, login=?, fecha=? WHERE id=?";
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1, tp.getTipo());
             ps.setString(2, tp.getLogin());
             ps.setString(3, tp.getFecha());
+            ps.setInt(4, tp.getId());
             ps.executeUpdate();
             ps.close();
             pool.freeConnection(connection);
@@ -132,7 +133,7 @@ public class TareaDB {
             ps.setString(1, login);
             rs = ps.executeQuery();
             while (rs.next()) {
-                String fechaTP = rs.getString(5);
+                String fechaTP = rs.getString(4);
                 //Pasar String a Calendar
                 Calendar fechaT = Calendar.getInstance();
                 fechaT.setTime(formatter.parse(fechaTP));

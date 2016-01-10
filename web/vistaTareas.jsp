@@ -63,6 +63,12 @@
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
+                    <%String mensaje = (String) request.getAttribute("mensaje");
+                        if (mensaje != null) {
+                    %>
+                    <h2><font color="#01DF01"><%=mensaje%></font></h2>
+                        <%}
+                        %>
                     <h1>
                         Lista de tareas </h1>
                 </section>

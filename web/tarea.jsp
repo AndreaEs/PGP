@@ -49,7 +49,7 @@
 
             function validarFecha() {
                 var fecha = document.tarea.fecha.value;
-                if (fecha === "" || fecha === " " || fecha.length < 11) {
+                if (fecha === "" || fecha === " " || fecha.length < 10) {
                     window.alert("Fecha errónea");
                     return false;
                 } else {
@@ -73,6 +73,12 @@
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
+                    <%String mensaje = (String) request.getAttribute("mensaje");
+                        if (mensaje != null) {
+                    %>
+                    <h2><font color="#FF0000"><%=mensaje%></font></h2>
+                        <%}
+                        %>
                     <h1>
                         Tarea Personal
                         <small>Crear una nueva tarea personal</small>
@@ -126,7 +132,7 @@
                                                 <div class="input-group-addon">
                                                   <i class="fa fa-calendar"></i>
                                                 </div>
-                                                <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                                <input type="text" class="form-control pull-right" id="fecha" name="fecha">
                                               </div><!-- /.input group -->
                                             </div><!-- /.form group -->
                                             <div class="form-group">
@@ -167,7 +173,7 @@
                                                 <div class="input-group-addon">
                                                   <i class="fa fa-calendar"></i>
                                                 </div>
-                                                <input type="text" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                                <input type="text" class="form-control pull-right" id="fecha" name="fecha">
                                               </div><!-- /.input group -->
                                             </div><!-- /.form group -->
                                         </div><!-- /.box-body -->
@@ -212,10 +218,9 @@
                                                 $(function () {
                                                     //Initialize Select2 Elements
                                                     $(".select2").select2();
-
-                                                    //Date range picker
-                                                    $('#reservation').daterangepicker();
-                                                });
+//Date range picker
+                $('#fecha').daterangepicker({singleDatePicker: true, format: 'YYYY-MM-DD'});
+                });
         </script>
     </body>
 </html>
