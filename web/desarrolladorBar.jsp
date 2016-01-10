@@ -9,7 +9,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>AdminLTE 2 | Dashboard</title>
+        <title>GTPROS</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.5 -->
@@ -77,6 +77,7 @@
                             <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
                         </li>
                     </ul>
+                    <input type="submit" value="Cerrar Sesion" onclick = "location='/PGP/index.jsp'"/>
                 </div>
 
 
@@ -123,7 +124,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="informesD.jsp">
                             <i class="fa fa-line-chart"></i> <span>Informes</span> 
                         </a>
                     </li>
@@ -131,19 +132,7 @@
                     <!-- /.sidebar -->
                     </aside>
 
-                    <!-- Content Wrapper. Contains page content -->
-
-
-
-
-
-
-
-                    <!-- Control Sidebar -->
-                    <!-- /.control-sidebar -->
-                    <!-- Add the sidebar's background. This div must be placed
-                         immediately after the control sidebar -->
-                    <!-- ./wrapper -->
+    
 
                     <!-- jQuery 2.1.4 -->
                     <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>

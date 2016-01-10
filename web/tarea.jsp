@@ -7,7 +7,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Nueva tarea</title>
+        <title>Tarea</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.5 -->
@@ -107,15 +107,15 @@
                                                 <label for="tipoTarea">Tipo de la tarea</label>
                                                 <select class="form-control select2" style="width: 100%;" name="tipoTarea">
                                                     <option selected="selected" value="TU">Trato con usuarios</option>
-                                                    <option disabled="disabled" value="RE">Reuniones externas</option>
-                                                    <option disabled="disabled" value="RI">Reuniones internas</option>
-                                                    <option disabled="disabled" value="LD">Lectura de documentacion</option>
-                                                    <option disabled="disabled" value="RV">Revision de documentacion</option>
-                                                    <option disabled="disabled" value="ED">Elaboracion de documentacion</option>
-                                                    <option disabled="disabled" value="DP">Desarrollo de programas</option>
-                                                    <option disabled="disabled" value="VP">Verificacion de programas</option>
-                                                    <option disabled="disabled" value="FU">Formacion de usuarios</option>
-                                                    <option disabled="disabled" value="FA">Formacion de otras actividades</option>
+                                                    <option value="RE">Reuniones externas</option>
+                                                    <option value="RI">Reuniones internas</option>
+                                                    <option value="LD">Lectura de documentacion</option>
+                                                    <option value="RV">Revision de documentacion</option>
+                                                    <option value="ED">Elaboracion de documentacion</option>
+                                                    <option value="DP">Desarrollo de programas</option>
+                                                    <option value="VP">Verificacion de programas</option>
+                                                    <option value="FU">Formacion de usuarios</option>
+                                                    <option value="FA">Formacion de otras actividades</option>
                                                     
                                                 </select>
                                             </div>
@@ -148,15 +148,15 @@
                                                 <label for="tipoTarea">Tipo de la tarea personal:</label>
                                                 <select class="form-control select2" style="width: 100%;" name="tipoTarea">
                                                     <option selected="selected" value="TU">Trato con usuarios</option>
-                                                    <option disabled="disabled" value="RE">Reuniones externas</option>
-                                                    <option disabled="disabled" value="RI">Reuniones internas</option>
-                                                    <option disabled="disabled" value="LD">Lectura de documentacion</option>
-                                                    <option disabled="disabled" value="RV">Revision de documentacion</option>
-                                                    <option disabled="disabled" value="ED">Elaboracion de documentacion</option>
-                                                    <option disabled="disabled" value="DP">Desarrollo de programas</option>
-                                                    <option disabled="disabled" value="VP">Verificacion de programas</option>
-                                                    <option disabled="disabled" value="FU">Formacion de usuarios</option>
-                                                    <option disabled="disabled" value="FA">Formacion de otras actividades</option>
+                                                    <option value="RE">Reuniones externas</option>
+                                                    <option value="RI">Reuniones internas</option>
+                                                    <option value="LD">Lectura de documentacion</option>
+                                                    <option value="RV">Revision de documentacion</option>
+                                                    <option value="ED">Elaboracion de documentacion</option>
+                                                    <option value="DP">Desarrollo de programas</option>
+                                                    <option value="VP">Verificacion de programas</option>
+                                                    <option value="FU">Formacion de usuarios</option>
+                                                    <option value="FA">Formacion de otras actividades</option>
                                                     
                                                 </select>
                                             </div>

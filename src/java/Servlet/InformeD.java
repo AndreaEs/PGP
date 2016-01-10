@@ -46,10 +46,24 @@ public class InformeD extends HttpServlet {
             throws ServletException, IOException, ParseException {
         
         HttpSession sesion = request.getSession();
-        String login = request.getParameter("login");
-        String fechaI = request.getParameter("fechaI");
-        String fechaF = request.getParameter("fechaF");
+        String fechaInicioyFin = request.getParameter("fechaInicioyFin");
+        String fechaInicio = "";
+        boolean encontrado = false;
+        int i = 0;
+        while (i < fechaInicioyFin.length() && !encontrado) {
+            if (fechaInicioyFin.charAt(i) != ' ') {
+                fechaInicio += fechaInicioyFin.charAt(i);
+            } else {
+                encontrado = true;
+            }
+            i++;
+        }
+        String fechaFin = fechaInicioyFin.substring(i + 2);
+        String login = (String)sesion.getAttribute("user");
+        String fechaI = fechaInicio.substring(6)+"-"+fechaInicio.substring(0,2)+"-"+fechaInicio.substring(3,5);
+        String fechaF = fechaFin.substring(6)+"-"+fechaFin.substring(0,2)+"-"+fechaFin.substring(3,5);
         String url = null;
+        
         
         //Comprobar que la fecha de Inicio no es posterior a hoy
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -89,8 +103,8 @@ public class InformeD extends HttpServlet {
                     inf.get(j).add(actividades.get(i));
                 }
         }
-        
-        sesion.setAttribute("login", login);
+        //sesion.setAttribute("login", login);
+        sesion.setAttribute("user", login);
         sesion.setAttribute("fechaI", fechaI);
         sesion.setAttribute("fechaF", fechaF);
         sesion.setAttribute("informe", inf);

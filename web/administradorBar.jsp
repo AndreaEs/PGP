@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Dashboard</title>
+    <title>GTPROS</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -78,6 +78,7 @@
                                 <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
                             </li>
                         </ul>
+                        <input type="submit" value="Cerrar Sesion" onclick = "location='/PGP/index.jsp'"/>
                     </div>
                     
                     
@@ -107,11 +108,6 @@
                 <a href="#">
                 <i class="fa fa-circle-o"></i><span>Perfil</span>
                 </a>
-            </li>
-            <li>
-              <a href="pages/calendar.html">
-                <i class="fa fa-calendar"></i> <span>Calendar</span>
-              </a>
             </li>
             <li>
                 <a href="usuarios.jsp">

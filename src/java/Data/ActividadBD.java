@@ -469,7 +469,12 @@ public class ActividadBD {
             java.util.Date fechaFU = formatter.parse(fechaF);
             java.util.Date fechaIA = formatter.parse(a.getFechaInicio());
             java.util.Date fechaFA = formatter.parse(a.getFechaFin());
-
+            System.out.println("Fecha inicio usuario "+fechaIU);
+            System.out.println("Fecha inicio actividad "+fechaIA);
+            System.out.println("Fecha fin usuario "+fechaFU);
+            System.out.println("Fecha fin actividad "+fechaFA);
+            
+            
             if (fechaIU.compareTo(fechaIA) == 0 || fechaIU.compareTo(fechaFA) == 0) {
                 return true;
             }
@@ -562,5 +567,89 @@ public class ActividadBD {
             }
             return actividades;
         }
+    }
+    public static ArrayList<Actividad> selectInformeCA(String fechaI, String fechaF, String login) throws ParseException {
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date fechaIU = formatter.parse(fechaI);
+        System.out.println("login"+login);
+        Date hoy = Calendar.getInstance().getTime();
+        if (fechaIU.compareTo(hoy) > 0) {
+            //System.out.println("holaaaaa");
+            return null;
+        } else {
+            ConnectionPool pool = ConnectionPool.getInstance();
+            Connection connection = pool.getConnection();
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            String query = "SELECT * FROM Actividades a , Proyectos p , Fases f WHERE p.login=? AND p.id = f.idProyecto AND f.id = a.idFase"
+                    + " AND a.duracionEstimada < a.duracionReal  ";
+            ArrayList<Actividad> actividades = new ArrayList<Actividad>();
+            try {
+                ps = connection.prepareStatement(query);
+                ps.setString(1, login);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    
+                     
+                    String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt("anoinicio"), rs.getInt("mesinicio"), rs.getInt("diainicio"));
+                    String fechaFin = String.format("%04d-%02d-%02d", rs.getInt("anofin"), rs.getInt("mesfin"), rs.getInt("diafin"));
+                    Actividad a = new Actividad(rs.getInt("id"), rs.getString("login"), rs.getString("descripcion"), rs.getString("rol"), rs.getInt("duracionestimada"), fechaInicio, fechaFin, rs.getInt("duracionreal"), rs.getString("estado").charAt(0), rs.getInt("idfase"));
+                    /*if (comprobarFechaEntreFechas(fechaI, fechaF, a)) {
+                        actividades.add(a);
+                    }*/
+                    actividades.add(a);
+                }
+                rs.close();
+                ps.close();
+                pool.freeConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+           System.out.println("actividades "+actividades.size());
+            return actividades;
+        }
+    }
+
+    public static HashMap<String, ArrayList<Actividad>> selectInformeAF(String fechaI, String fechaF, String login) throws ParseException {
+        
+          ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        HashMap<String, ArrayList<Actividad>> inf = new HashMap<String, ArrayList<Actividad>>();
+        //Selecciona actividades de fase de proyectos "En Curso" de determinado usuario;
+       String query = "SELECT * FROM Actividades a , Proyectos p , Fases f WHERE p.login=? AND p.id = f.idProyecto AND f.id = a.idFase";
+
+        ArrayList<Actividad> actividades = new ArrayList<Actividad>();
+        try {
+
+            ps = connection.prepareStatement(query);
+            ps.setString(1, login);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt("anoinicio"), rs.getInt("mesinicio"), rs.getInt("diainicio"));
+                String fechaFin = String.format("%04d-%02d-%02d", rs.getInt("anofin"), rs.getInt("mesfin"), rs.getInt("diafin"));
+
+               //User u = new User(rs.getString("login"), rs.getString("pass"), rs.getString("tipo").charAt(0), rs.getString("nif"), rs.getString("infogeneral"), rs.getInt("maxproy"));
+                Actividad a = new Actividad(rs.getInt("id"), rs.getString("login"), rs.getString("descripcion"), rs.getString("rol"), rs.getInt("duracionestimada"), fechaInicio, fechaFin, rs.getInt("duracionreal"), rs.getString("estado").charAt(0), rs.getInt("idfase"));
+
+                //Comprobar si la actividad obtenida está entre el rango de fechas introducido por el usuario
+                if (comprobarFechaEntreFechas(fechaI, fechaF, a)) {
+                    if (inf.get(a.getLogin()) == null) {
+                        inf.put(a.getLogin(), new ArrayList<Actividad>());
+                    }
+                    inf.get(a.getLogin()).add(a);
+                }
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return inf;
     }
 }

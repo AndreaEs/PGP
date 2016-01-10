@@ -93,7 +93,7 @@ public class Acceder extends HttpServlet {
         
         if(UserDB.identificar(user, password, rol)){
             msg=" ";
-            url = "/indexUsuario.jsp";
+            //url = "/indexUsuario.jsp";
             sesion.setAttribute("user", user);
             sesion.setAttribute("pass", password);
             sesion.setAttribute("tipo", rol);
@@ -101,14 +101,17 @@ public class Acceder extends HttpServlet {
             if(rol.equals("D")){
                 ArrayList<TareaPersonal> tareas = TareaDB.findAll(user);
                 sesion.setAttribute("tareas", tareas);
+                url="/informesD.jsp";
             } else {
                 if(rol.equals("J")){
                     ArrayList<Proyecto> proyectos = Proyecto.getProyectos(user);
                     sesion.setAttribute("proyectos", proyectos);
+                    url="/informesJP.jsp";
                 } else {
                     if(rol.equals("A")){
                         ArrayList<User> usuarios = UserDB.findAll();
                         sesion.setAttribute("usuarios", usuarios);
+                        url="/usuarios.jsp";
                     }
                 }
             }

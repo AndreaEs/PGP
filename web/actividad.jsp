@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Nueva actividad</title>
+        <title>Actividad</title>
         <!-- Bootstrap 3.3.5 -->
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
         <!-- Font Awesome -->
