@@ -79,10 +79,15 @@
                             }
                         }
                     %>
+                    <div class="row no-print">
+                        <div class="col-xs-12">
+                            <button class="btn btn-primary pull-right" style="margin-right: 5px;" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+                        </div>
+                    </div>
                 </section>
 
             </div>
-                <%@include file="footer.html" %>
+            <%@include file="footer.html" %>
             <%@include file="settings.html" %>
         </div>
         <!-- jQuery 2.1.4 -->
