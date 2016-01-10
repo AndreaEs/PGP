@@ -115,7 +115,7 @@
             </li>
             
             <li>
-               <a href="#">
+               <a href="Proyectos?proyecto=verProyectos">
                                <i class="fa fa-book"></i> <span>Proyectos</span> 
                             </a>
             </li>

@@ -115,7 +115,6 @@
                                         int idFase = (Integer) session.getAttribute("idFase");
                                         String user = (String) session.getAttribute("user");
                                         boolean actualizar = (Boolean) session.getAttribute("actualizar");
-                                        int idActividad;
                                         if (!actualizar) {
                                     %>
                                     <form role="form" action="Actividades?actividad=crearActividad&idFase=<%=idFase%>" name="actividad" value="crearActividad" method="post">
@@ -154,8 +153,10 @@
                                             <div class="form-group">
                                                 <label>Estado</label>
                                                 <select class="form-control select2" style="width: 100%;" name="estado">
-                                                    <option selected="selected" value="false">No realizada</option>
-                                                    <option value="true" disabled="disabled">Realizada</option>
+                                                    <option selected="selected" value="S">Sin comenzar</option>
+                                                    <option value="E" disabled="disabled">En curso</option>
+                                                    <option value="F" disabled="disabled">Finalizada</option>
+                                                    <option value="C" disabled="disabled">Cerrada</option>
                                                 </select>
                                             </div><!-- /.form-group -->
                                             <div class="form-group">
@@ -170,19 +171,22 @@
 
                                     </form>
                                     <% } else {
-                                        idActividad = (Integer) session.getAttribute("idActividad");
                                         Actividad a = (Actividad) session.getAttribute("actividad");
                                     %> 
-                                    <form role="form" action="Actividades?actividad=actualizarActividad&idFase=<%=idFase%>&idActividad=<%= idActividad%>" name="actividad" value="actualizarActividad" method="post">
+                                    <form role="form" action="Actividades?actividad=actualizarActividad&idFase=<%= a.getIdFase() %>&idActividad=<%= a.getIdentificador() %>" name="actividad" value="actualizarActividad" method="post">
                                         <div class="box-body">
                                             <!-- textarea -->
                                             <div class="form-group">
                                                 <label>Descripción de la actividad</label>
-                                                <textarea class="form-control" rows="3" name="descripcion"><%= a.getDescripcion()%></textarea>
+                                                <textarea class="form-control" <%if (session.getAttribute("tipo").equals("D")){%>
+                                                          readonly
+                                                          <%}%>rows="3" name="descripcion"><%= a.getDescripcion()%></textarea>
                                             </div>
                                             <div class="form-group">
                                                 <label>Rol necesario</label>
-                                                <select class="form-control select2" style="width: 100%;" name="rol">
+                                                <select class="form-control select2" <%if (session.getAttribute("tipo").equals("D")){%>
+                                                          disabled="disabled"
+                                                          <%}%>style="width: 100%;" name="rol">
                                                     <option 
                                                         <% if (a.getRolNecesario().equals("JP")) { %>
                                                         selected="selected" 
@@ -222,7 +226,11 @@
                                             </div><!-- /.form-group -->
                                             <div class="form-group">
                                                 <label for="duracionEstimadaActividad">Duración estimada de la actividad</label>
-                                                <input type="number" class="form-control" id="duracionEstimadaActividad" name="duracionEstimada" value="<%= a.getDuracionEstimada()%>">
+                                                <input type="number" 
+                                                       <%if (session.getAttribute("tipo").equals("D")){%>
+                                                          readonly
+                                                          <%}%>
+                                                       class="form-control" id="duracionEstimadaActividad" name="duracionEstimada" value="<%= a.getDuracionEstimada()%>">
                                             </div>
                                             <!-- Date range -->
                                             <div class="form-group">
@@ -238,15 +246,24 @@
                                                 <label>Estado</label>
                                                 <select class="form-control select2" style="width: 100%;" name="estado">
                                                     <option 
-                                                        <% if (a.getEstado() == false) { %>
+                                                        <% if (a.getEstado() == 'S') { %>
                                                         selected="selected" 
                                                         <% } %>
-                                                        value="false">No realizada</option>
+                                                        value="S">Sin comenzar</option>
                                                     <option 
-                                                        <% if (a.getEstado() == true) { %>
+                                                        <% if (a.getEstado() == 'E') { %>
                                                         selected="selected" 
                                                         <% }%>
-                                                        value="true">Realizada</option>
+                                                        value="E">En curso</option>
+                                                    <option
+                                                        <% if (a.getEstado() == 'F') { %>
+                                                        selected="selected"
+                                                        <%}%>
+                                                        value="F">Finalizada</option>
+                                                    <option <% if (a.getEstado() == 'C') { %>
+                                                        selected="selected"
+                                                        <%}%>
+                                                        value="C">Cerrada</option>
                                                 </select>
                                             </div><!-- /.form-group -->
                                             <div class="form-group">

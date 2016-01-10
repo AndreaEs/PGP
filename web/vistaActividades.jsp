@@ -97,7 +97,7 @@
                                     %>
                                     <ul class="nav nav-pills nav-stacked">
                                         <div class="btn pull-left">
-                                            <a href="Actividades?actividad=actualizarUnaActividad&idFase=<%=idFase%>&idActividad=<%=a.getIdentificador()%>">
+                                            <a href="Actividades?actividad=actualizarUnaActividad&idFase=<%= a.getIdFase()%>&idActividad=<%=a.getIdentificador()%>">
                                                 <% if (a.getEstado() == 'S') {
                                                         colorClase = "text-light-blue";
                                                     } else if (a.getEstado() == 'E') {
@@ -113,7 +113,8 @@
                                                     <small> <%= a.getFechaInicio()%> - <%= a.getFechaFin()%>  </small>
                                                 </div>
                                             </a>
-                                            <% boolean b = !ParticipantesBD.exist(a.getIdentificador());%>
+                                            <% if (!session.getAttribute("tipo").equals("D")) {
+                                                    boolean b = !ParticipantesBD.exist(a.getIdentificador());%>
                                             <a href="usuarios.jsp?participante=true&idActividad=<%=a.getIdentificador()%>">
                                                 <% if (b) { %> 
                                                 <button class="btn btn-block btn-info btn-flat">Add participantes</button>
@@ -121,19 +122,21 @@
                                                 <button disabled="true" class="btn btn-block btn-info btn-flat">Add participantes</button>
                                                 <%}%>
                                             </a>
-
+                                            <%}%>
                                         </div>
                                     </ul>
                                     <%
                                         }
                                     %>
                                 </div><!-- /.box-body -->
+                                <%if (!session.getAttribute("tipo").equals("D")){%>
                                 <div class="box-footer">
-                                    <a class="btn btn-app" href="Actividades?actividad=crearNuevaActividad&idFase=<%=idFase%>">
+                                    <a class="btn btn-app" href="Actividades?actividad=crearNuevaActividad&idFase=<%= idFase%>">
                                         <i class="fa fa-edit"></i> Nueva Actividad
                                     </a>
                                     <a href="<%=session.getAttribute("urlAnterior")%>"><input type="button" class="btn btn-default" name="actividad" value="Cancelar" onclick="url()"/></a>
                                 </div>
+                                <%}%>
                             </div><!-- /. box -->
 
                         </div><!-- /.row -->

@@ -137,6 +137,32 @@ public class ActividadBD {
         }
         return actividades;
     }
+    
+    public static ArrayList<Actividad> selectActividadesLoginOrdenadas(String login) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM Actividades a WHERE login=? ORDER BY a.anoInicio, a.mesInicio, a.diaInicio ASC";
+        ArrayList<Actividad> actividades = new ArrayList<Actividad>();
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, login);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String fechaInicio = String.format("%02d/%02d/%04d", rs.getInt(6), rs.getInt(7), rs.getInt(8));
+                String fechaFin = String.format("%02d/%02d/%04d", rs.getInt(9), rs.getInt(10), rs.getInt(11));
+                Actividad a = new Actividad(rs.getInt(1), login, rs.getString(3), rs.getString(4), rs.getInt(5), fechaInicio, fechaFin, rs.getInt(12), rs.getString(13).charAt(0), rs.getInt(14));
+                actividades.add(a);
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return actividades;
+    }
 
     public static void updateActividad(Actividad a) {
         ConnectionPool pool = ConnectionPool.getInstance();

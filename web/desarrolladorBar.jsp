@@ -113,12 +113,12 @@
                         </a>
                     </li>
                     <li>
-                        <a href="tareas.jsp">
+                        <a href="Tareas?tarea=verTareas"">
                             <i class="fa fa-file-text-o"></i><span>Tareas Personales</span> <!-- Aqui poner dependiendo el rol -->
                         </a>
                     </li>
                     <li>
-                        <a href="actividad.jsp">
+                        <a href="Actividades?actividad=verActividadesDeUsuario&idFase=0">
                             <i class="fa fa-sticky-note-o"></i> <span>Actividades</span> 
                         </a>
                     </li>

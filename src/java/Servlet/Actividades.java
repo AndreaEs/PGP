@@ -54,12 +54,11 @@ public class Actividades extends HttpServlet {
                 } else if (accion.equals("actualizarUnaActividad")) {
                     int idActividad = Integer.parseInt(request.getParameter("idActividad"));
                     sesion.setAttribute("actualizar", true);
-                    sesion.setAttribute("idActividad", idActividad);
                     Actividad a = Actividad.getActivity(idActividad);
                     sesion.setAttribute("actividad", a);
                     sesion.setAttribute("user", user);
                     url = "/actividad.jsp";
-                } else if(accion.equals("actualizarActividad")){
+                } else if (accion.equals("actualizarActividad")) {
                     int idActividad = Integer.parseInt(request.getParameter("idActividad"));
                     Actividad.actualizarActividad(getActividadFromParameters(request, idActividad, idFase, user));
                     url = getActividades(idFase, sesion, user);
@@ -67,6 +66,16 @@ public class Actividades extends HttpServlet {
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
                 respuesta.forward(request, response);
             }
+        } else {
+            String accion = request.getParameter("actividad");
+            if (accion.equals("verActividadesDeUsuario")) {
+                ArrayList<Actividad> actividades = Actividad.getActividadesLoginOrdenadas(user);
+                sesion.setAttribute("actividades", actividades);
+                sesion.setAttribute("user", user);
+                url = "/vistaActividades.jsp";
+            }
+            RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
+            respuesta.forward(request, response);
         }
 
     }
@@ -93,9 +102,9 @@ public class Actividades extends HttpServlet {
         if (!request.getParameter("duracionReal").equals("") && request.getParameter("duracionReal") != null) {
             duracionReal = Integer.parseInt(request.getParameter("duracionReal"));
         }
-        if(idActividad == 0){
+        if (idActividad == 0) {
             return new Actividad(user, descripcion, rol, duracionEstimada, fechaInicio, fechaFin, duracionReal, estado, idFase);
-        }else{
+        } else {
             return new Actividad(idActividad, user, descripcion, rol, duracionEstimada, fechaInicio, fechaFin, duracionReal, estado, idFase);
         }
     }
