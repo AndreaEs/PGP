@@ -40,10 +40,10 @@
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
 
-            <% if (session.getAttribute("tipo").equals("A")){
-             %>
+            <% if (session.getAttribute("tipo").equals("A")) {
+            %>
             <%@include file="administradorBar.jsp" %>
-            <% }else if(session.getAttribute("tipo").equals("D")) { %>
+            <% } else if (session.getAttribute("tipo").equals("D")) { %>
             <%@include file="desarrolladorBar.jsp" %>
             <% } else {%>
             <%@include file="jefeProyectoBar.jsp" %>
@@ -107,9 +107,11 @@
                                                         </div>
                                                     </a>
                                                 </div>
+                                                <%if (!session.getAttribute("tipo").equals("A")) {%>
                                                 <div class="btn pull-right">
                                                     <a href="Fases?fase=verFases&idProyecto=<%= p.getIdentificador()%>"><button type="button" class="btn btn-default">Fases</button></a>
                                                 </div>
+                                                <%}%>
                                             </div>
                                         </li>
 
@@ -118,11 +120,13 @@
                                         }
                                     %>
                                 </div><!-- /.box-body -->
+                                <% if (session.getAttribute("tipo").equals("A")) {%>
                                 <div class="box-footer">
                                     <a class="btn btn-app" href="Proyectos?proyecto=crearNuevoProyecto&usuario=<%= usuario%>">
                                         <i class="fa fa-edit"></i> Nuevo Proyecto
                                     </a>
                                 </div>
+                                <%}%>
                             </div><!-- /. box -->
                         </div><!-- /.row -->
                 </section><!-- /.content -->

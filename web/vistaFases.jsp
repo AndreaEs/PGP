@@ -6,8 +6,6 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Ver Fases</title>
-        <!-- Tell the browser to be responsive to screen width -->
-        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.5 -->
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
         <!-- Font Awesome -->
@@ -38,24 +36,18 @@
             <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <script type="text/javascript">
-            function url(){
-             <% session.setAttribute("urlAnterior", "Proyectos?proyecto=actualizarUnProyecto&usuario="+session.getAttribute("user")+"&idProyecto="+session.getAttribute("idProyecto"));%>
-             
-            }
-        </script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
 
-            <% if (session.getAttribute("tipo").equals("A")){
-             %>
+            <% if (session.getAttribute("tipo").equals("A")) {%>
             <%@include file="administradorBar.jsp" %>
-            <% }else if(session.getAttribute("tipo").equals("D")) { %>
+            <% } else if (session.getAttribute("tipo").equals("D")) { %>
             <%@include file="desarrolladorBar.jsp" %>
             <% } else {%>
             <%@include file="jefeProyectoBar.jsp" %>
             <% }%>
+
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
@@ -65,7 +57,7 @@
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li><a href="vistaProyectos.jsp">Proyectos</a></li>
+                        <li><a href="Proyectos?proyecto=verProyectos">Proyectos</a></li>
                         <li class="active">Fases</li>
                     </ol>
                 </section>
@@ -76,12 +68,12 @@
                         <div class="col-md-3">
                             <div class="box box-solid">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Lista de fases</h3>
+                                    <h3 class="box-title">Lista de proyectos</h3>
                                     <div class="pull-right">
                                         <small class="text-light-blue">Sin comenzar.</small>&nbsp;&nbsp;&nbsp;&nbsp;
                                         <small class="text-red">En curso.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-yellow">Finalizado.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-muted">Cerrado.</small>
+                                        <small class="text-yellow">Finalizada.</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <small class="text-muted">Cerrada.</small>
                                     </div>
                                 </div>
                                 <div class="box-body no-padding">
@@ -96,7 +88,7 @@
                                         <li>
                                             <div class="margin">
                                                 <div class="btn pull-left">
-                                                    <a href="Fases?fase=actualizarUnaFase&idProyecto=<%=idProyecto%>&idFase=<%= f.getId()%>"></a>
+                                                    <a href="Fases?fase=actualizarUnaFase&idProyecto=<%=idProyecto%>&idFase=<%= f.getId()%>">
                                                         <% if (f.getEstado() == 'S') {
                                                                 colorClase = "text-light-blue";
                                                             } else if (f.getEstado() == 'E') {
@@ -108,15 +100,17 @@
                                                             }
                                                         %>
                                                         <div class="<%=colorClase%>">
-                                                            <i class="fa fa-file-text-o"></i> <%= f.getNombre()%>
+                                                            <i class="fa fa-file-text-o"></i> <b><%= f.getNombre()%></b>
                                                             <small> <%= f.getFechaInicio()%> - <%= f.getFechaFin()%>  </small>
                                                         </div>
+                                                    </a>
                                                 </div>
                                                 <div class="btn pull-right">
                                                     <a href="Actividades?actividad=verActividades&idFase=<%= f.getId()%>"><button type="button" class="btn btn-default">Actividades</button></a>
                                                 </div>
                                             </div>
                                         </li>
+
                                     </ul>
                                     <%
                                         }
@@ -125,11 +119,8 @@
                                 <div class="box-footer">
                                     <a class="btn btn-app" href="Fases?fase=crearNuevaFase&idProyecto=<%=idProyecto%>">
                                         <i class="fa fa-edit"></i> Nueva Fase
-                                    </a>                           
-                                    <a href="<%=session.getAttribute("urlAnterior")%>"><input type="button" class="btn btn-default" name="fase" value="Cancelar" onclick="url()"/></a>
-
+                                    </a>
                                 </div>
-
                             </div><!-- /. box -->
                         </div><!-- /.row -->
                 </section><!-- /.content -->

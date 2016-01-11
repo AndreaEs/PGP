@@ -156,7 +156,9 @@
                                                     <option selected="selected" value="S">Sin comenzar</option>
                                                     <option value="E" disabled="disabled">En curso</option>
                                                     <option value="F" disabled="disabled">Finalizada</option>
+                                                    <%if (session.getAttribute("tipo").equals("JP")){%>
                                                     <option value="C" disabled="disabled">Cerrada</option>
+                                                    <%}%>
                                                 </select>
                                             </div><!-- /.form-group -->
                                             <div class="form-group">
@@ -239,12 +241,16 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <input type="text" class="form-control pull-right" id="reservation" name="fechaInicioyFin" value="<%= a.getFechaInicio()%> - <%= a.getFechaFin()%>">
+                                                    <input<%if (session.getAttribute("tipo").equals("D")){%>
+                                                          disabled
+                                                          <%}%> type="text" class="form-control pull-right" id="reservation" name="fechaInicioyFin" value="<%= a.getFechaInicio()%> - <%= a.getFechaFin()%>">
                                                 </div><!-- /.input group -->
                                             </div><!-- /.form group -->
                                             <div class="form-group">
                                                 <label>Estado</label>
-                                                <select class="form-control select2" style="width: 100%;" name="estado">
+                                                <select <% if (a.getEstado() == 'C') { %>
+                                                        disabled
+                                                        <%}%>class="form-control select2" style="width: 100%;" name="estado">
                                                     <option 
                                                         <% if (a.getEstado() == 'S') { %>
                                                         selected="selected" 
@@ -260,20 +266,28 @@
                                                         selected="selected"
                                                         <%}%>
                                                         value="F">Finalizada</option>
+                                                    <%if (session.getAttribute("tipo").equals("JP")){%>
                                                     <option <% if (a.getEstado() == 'C') { %>
                                                         selected="selected"
                                                         <%}%>
                                                         value="C">Cerrada</option>
+                                                    <%}%>
                                                 </select>
                                             </div><!-- /.form-group -->
                                             <div class="form-group">
                                                 <label for="duracionRealActividad">Duración real de la actividad</label>
-                                                <input type="number" class="form-control" id="duracionRealActividad" name="duracionReal" value="<%= a.getDuracionReal()%>">
+                                                <input <%if (session.getAttribute("tipo").equals("D")){%>
+                                                          readonly
+                                                          <%}%>type="number" class="form-control" id="duracionRealActividad" name="duracionReal" value="<%= a.getDuracionReal()%>">
                                             </div>
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
+                                            <% if (a.getEstado() == 'C') { %>
+                                            <a href="Actividades?actividad=verActividades&idFase=<%= a.getIdFase() %>"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Atrás</button></a>
+                                            <%} else{%>
                                             <button type="submit" class="btn btn-primary" name="actualizarActividad" value="actualizarActividad" onclick="return validar()">Actualizar Actividad</button>
-                                            <a href=vistaActividades.jsp><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Cancelar</button></a>
+                                            <a href="Actividades?actividad=verActividades&idFase=<%= a.getIdFase() %>"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Cancelar</button></a>
+                                            <%}%>
                                         </div>
 
                                     </form>

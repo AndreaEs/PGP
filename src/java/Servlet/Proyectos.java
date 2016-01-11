@@ -37,7 +37,7 @@ public class Proyectos extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
-        
+        String usuario = (String) sesion.getAttribute("user");
         String url = null;
         
             String accion = request.getParameter("proyecto");
@@ -49,7 +49,7 @@ public class Proyectos extends HttpServlet {
                     Proyecto.guardarNuevoProyecto(getProyectoFromParameters(request, 0, user,Integer.valueOf(numero)));
                     url = getTodosProyectos(sesion);
                 } else if (accion.equals("verProyectos")) {
-                    url = getTodosProyectos( sesion);
+                    url = getProyectos(usuario, sesion);
                 } else if (accion.equals("crearNuevoProyecto")) {
                     sesion.setAttribute("actualizar", false);
                     url = "/proyecto.jsp";

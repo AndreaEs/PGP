@@ -77,10 +77,10 @@
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
 
-            <% if (session.getAttribute("tipo").equals("A")){
-             %>
+            <% if (session.getAttribute("tipo").equals("A")) {
+            %>
             <%@include file="administradorBar.jsp" %>
-            <% }else if(session.getAttribute("tipo").equals("D")) { %>
+            <% } else if (session.getAttribute("tipo").equals("D")) { %>
             <%@include file="desarrolladorBar.jsp" %>
             <% } else {%>
             <%@include file="jefeProyectoBar.jsp" %>
@@ -176,7 +176,10 @@
                                         <div class="box-body">
                                             <div class="form-group">
                                                 <label for="nombreProyecto">Nombre del proyecto</label>
-                                                <input type="text" class="form-control" id="nombreProyecto" name="nombre" value="<%= p.getNombre()%>">
+                                                <input  <%if (p.getEstado() == 'C') {%>
+                                                    readonly
+                                                    <%}%>
+                                                    type="text" class="form-control" id="nombreProyecto" name="nombre" value="<%= p.getNombre()%>">
                                             </div>
                                             <!-- Date range -->
                                             <div class="form-group">
@@ -185,12 +188,16 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <input type="text" class="form-control pull-right" id="reservation" name="fechaInicioyFin" value="<%= p.getFechaInicio()%> - <%= p.getFechaFin()%>">
+                                                    <input type="text"<%if (p.getEstado() == 'C') {%>
+                                                    disabled
+                                                    <%}%> class="form-control pull-right" id="reservation" name="fechaInicioyFin" value="<%= p.getFechaInicio()%> - <%= p.getFechaFin()%>">
                                                 </div><!-- /.input group -->
                                             </div><!-- /.form group -->
                                             <div class="form-group">
                                                 <label>Estado</label>
-                                                <select class="form-control select2" style="width: 100%;" name="estado">
+                                                <select class="form-control select2" <%if (p.getEstado() == 'C') {%>
+                                                    disabled
+                                                    <%}%>style="width: 100%;" name="estado">
                                                     <option 
                                                         <% if (p.getEstado() == 'S') {%>
                                                         selected="selected"
@@ -235,7 +242,9 @@
                                                     for (int i = 0; i < num; i++) {
                                                 %>
                                                 <input disabled type="text" name="desarrollador<%=i%>" value="desarrollador<%=i%>">
-                                                <select  name="categoria<%=i%>">
+                                                <select  <%if (p.getEstado() == 'C') {%>
+                                                    disabled
+                                                    <%}%>name="categoria<%=i%>">
 
                                                     <option class="option-control" value="AN">AN</option>
                                                     <option class="option-control" value="DI">DI</option>
@@ -253,18 +262,21 @@
 
                                             </div>
 
-                                            <% } else {
-                                                }%> 
+                                            <% } %> 
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
+                                            <%if (p.getEstado() != 'C') {%>
                                             <button type="submit" class="btn btn-primary" name="actualizarProyecto" value="actualizarProyecto" onclick="return validar()">Actualizar Proyecto</button>
                                             <a href="vistaProyectos.jsp"><button type="button" class="btn btn-default" name="proyecto" value="cancelar">Cancelar</button></a>
+                                            <%} else {%>
+                                            <a href="vistaProyectos.jsp"><button type="button" class="btn btn-default" name="proyecto" value="cancelar">Atrás</button></a>
+                                            <%}%>
                                         </div>
                                     </form>
-                                        <div class="btn pull-right">
-                                        
-                                            <a href="Fases?fase=verFases&idProyecto=<%= p.getIdentificador()%>"><button type="button" class="btn btn-default" onclick="url()">Fases</button></a>
-                                        </div>     
+                                    <div class="btn pull-right">
+
+                                        <a href="Fases?fase=verFases&idProyecto=<%= p.getIdentificador()%>"><button type="button" class="btn btn-default" onclick="url()">Fases</button></a>
+                                    </div>     
                                     <% }%>
                                 </div><!-- /.col -->
                             </div><!-- /.row -->
@@ -298,13 +310,13 @@
 
         <!-- Page script -->
         <script>
-                                                $(function () {
-                                                    //Initialize Select2 Elements
-                                                    $(".select2").select2();
+                                            $(function () {
+                                                //Initialize Select2 Elements
+                                                $(".select2").select2();
 
-                                                    //Date range picker
-                                                    $('#reservation').daterangepicker();
-                                                });
+                                                //Date range picker
+                                                $('#reservation').daterangepicker();
+                                            });
         </script>
     </body>
 </html>

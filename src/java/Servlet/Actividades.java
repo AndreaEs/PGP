@@ -37,13 +37,14 @@ public class Actividades extends HttpServlet {
         HttpSession sesion = request.getSession();
         int idFase = Integer.parseInt(request.getParameter("idFase"));
         String user = (String) sesion.getAttribute("user");
+        String tipo = (String) sesion.getAttribute("tipo");
         sesion.setAttribute("idFase", idFase);
         String url = null;
         if (idFase != 0) {
             String accion = request.getParameter("actividad");
             if (accion != null) {
                 if (accion.equals("crearActividad")) {
-                    Actividad.guardarNuevaActividad(getActividadFromParameters(request, 0, idFase, user));
+                    Actividad.guardarNuevaActividad(getActividadFromParameters(request, 0, idFase, user, tipo));
                     url = getActividades(idFase, sesion, user);
                 } else if (accion.equals("verActividades")) {
                     url = getActividades(idFase, sesion, user);
@@ -60,7 +61,7 @@ public class Actividades extends HttpServlet {
                     url = "/actividad.jsp";
                 } else if (accion.equals("actualizarActividad")) {
                     int idActividad = Integer.parseInt(request.getParameter("idActividad"));
-                    Actividad.actualizarActividad(getActividadFromParameters(request, idActividad, idFase, user));
+                    Actividad.actualizarActividad(getActividadFromParameters(request, idActividad, idFase, user, tipo));
                     url = getActividades(idFase, sesion, user);
                 }
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
@@ -80,33 +81,44 @@ public class Actividades extends HttpServlet {
 
     }
 
-    private Actividad getActividadFromParameters(HttpServletRequest request, int idActividad, int idFase, String user) {
-        String descripcion = request.getParameter("descripcion");
-        String rol = request.getParameter("rol");
-        int duracionEstimada = Integer.parseInt(request.getParameter("duracionEstimada"));
-        String fechaInicioyFin = request.getParameter("fechaInicioyFin");
-        String fechaInicio = "";
-        boolean encontrado = false;
-        int i = 0;
-        while (i < fechaInicioyFin.length() && !encontrado) {
-            if (fechaInicioyFin.charAt(i) != ' ') {
-                fechaInicio += fechaInicioyFin.charAt(i);
-            } else {
-                encontrado = true;
+    private Actividad getActividadFromParameters(HttpServletRequest request, int idActividad, int idFase, String user, String tipo) {
+        if (!tipo.equals("D")) {
+            String descripcion = request.getParameter("descripcion");
+            String rol = request.getParameter("rol");
+
+            int duracionEstimada = Integer.parseInt(request.getParameter("duracionEstimada"));
+            String fechaInicioyFin = request.getParameter("fechaInicioyFin");
+            String fechaInicio = "";
+            boolean encontrado = false;
+            int i = 0;
+            while (i < fechaInicioyFin.length() && !encontrado) {
+                if (fechaInicioyFin.charAt(i) != ' ') {
+                    fechaInicio += fechaInicioyFin.charAt(i);
+                } else {
+                    encontrado = true;
+                }
+                i++;
             }
-            i++;
-        }
-        String fechaFin = fechaInicioyFin.substring(i + 2);
-        char estado = request.getParameter("estado").charAt(0);
-        int duracionReal = 0;
-        if (!request.getParameter("duracionReal").equals("") && request.getParameter("duracionReal") != null) {
-            duracionReal = Integer.parseInt(request.getParameter("duracionReal"));
-        }
-        if (idActividad == 0) {
-            return new Actividad(user, descripcion, rol, duracionEstimada, fechaInicio, fechaFin, duracionReal, estado, idFase);
+            String fechaFin = fechaInicioyFin.substring(i + 2);
+            char estado = request.getParameter("estado").charAt(0);
+
+            int duracionReal = 0;
+            if (!request.getParameter("duracionReal").equals("") && request.getParameter("duracionReal") != null) {
+                duracionReal = Integer.parseInt(request.getParameter("duracionReal"));
+            }
+
+            if (idActividad == 0) {
+                return new Actividad(user, descripcion, rol, duracionEstimada, fechaInicio, fechaFin, duracionReal, estado, idFase);
+            } else {
+                return new Actividad(idActividad, user, descripcion, rol, duracionEstimada, fechaInicio, fechaFin, duracionReal, estado, idFase);
+            }
         } else {
-            return new Actividad(idActividad, user, descripcion, rol, duracionEstimada, fechaInicio, fechaFin, duracionReal, estado, idFase);
+            Actividad a = Actividad.getActivity(idActividad);
+            char estado = request.getParameter("estado").charAt(0);
+            a.setEstado(estado);
+            return a;
         }
+
     }
 
     private String getActividades(int idFase, HttpSession sesion, String user) {

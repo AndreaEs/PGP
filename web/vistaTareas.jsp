@@ -50,10 +50,10 @@
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
 
-             <% if (session.getAttribute("tipo").equals("A")){
-             %>
+            <% if (session.getAttribute("tipo").equals("A")) {
+            %>
             <%@include file="administradorBar.jsp" %>
-            <% }else if(session.getAttribute("tipo").equals("D")) { %>
+            <% } else if (session.getAttribute("tipo").equals("D")) { %>
             <%@include file="desarrolladorBar.jsp" %>
             <% } else {%>
             <%@include file="jefeProyectoBar.jsp" %>
@@ -84,22 +84,42 @@
                                 <div class="box-body no-padding">
                                     <%
                                         String usuario = (String) session.getAttribute("user");
-                                        ArrayList<TareaPersonal> tareas = (ArrayList<TareaPersonal>) session.getAttribute("tareas"); 
-                    
+                                        ArrayList<TareaPersonal> tareas = (ArrayList<TareaPersonal>) session.getAttribute("tareas");
+
                                         for (TareaPersonal a : tareas) {
                                     %>
                                     <ul class="nav nav-pills nav-stacked">
-                                        
+
                                         <div class="btn pull-left">
-                                                <div>
-                                                    <a href="Tareas?tarea=actualizarUnaTarea&usuario=<%=usuario%>&idTarea=<%= a.getId()%>">
+                                            <div>
+                                                <a href="Tareas?tarea=actualizarUnaTarea&usuario=<%=usuario%>&idTarea=<%= a.getId()%>">
                                                     <i class="fa fa-file-text-o"></i> <b><%= a.getId()%></b>
-                                                    <i class="fa fa-file-text-o"></i> <b><%= a.getTipo()%></b>
+                                                    <% if (a.getTipo().equals("TU")) {%>
+                                                    <i class="fa fa-file-text-o"></i> <b>Trato con Usuarios</b>
+                                                    <%}else if (a.getTipo().equals("RE")) {%>
+                                                    <i class="fa fa-file-text-o"></i> <b>Reuniones Externas</b>
+                                                    <%}else if (a.getTipo().equals("RI")) {%>
+                                                    <i class="fa fa-file-text-o"></i> <b>Reuniones Internas</b>
+                                                    <%}else if (a.getTipo().equals("LD")) {%>
+                                                    <i class="fa fa-file-text-o"></i> <b>Lectura de Documentación</b>
+                                                    <%}else if (a.getTipo().equals("RV")) {%>
+                                                    <i class="fa fa-file-text-o"></i> <b>Revisión de documentación</b>
+                                                    <%}else if (a.getTipo().equals("ED")) {%>
+                                                    <i class="fa fa-file-text-o"></i> <b>Elaboración de documentación</b>
+                                                    <%}else if (a.getTipo().equals("DP")) {%>
+                                                    <i class="fa fa-file-text-o"></i> <b>Desarrollo de Programas</b>
+                                                    <%}else if (a.getTipo().equals("VP")) {%>
+                                                    <i class="fa fa-file-text-o"></i> <b>Verificación de Programas</b>
+                                                    <%}else if (a.getTipo().equals("FU")) {%>
+                                                    <i class="fa fa-file-text-o"></i> <b>Formación de Usuarios</b>
+                                                    <%}else if (a.getTipo().equals("FA")) {%>
+                                                    <i class="fa fa-file-text-o"></i> <b>Formación de Otras Actividades</b>
+                                                    <%}%>
                                                     <i class="fa fa-file-text-o"></i> <%= a.getFecha()%>
-                                                    </a>
-                                                </div>
+                                                </a>
+                                            </div>
                                         </div>
-                                        
+
                                     </ul>
                                     <%
                                         }

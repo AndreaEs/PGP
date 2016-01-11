@@ -58,7 +58,9 @@
             <%@include file="desarrolladorBar.jsp" %>
             <% } else {%>
             <%@include file="jefeProyectoBar.jsp" %>
-            <% }%>
+            <% }
+            int idProyecto = (Integer) session.getAttribute("idProyecto");
+            %>
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
@@ -70,7 +72,7 @@
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                         <li><a href="#">Proyectos</a></li>
-                        <li><a href="#">Fases</a></li>
+                        <li><a href="Fases?fase=verFases&idProyecto=<%= idProyecto %>">Fases</a></li>
                         <li class="active">Nueva Fase</li>
                     </ol>
                 </section>
@@ -87,7 +89,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <%
-                                        int idProyecto = (Integer) session.getAttribute("idProyecto");
+                                        
                                         boolean actualizar = (Boolean) session.getAttribute("actualizar");
                                         int idFase;
                                         if (!actualizar) {
@@ -121,7 +123,7 @@
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
                                             <button type="submit" class="btn btn-primary" name="crearFase" value="crearFase" onclick="return validarFecha()">Crear Fase</button>
-                                            <a href="vistaFases.jsp"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Cancelar</button></a>
+                                            <a href="Fases?fase=verFases&idProyecto=<%= idProyecto %>"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Cancelar</button></a>
                                         </div>
                                     </form>
                                     <% } else {
@@ -132,7 +134,7 @@
                                         <div class="box-body">
                                             <div class="form-group">
                                                 <label for="nombreFase">Nombre de la fase</label>
-                                                <input type="text" class="form-control" id="nombreFase" name="nombre" value="<%= f.getNombre() %>">
+                                                <input type="text" readonly="readonly" class="form-control" id="nombreFase" name="nombre" value="<%= f.getNombre() %>">
                                             </div>
                                             <!-- Date range -->
                                             <div class="form-group">
@@ -171,8 +173,12 @@
                                             </div><!-- /.form-group -->
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
+                                            <% if (f.getEstado() == 'C') { %>
+                                            <a href="Fases?fase=verFases&idProyecto=<%= idProyecto %>"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Atrás</button></a>
+                                            <%} else{%>
                                             <button type="submit" class="btn btn-primary" name="actualizarFase" value="actualizarFase" onclick="return validarFecha()">Actualizar Fase</button>
-                                            <a href="vistaFases.jsp"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Cancelar</button></a>
+                                            <a href="Fases?fase=verFases&idProyecto=<%= idProyecto %>"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Cancelar</button></a>
+                                            <%}%>
                                         </div>
                                     </form>
                                     <% }%>

@@ -60,7 +60,9 @@
             <% } else {%>
             <%@include file="jefeProyectoBar.jsp" %>
             <% }%>
-            <% session.setAttribute("user", user);%>
+            <% session.setAttribute("user", user);
+            session.setAttribute("tipo", session.getAttribute("tipo"));
+            %>
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
