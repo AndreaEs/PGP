@@ -652,4 +652,30 @@ public class ActividadBD {
 
         return inf;
     }
+
+    public static ArrayList<Actividad> selectActividadesProyecto(int idProyecto) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM Actividades a, Fases f, Proyectos p WHERE a.idFase=f.id AND f.idProyecto=p.id AND f.id=? ORDER BY a.anoInicio, a.mesInicio, a.diaInicio ASC";
+        ArrayList<Actividad> actividades = new ArrayList<Actividad>();
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, idProyecto);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String fechaInicio = String.format("%02d/%02d/%04d", rs.getInt(6), rs.getInt(7), rs.getInt(8));
+                String fechaFin = String.format("%02d/%02d/%04d", rs.getInt(9), rs.getInt(10), rs.getInt(11));
+                Actividad a = new Actividad(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), fechaInicio, fechaFin, rs.getInt(12), rs.getString(13).charAt(0), rs.getInt(14));
+                actividades.add(a);
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return actividades;
+    }
 }

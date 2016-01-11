@@ -6,6 +6,7 @@
 package Servlet;
 
 import Business.Actividad;
+import Data.ActividadBD;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
@@ -49,6 +50,10 @@ public class Actividades extends HttpServlet {
                 } else if (accion.equals("verActividades")) {
                     url = getActividades(idFase, sesion, user);
                 } else if (accion.equals("crearNuevaActividad")) {
+                    //Obtener actividades del proyecto al que pertenece la fase
+                    ArrayList<Actividad> act = new ArrayList<Actividad>();
+                    act = ActividadBD.selectActividadesProyecto(idFase);
+                    sesion.setAttribute("predecesoras", act);
                     sesion.setAttribute("actualizar", false);
                     sesion.setAttribute("user", user);
                     url = "/actividad.jsp";
@@ -64,6 +69,7 @@ public class Actividades extends HttpServlet {
                     Actividad.actualizarActividad(getActividadFromParameters(request, idActividad, idFase, user, tipo));
                     url = getActividades(idFase, sesion, user);
                 }
+                
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
                 respuesta.forward(request, response);
             }

@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="Business.Actividad"%>
 <!DOCTYPE html>
 <html>
@@ -115,6 +116,7 @@
                                         int idFase = (Integer) session.getAttribute("idFase");
                                         String user = (String) session.getAttribute("user");
                                         boolean actualizar = (Boolean) session.getAttribute("actualizar");
+                                        ArrayList<Actividad> predecesoras = (ArrayList<Actividad>) session.getAttribute("predecesoras");
                                         if (!actualizar) {
                                     %>
                                     <form role="form" action="Actividades?actividad=crearActividad&idFase=<%=idFase%>" name="actividad" value="crearActividad" method="post">
@@ -166,6 +168,12 @@
                                                 <input type="number" class="form-control" id="duracionRealActividad" placeholder="Introduzca la duración real de esta actividad" name="duracionReal" value="duracionR">
                                             </div>
                                         </div><!-- /.box-body -->
+                                        <div class="form-group">
+                                            <label>Predecesoras</label></br>
+                                                    <% for(int i=0; i<predecesoras.size();i++){%>
+                                                    <Input type = "Checkbox" Name ="predecesoras[]" value="<% predecesoras.get(i).getIdentificador();%>"> <%=predecesoras.get(i).getDescripcion() %> Fecha Fin: <%=predecesoras.get(i).getFechaFin() %></br>
+                                                    <%}%>
+                                            </div>
                                         <div class="box-footer">
                                             <button type="submit" class="btn btn-primary" name="crearActividad" value="crearActividad" onclick="return validar()">Crear Actividad</button>
                                             <a href=vistaActividades.jsp><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Cancelar</button></a>
