@@ -12,15 +12,12 @@ import Business.Vacaciones;
 import Business.TareaPersonal;
 import Data.VacacionesDB;
 import Data.ActividadBD;
-import Data.TareaDB;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -190,10 +187,6 @@ public class CalendarioD extends HttpServlet {
             boolean correcto = false;
             String login = (String) sesion.getAttribute("user");
             String tipo = (String) sesion.getAttribute("tipo");
-//            String login = request.getParameter("login");
-//            String tipo = request.getParameter("tipo");
-//            String tipoT = request.getParameter("tipoT");
-//            String duracion = request.getParameter("duracion");
             String fechaI = request.getParameter("fechaI");
             String fechaF = request.getParameter("fechaF");
 
@@ -243,22 +236,6 @@ public class CalendarioD extends HttpServlet {
             }
 
             try (PrintWriter out = response.getWriter()) {
-//
-//                out.println("<!DOCTYPE html>");
-//                out.println("<html>");
-//                out.println("<head>");
-//                out.println("<title>Servlet Calendario</title>");
-//                out.println("</head>");
-//                out.println("<body>");
-//                out.println("<h1>Servlet Calendario at " + request.getContextPath() + "</h1>");
-//                out.println("<h4>Login: " + login + " </h4>");
-//                out.println("<h4>Fecha inicio: " + fechaI + " </h4>");
-//                out.println("<h4>Fecha fin: " + fechaF + " </h4>");
-//                out.println("<h3>Días que llevas asignados de vacaciones " + dias + "</h3>");
-//                out.println("<h3>Días nuevos que quieres asignar de vacaciones " + nuevos + "</h3>");
-//                out.println("<h2>" + mensaje + "</h2>");
-//                out.println("</body>");
-//                out.println("</html>");
                 String path = "";
                 if(!correcto){
                     path = "/CalendarioD?accion=anadirVacaciones";
@@ -270,68 +247,6 @@ public class CalendarioD extends HttpServlet {
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(path);
                 respuesta.forward(request, response);
             }
-
-            /*} else {
-
-             TareaPersonal tp = new TareaPersonal();
-             tp.setLogin(login);
-             tp.setTipo(tipoT);
-             tp.setFecha(fechaI);
-
-             //Comprobaciones de un evento tipo Tarea Personal
-             //Comprobar que no quiere asignar una tarea en fin de semana
-             if (!tp.tareaFinSemana(fechaI)) {
-             mensaje = "No puedes asignar una tarea en fin de semana";
-             }
-
-             //Comprobar que ese usuario tiene menos de 25 tareas asignadas para esa semana
-             if (!TareaDB.tareasPersonalesSemana(login, fechaI)) {
-             mensaje = "El usuario " + login + " ya tiene asignadas 24 tareas personales para la semana del " + fechaI;
-             }
-
-             //Obtener actividades de ese usuario
-             List<Actividad> actividades = new ArrayList<Actividad>();
-             actividades = ActividadBD.selectActividades(login);
-
-             //Comprobar que en esa fecha hay al menos una actividad
-             List<Actividad> actFecha = new ArrayList<Actividad>();
-             for (int i = 0; i < actividades.size(); i++) {
-             Actividad a = actividades.get(i);
-             if (a.comprobarFechaEntreFechas(fechaI, a)) {
-             actFecha.add(a);
-             }
-             }
-
-             //Si no había ninguna actividad asignada --> avisar usuario
-             if (actFecha.isEmpty()) {
-             mensaje = "No hay ninguna actividad en esa fecha";
-             }
-             //Si solo había una actividad --> asignar tarea a esa actividad
-             if (actFecha.size() == 1) {
-             //Anadir tp a la bbdd
-             TareaDB.insert(tp);
-             } else {
-             //Anadir tp a la bbdd
-             TareaDB.insert(tp);
-             }
-
-             try (PrintWriter out = response.getWriter()) {
-             out.println("<!DOCTYPE html>");
-             out.println("<html>");
-             out.println("<head>");
-             out.println("<title>Servlet Calendario</title>");
-             out.println("</head>");
-             out.println("<body>");
-             out.println("<h1>Servlet Calendario at " + request.getContextPath() + "</h1>");
-             out.println("<h4>Login: " + login + " </h4>");
-             out.println("<h4>Tipo de evento: " + tipoT + " </h4>");
-             out.println("<h4>Fecha: " + fechaI + " </h4>");
-             out.println("<h4>Duración: " + duracion + " </h4>");
-             out.println("<h2>" + mensaje + "</h2>");
-             out.println("</body>");
-             out.println("</html>");
-             }
-             }*/
         }
 
     }

@@ -274,10 +274,12 @@
                                         </div>
                                     </form>
                                     <div class="btn pull-right">
-
+                                        <% if(session.getAttribute("tipo").equals("A")){
+                                                    
+                                        } else { %>
                                         <a href="Fases?fase=verFases&idProyecto=<%= p.getIdentificador()%>"><button type="button" class="btn btn-default" onclick="url()">Fases</button></a>
                                     </div>     
-                                    <% }%>
+                                    <% } }%>
                                 </div><!-- /.col -->
                             </div><!-- /.row -->
                         </div><!-- /.box-body -->

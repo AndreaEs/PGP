@@ -48,7 +48,7 @@
      
       <header class="main-header">
                 <!-- Logo -->
-                <a href="index2.html" class="logo">
+                <a href="#" class="logo">
                     <!-- logo for regular state and mobile devices -->
                     <span class="logo-lg"><b>GTPROS</b></span>
                 </a>
@@ -104,11 +104,6 @@
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
             
-            <li>
-                <a href="#">
-                <i class="fa fa-circle-o"></i><span>Perfil</span>
-                </a>
-            </li>
             <li>
                 <a href="usuarios.jsp">
                 <i class="fa fa-user"></i><span>Usuarios</span> <!-- Aqui poner dependiendo el rol -->

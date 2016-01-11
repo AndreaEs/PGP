@@ -80,9 +80,13 @@
                         }
                     %>
                     <div class="row no-print">
+                        <div>
+                            <a href="informesD.jsp"><button type="button" class="btn btn-default pull-right">Cancelar</button></a>
+                        </div>
                         <div class="col-xs-12">
                             <button class="btn btn-primary pull-right" style="margin-right: 5px;" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
                         </div>
+
                     </div>
                 </section>
 
