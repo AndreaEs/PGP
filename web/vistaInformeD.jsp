@@ -83,6 +83,9 @@
                         <div class="col-xs-12">
                             <button class="btn btn-primary pull-right" style="margin-right: 5px;" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
                         </div>
+                        <div class="btn pull-right">
+                            <a href="informesD.jsp"><button type="button" class="btn btn-default">Cancelar</button></a>
+                        </div>
                     </div>
                 </section>
 

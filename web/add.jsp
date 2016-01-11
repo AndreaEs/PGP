@@ -135,12 +135,11 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Dashboard
-                        <small>Control panel</small>
+                        Añadir un usuario
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Dashboard</li>
+                        <li class="active">Añadir Usuario</li>
                     </ol>
                 </section>
 
@@ -154,7 +153,7 @@
                                 <h3 class="box-title">add user</h3>
                             </div><!-- /.box-header -->
                             <!-- form start -->
-                            <form class="form-horizontal" action="AddUser" method="post" onsubmit="return verificar(nif, login, pass, repass)">
+                            <form class="form-horizontal" action="AddUser" method="post">
                                 <div class="box-body">
                                     <div class="form-group">
                                         <label for="inputUser3" class="col-sm-2 control-label">Login</label>
@@ -211,7 +210,7 @@
                                 </div><!-- /.box-body -->
                                 <div class="box-footer">
                                     <button type="submit" class="btn btn-default" name = "Accion" value="cancelar">Cancelar</button>
-                                    <button type="submit" class="btn btn-info pull-right" name="Accion" value="anadir">Add</button>
+                                    <button type="submit" class="btn btn-info pull-right" name="Accion" value="anadir" onclick="verificar(nif, login, pass, repass,Accion)">Add</button>
                                 </div><!-- /.box-footer -->
                             </form>
                         </div><!-- /.box -->

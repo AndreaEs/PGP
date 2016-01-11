@@ -188,28 +188,28 @@
                     <h3>Los proyectos que se han cerrado entre <%=fechaI%> y <%=fechaF%> son :</h3>
 
                     <%
-                        HashMap<String,HashMap<String,ArrayList<Actividad>>> inf = (HashMap<String,HashMap<String,ArrayList<Actividad>>>) session.getAttribute("informe");
-                       System.out.println("inf "+inf);
-                        if(inf != null){
-                        Iterator it1 = inf.entrySet().iterator();
-                        while (it1.hasNext()) {
-                            Entry par = (Entry) it1.next();
-                            String valor = (String) par.getKey();
+                        HashMap<String, HashMap<String, ArrayList<Actividad>>> inf = (HashMap<String, HashMap<String, ArrayList<Actividad>>>) session.getAttribute("informe");
+                        System.out.println("inf " + inf);
+                        if (inf != null) {
+                            Iterator it1 = inf.entrySet().iterator();
+                            while (it1.hasNext()) {
+                                Entry par = (Entry) it1.next();
+                                String valor = (String) par.getKey();
                     %>
                     <h2>El proyecto <%= valor%></h2>
 
-                    <% 
+                    <%
                         Iterator it2 = inf.get(valor).entrySet().iterator();
                         while (it2.hasNext()) {
                             Entry par2 = (Entry) it2.next();
                             String valor2 = (String) par2.getKey();
-                            %>
-                            <h3> Fase : <%= valor2%></h3>
-                            
-                                <% if (!inf.get(valor).get(valor2).isEmpty()) {
-                                     for(int i =0; i< inf.get(valor).get(valor2).size();i++){
-                            
-                                
+                    %>
+                    <h3> Fase : <%= valor2%></h3>
+
+                    <% if (!inf.get(valor).get(valor2).isEmpty()) {
+                            for (int i = 0; i < inf.get(valor).get(valor2).size(); i++) {
+
+
                     %>
                     <h4> </h4>
                     <h4>----------------Actividad <%= inf.get(valor).get(valor2).get(i).getIdentificador()%>-----------</h4>
@@ -218,23 +218,26 @@
                     <h4>Fecha Inicio: <%= inf.get(valor).get(valor2).get(i).getFechaInicio()%></h4>
                     <h4>Fecha Fin: <%= inf.get(valor).get(valor2).get(i).getFechaFin()%></h4>
                     <h4>Duración real: <%= inf.get(valor).get(valor2).get(i).getDuracionReal()%></h4>
-                    
-                    
+
+
                     <% }
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
-                    }
                     %>
                     <div class="row no-print">
                         <div class="col-xs-12">
                             <button class="btn btn-primary pull-right" style="margin-right: 5px;" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+                            <div class="btn pull-right">
+                                <a href="informesJP.jsp"><button type="button" class="btn btn-default">Cancelar</button></a>
+                            </div>
                         </div>
                     </div>
                 </section>
             </div>
-<%@include file="footer.html" %>
+            <%@include file="footer.html" %>
             <%@include file="settings.html" %>
         </div> 
         <!-- jQuery 2.1.4 -->

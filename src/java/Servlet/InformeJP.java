@@ -44,7 +44,7 @@ public class InformeJP extends HttpServlet {
             throws ServletException, IOException, ParseException {
 
         HttpSession sesion = request.getSession();
-        String login = request.getParameter("user");
+        String login = (String) sesion.getAttribute("user");
         String tipoI = request.getParameter("tipoI");
         String fechaInicioyFin = request.getParameter("fechaInicioyFin");
         String fechaInicio = "";
