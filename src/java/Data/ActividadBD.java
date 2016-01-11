@@ -678,4 +678,26 @@ public class ActividadBD {
         }
         return actividades;
     }
+    
+    public static int obtenerUltimaEntrada(){
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String query = "SELECT MAX(id) as \"id\" FROM Actividades";
+        int id = 0;
+        try {
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                id=rs.getInt("id");
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
 }

@@ -7,6 +7,7 @@ package Servlet;
 
 import Business.Actividad;
 import Data.ActividadBD;
+import Data.PredecesorasDB;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
@@ -45,7 +46,14 @@ public class Actividades extends HttpServlet {
             String accion = request.getParameter("actividad");
             if (accion != null) {
                 if (accion.equals("crearActividad")) {
+                    
                     Actividad.guardarNuevaActividad(getActividadFromParameters(request, 0, idFase, user, tipo));
+                    int id = ActividadBD.obtenerUltimaEntrada();
+                    //Crear predecesoras
+                    ArrayList<Actividad> predecesoras = new ArrayList<Actividad>();
+                    predecesoras = (ArrayList<Actividad>) sesion.getAttribute("predecesoras");
+                    for(int i=0;i<predecesoras.size();i++)
+                        PredecesorasDB.crearPredecesoras(id, predecesoras.get(i).getIdentificador());
                     url = getActividades(idFase, sesion, user);
                 } else if (accion.equals("verActividades")) {
                     url = getActividades(idFase, sesion, user);

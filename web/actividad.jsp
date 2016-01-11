@@ -171,7 +171,7 @@
                                         <div class="form-group">
                                             <label>Predecesoras</label></br>
                                                     <% for(int i=0; i<predecesoras.size();i++){%>
-                                                    <Input type = "Checkbox" Name ="predecesoras[]" value="<% predecesoras.get(i).getIdentificador();%>"> <%=predecesoras.get(i).getDescripcion() %> Fecha Fin: <%=predecesoras.get(i).getFechaFin() %></br>
+                                                    <Input type = "Checkbox" Name ="predecesoras" value="<% predecesoras.get(i).getIdentificador();%>"> <%=predecesoras.get(i).getDescripcion() %> Fecha Inicio: <%=predecesoras.get(i).getFechaInicio() %> Fecha Fin: <%=predecesoras.get(i).getFechaFin() %></br>
                                                     <%}%>
                                             </div>
                                         <div class="box-footer">
