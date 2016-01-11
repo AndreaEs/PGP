@@ -70,7 +70,7 @@
             function url() {
 
             <%
-                session.setAttribute("urlAnterior", "/PGP/indexUsuario.jsp");%>
+                session.setAttribute("desdeProyecto", true);%>
             }
         </script>
     </head>
@@ -163,7 +163,7 @@
                                             <% session.setAttribute("actualizar", true); %>
 
                                             <button type="submit" class="btn btn-primary" name="crearProyecto" value="crearProyecto" onclick="return validar()">Crear Proyecto</button>
-                                            <a href="vistaProyectos.jsp"><button type="button" class="btn btn-default" name="proyecto" value="cancelar">Cancelar</button></a>
+                                            <a href="vistaProyectos.jsp"><span class="btn btn-default">Cancelar</span></a>
                                         </div>
 
                                     </form>
@@ -267,9 +267,9 @@
                                         <div class="box-footer">
                                             <%if (p.getEstado() != 'C') {%>
                                             <button type="submit" class="btn btn-primary" name="actualizarProyecto" value="actualizarProyecto" onclick="return validar()">Actualizar Proyecto</button>
-                                            <a href="vistaProyectos.jsp"><button type="button" class="btn btn-default" name="proyecto" value="cancelar">Cancelar</button></a>
+                                            <a href="vistaProyectos.jsp"><span class="btn btn-default">Cancelar</span></a>
                                             <%} else {%>
-                                            <a href="vistaProyectos.jsp"><button type="button" class="btn btn-default" name="proyecto" value="cancelar">Atrás</button></a>
+                                            <a href="vistaProyectos.jsp"><span class="btn btn-default">Cancelar</span></a>
                                             <%}%>
                                         </div>
                                     </form>

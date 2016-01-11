@@ -140,7 +140,7 @@
                     selectHelper: true,
                     editable: false,
                     eventLimit: true, // allow "more" link when too many events
-                    events: "http://localhost:8084/PGP/CalendarioD?accion=mostrarEventos"
+                    events: "http://localhost:8080/PGP/CalendarioD?accion=mostrarEventos"
                 });
             });
         </script>

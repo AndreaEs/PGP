@@ -82,10 +82,10 @@
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
 
-            <% if (session.getAttribute("tipo").equals("A")){
-             %>
+            <% if (session.getAttribute("tipo").equals("A")) {
+            %>
             <%@include file="administradorBar.jsp" %>
-            <% }else if(session.getAttribute("tipo").equals("D")) { %>
+            <% } else if (session.getAttribute("tipo").equals("D")) { %>
             <%@include file="desarrolladorBar.jsp" %>
             <% } else {%>
             <%@include file="jefeProyectoBar.jsp" %>
@@ -162,7 +162,7 @@
                                                     <option selected="selected" value="S">Sin comenzar</option>
                                                     <option value="E" disabled="disabled">En curso</option>
                                                     <option value="F" disabled="disabled">Finalizada</option>
-                                                    <%if (session.getAttribute("tipo").equals("JP")){%>
+                                                    <%if (session.getAttribute("tipo").equals("JP")) {%>
                                                     <option value="C" disabled="disabled">Cerrada</option>
                                                     <%}%>
                                                 </select>
@@ -180,27 +180,27 @@
                                             </div>
                                         <div class="box-footer">
                                             <button type="submit" class="btn btn-primary" name="crearActividad" value="crearActividad" onclick="return validar()">Crear Actividad</button>
-                                            <a href=vistaActividades.jsp><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Cancelar</button></a>
+                                            <a href=vistaActividades.jsp><span class="btn btn-default" >Cancelar</span></a>
                                         </div>
 
                                     </form>
                                     <% } else {
                                         Actividad a = (Actividad) session.getAttribute("actividad");
                                     %> 
-                                    <form role="form" action="Actividades?actividad=actualizarActividad&idFase=<%= a.getIdFase() %>&idActividad=<%= a.getIdentificador() %>" name="actividad" value="actualizarActividad" method="post">
+                                    <form role="form" action="Actividades?actividad=actualizarActividad&idFase=<%= a.getIdFase()%>&idActividad=<%= a.getIdentificador()%>" name="actividad" value="actualizarActividad" method="post">
                                         <div class="box-body">
                                             <!-- textarea -->
                                             <div class="form-group">
                                                 <label>Descripción de la actividad</label>
-                                                <textarea class="form-control" <%if (session.getAttribute("tipo").equals("D")){%>
+                                                <textarea class="form-control" <%if (session.getAttribute("tipo").equals("D")) {%>
                                                           readonly
                                                           <%}%>rows="3" name="descripcion"><%= a.getDescripcion()%></textarea>
                                             </div>
                                             <div class="form-group">
                                                 <label>Rol necesario</label>
-                                                <select class="form-control select2" <%if (session.getAttribute("tipo").equals("D")){%>
-                                                          disabled="disabled"
-                                                          <%}%>style="width: 100%;" name="rol">
+                                                <select class="form-control select2" <%if (session.getAttribute("tipo").equals("D")) {%>
+                                                        disabled="disabled"
+                                                        <%}%>style="width: 100%;" name="rol">
                                                     <option 
                                                         <% if (a.getRolNecesario().equals("JP")) { %>
                                                         selected="selected" 
@@ -241,9 +241,9 @@
                                             <div class="form-group">
                                                 <label for="duracionEstimadaActividad">Duración estimada de la actividad</label>
                                                 <input type="number" 
-                                                       <%if (session.getAttribute("tipo").equals("D")){%>
-                                                          readonly
-                                                          <%}%>
+                                                       <%if (session.getAttribute("tipo").equals("D")) {%>
+                                                       readonly
+                                                       <%}%>
                                                        class="form-control" id="duracionEstimadaActividad" name="duracionEstimada" value="<%= a.getDuracionEstimada()%>">
                                             </div>
                                             <!-- Date range -->
@@ -253,16 +253,16 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <input<%if (session.getAttribute("tipo").equals("D")){%>
-                                                          disabled
-                                                          <%}%> type="text" class="form-control pull-right" id="reservation" name="fechaInicioyFin" value="<%= a.getFechaInicio()%> - <%= a.getFechaFin()%>">
+                                                    <input<%if (session.getAttribute("tipo").equals("D")) {%>
+                                                        disabled
+                                                        <%}%> type="text" class="form-control pull-right" id="reservation" name="fechaInicioyFin" value="<%= a.getFechaInicio()%> - <%= a.getFechaFin()%>">
                                                 </div><!-- /.input group -->
                                             </div><!-- /.form group -->
                                             <div class="form-group">
                                                 <label>Estado</label>
                                                 <select <% if (a.getEstado() == 'C') { %>
-                                                        disabled
-                                                        <%}%>class="form-control select2" style="width: 100%;" name="estado">
+                                                    disabled
+                                                    <%}%>class="form-control select2" style="width: 100%;" name="estado">
                                                     <option 
                                                         <% if (a.getEstado() == 'S') { %>
                                                         selected="selected" 
@@ -278,7 +278,7 @@
                                                         selected="selected"
                                                         <%}%>
                                                         value="F">Finalizada</option>
-                                                    <%if (session.getAttribute("tipo").equals("JP")){%>
+                                                    <%if (session.getAttribute("tipo").equals("JP")) {%>
                                                     <option <% if (a.getEstado() == 'C') { %>
                                                         selected="selected"
                                                         <%}%>
@@ -288,17 +288,17 @@
                                             </div><!-- /.form-group -->
                                             <div class="form-group">
                                                 <label for="duracionRealActividad">Duración real de la actividad</label>
-                                                <input <%if (session.getAttribute("tipo").equals("D")){%>
-                                                          readonly
-                                                          <%}%>type="number" class="form-control" id="duracionRealActividad" name="duracionReal" value="<%= a.getDuracionReal()%>">
+                                                <input <%if (session.getAttribute("tipo").equals("D")) {%>
+                                                    readonly
+                                                    <%}%>type="number" class="form-control" id="duracionRealActividad" name="duracionReal" value="<%= a.getDuracionReal()%>">
                                             </div>
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
-                                            <% if (a.getEstado() == 'C') { %>
-                                            <a href="Actividades?actividad=verActividades&idFase=<%= a.getIdFase() %>"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Atrás</button></a>
-                                            <%} else{%>
+                                            <% if (a.getEstado() == 'C') {%>
+                                            <a href="Actividades?actividad=verActividades&idFase=<%= a.getIdFase()%>"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Atrás</button></a>
+                                            <%} else {%>
                                             <button type="submit" class="btn btn-primary" name="actualizarActividad" value="actualizarActividad" onclick="return validar()">Actualizar Actividad</button>
-                                            <a href="Actividades?actividad=verActividades&idFase=<%= a.getIdFase() %>"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Cancelar</button></a>
+                                            <a href="Actividades?actividad=verActividades&idFase=<%= a.getIdFase()%>"><span class="btn btn-default">Cancelar</span></a>
                                             <%}%>
                                         </div>
 

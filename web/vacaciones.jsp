@@ -103,7 +103,7 @@
                                             </div>
                                             </br>
                                             <button class="btn btn-primary" type="submit">Añadir</button>
-                                            <a href="CalendarioD?accion=mostrarCalendario&user=<%=session.getAttribute("user")%>&tipo=<%=session.getAttribute("tipo")%>"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Cancelar</button></a>
+                                            <a href="CalendarioD?accion=mostrarCalendario&user=<%=session.getAttribute("user")%>&tipo=<%=session.getAttribute("tipo")%>"><span class="btn btn-default">Cancelar</span></a>
                                         </div><!-- /.box-body -->
                                     </form>
                                 </div><!-- /.col -->

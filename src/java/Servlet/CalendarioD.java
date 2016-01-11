@@ -128,7 +128,7 @@ public class CalendarioD extends HttpServlet {
                                 break;
                         }
                     }
-                    c.setColor("#58FA82");
+                    c.setColor("#F781F3");
                     c.setTextColor("#000000");
                     l.add(c);
                 }

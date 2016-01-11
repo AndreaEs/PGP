@@ -140,7 +140,7 @@
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
                                             <button type="submit" class="btn btn-primary" name="crearTarea" value="crearTarea" onclick="return validar()">Crear Tarea</button>
-                                            <a href="vistaTareas.jsp"><button type="button" class="btn btn-default" name="tarea" value="cancelar">Cancelar</button></a>
+                                            <a href="vistaTareas.jsp"><span class="btn btn-default">Cancelar</span></a>
                                         </div>
 
                                     </form>
@@ -153,16 +153,16 @@
                                             <div class="form-group">
                                                 <label for="tipoTarea">Tipo de la tarea personal:</label>
                                                 <select class="form-control select2" style="width: 100%;" name="tipoTarea">
-                                                    <option selected="selected" value="TU">Trato con usuarios</option>
-                                                    <option value="RE">Reuniones externas</option>
-                                                    <option value="RI">Reuniones internas</option>
-                                                    <option value="LD">Lectura de documentacion</option>
-                                                    <option value="RV">Revision de documentacion</option>
-                                                    <option value="ED">Elaboracion de documentacion</option>
-                                                    <option value="DP">Desarrollo de programas</option>
-                                                    <option value="VP">Verificacion de programas</option>
-                                                    <option value="FU">Formacion de usuarios</option>
-                                                    <option value="FA">Formacion de otras actividades</option>
+                                                    <option <%if(t.getTipo().equals("TU")){%>selected="selected"<%}%> value="TU">Trato con usuarios</option>
+                                                    <option <%if(t.getTipo().equals("RE")){%>selected="selected"<%}%>value="RE">Reuniones externas</option>
+                                                    <option <%if(t.getTipo().equals("RI")){%>selected="selected"<%}%>value="RI">Reuniones internas</option>
+                                                    <option <%if(t.getTipo().equals("LD")){%>selected="selected"<%}%>value="LD">Lectura de documentacion</option>
+                                                    <option <%if(t.getTipo().equals("RV")){%>selected="selected"<%}%>value="RV">Revision de documentacion</option>
+                                                    <option <%if(t.getTipo().equals("ED")){%>selected="selected"<%}%>value="ED">Elaboracion de documentacion</option>
+                                                    <option <%if(t.getTipo().equals("DP")){%>selected="selected"<%}%>value="DP">Desarrollo de programas</option>
+                                                    <option <%if(t.getTipo().equals("VP")){%>selected="selected"<%}%>value="VP">Verificacion de programas</option>
+                                                    <option <%if(t.getTipo().equals("FU")){%>selected="selected"<%}%>value="FU">Formacion de usuarios</option>
+                                                    <option <%if(t.getTipo().equals("FA")){%>selected="selected"<%}%>value="FA">Formacion de otras actividades</option>
                                                     
                                                 </select>
                                             </div>
@@ -173,13 +173,13 @@
                                                 <div class="input-group-addon">
                                                   <i class="fa fa-calendar"></i>
                                                 </div>
-                                                <input type="text" class="form-control pull-right" id="fecha" name="fecha">
+                                                <input type="text" class="form-control pull-right" id="fecha" name="fecha" value="<%=t.getFecha() %>">
                                               </div><!-- /.input group -->
                                             </div><!-- /.form group -->
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
                                             <button type="submit" class="btn btn-primary" name="actualizarTarea" value="actualizarTarea" onclick="return validar()">Actualizar tarea</button>
-                                            <a href="vistaTareas.jsp"><button type="button" class="btn btn-default" name="tarea" value="cancelar">Cancelar</button></a>
+                                            <a href="vistaTareas.jsp"><span class="btn btn-default">Cancelar</span></a>
                                         </div>
                                     </form>
                                     <% }%>

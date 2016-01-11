@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import static Data.ActividadBD.comprobarFechaEntreFechas;
 
-
 /**
  *
  * @author andreaescribano
@@ -83,7 +82,7 @@ public class ProyectoDB {
         }
         return proyectos;
     }
-    
+
     public static ArrayList<Proyecto> selectProyectosSinOrdenar(String usuario) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -179,23 +178,24 @@ public class ProyectoDB {
         String num = "";
         for (int i = 0; i < fecha.length(); i++) {
             if (fecha.charAt(i) != '/') {
-                num += fecha.charAt(i);
-                if (cont == 1) {
-                    fechas[1] = Integer.parseInt(num);
-                    num = "";
-                } else if (cont == 3) {
-                    fechas[0] = Integer.parseInt(num);
-                    num = "";
-                } else if (cont == 7) {
-                    fechas[2] = Integer.parseInt(num);
-                    num = "";
+                if (fecha.charAt(i) != '-') {
+                    num += fecha.charAt(i);
+                    if (cont == 1) {
+                        fechas[1] = Integer.parseInt(num);
+                        num = "";
+                    } else if (cont == 3) {
+                        fechas[0] = Integer.parseInt(num);
+                        num = "";
+                    } else if (cont == 7) {
+                        fechas[2] = Integer.parseInt(num);
+                        num = "";
+                    }
+                    cont++;
                 }
-                cont++;
             }
         }
         return fechas;
     }
-
 
     public static ArrayList<Proyecto> selectTodosProyectos() {
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -206,7 +206,7 @@ public class ProyectoDB {
         ArrayList<Proyecto> proyectos = new ArrayList<Proyecto>();
         try {
             ps = connection.prepareStatement(query);
-            
+
             rs = ps.executeQuery();
             while (rs.next()) {
                 String fechaInicio = String.format("%02d/%02d/%04d", rs.getInt(3), rs.getInt(4), rs.getInt(5));
@@ -222,14 +222,14 @@ public class ProyectoDB {
         }
         return proyectos;
     }
-    
-    public static HashMap<String, HashMap<String, ArrayList<Actividad>>> selectInformePC(String fechaI , String fechaF, String login) {
-    ConnectionPool pool = ConnectionPool.getInstance();
+
+    public static HashMap<String, HashMap<String, ArrayList<Actividad>>> selectInformePC(String fechaI, String fechaF, String login) {
+        ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        HashMap<String, HashMap<String, ArrayList<Actividad>>> inf =
-                new HashMap<String, HashMap<String, ArrayList<Actividad>>>();
+        HashMap<String, HashMap<String, ArrayList<Actividad>>> inf
+                = new HashMap<String, HashMap<String, ArrayList<Actividad>>>();
         //Selecciona actividades de fase de proyectos "En Curso" de determinado usuario;
         String query = "SELECT p.id as idProyecto , p.nombre as nombreP , p.diainicio as diP , p.mesinicio as miP ,"
                 + "p.anoinicio as aiP, p.diafin as dfP , p.mesfin as mfP , p.anofin as afP, "
@@ -248,34 +248,32 @@ public class ProyectoDB {
             ps.setString(1, login);
             ps.setString(2, "C");
             rs = ps.executeQuery();
-            
 
             while (rs.next()) {
                 String fechaInicioP = String.format("%04d-%02d-%02d", rs.getInt("aiP"), rs.getInt("miP"), rs.getInt("diP"));
                 String fechaFinP = String.format("%04d-%02d-%02d", rs.getInt("afP"), rs.getInt("mfP"), rs.getInt("dfP"));
-                 String fechaInicioF = String.format("%04d-%02d-%02d", rs.getInt("aiF"), rs.getInt("miF"), rs.getInt("diF"));
+                String fechaInicioF = String.format("%04d-%02d-%02d", rs.getInt("aiF"), rs.getInt("miF"), rs.getInt("diF"));
                 String fechaFinF = String.format("%04d-%02d-%02d", rs.getInt("afF"), rs.getInt("mfF"), rs.getInt("dfF"));
-                 String fechaInicioA = String.format("%04d-%02d-%02d", rs.getInt("aiA"), rs.getInt("miA"), rs.getInt("diA"));
+                String fechaInicioA = String.format("%04d-%02d-%02d", rs.getInt("aiA"), rs.getInt("miA"), rs.getInt("diA"));
                 String fechaFinA = String.format("%04d-%02d-%02d", rs.getInt("afA"), rs.getInt("mfA"), rs.getInt("dfA"));
-                
-                Proyecto p = new Proyecto(rs.getInt("idProyecto"),rs.getString("nombreP"), fechaInicioP , fechaFinP , rs.getString("estadoP").charAt(0), rs.getString("loginP"), rs.getInt("numP"));
-                Fase f = new Fase(rs.getInt("idFase"), rs.getString("nombreF"), fechaInicioA , fechaFinA,rs.getString("estadoF").charAt(0),rs.getInt("idPf"));
+
+                Proyecto p = new Proyecto(rs.getInt("idProyecto"), rs.getString("nombreP"), fechaInicioP, fechaFinP, rs.getString("estadoP").charAt(0), rs.getString("loginP"), rs.getInt("numP"));
+                Fase f = new Fase(rs.getInt("idFase"), rs.getString("nombreF"), fechaInicioA, fechaFinA, rs.getString("estadoF").charAt(0), rs.getInt("idPf"));
                 Actividad a = new Actividad(rs.getInt("idActividad"), rs.getString("loginA"), rs.getString("descripcionA"), rs.getString("rol"), rs.getInt("duracionestimada"), fechaInicioA, fechaFinA, rs.getInt("duracionreal"), rs.getString("estadoA").charAt(0), rs.getInt("idFa"));
 
                 //Comprobar si la actividad obtenida está entre el rango de fechas introducido por el usuario
                 if (comprobarFechaEntreFechas(fechaI, fechaF, p)) {
                     if (inf.get(String.valueOf(p.getIdentificador())) == null) {
-                        inf.put(String.valueOf(p.getIdentificador()), new  HashMap<String, ArrayList<Actividad>>());
-                        inf.get(String.valueOf(p.getIdentificador())).put(String.valueOf(f.getId()), new ArrayList<Actividad>() );
-                         inf.get(String.valueOf(p.getIdentificador())).get(String.valueOf(f.getId())).add(a);
-                        
-                        
-                    }else{
-                    if(inf.get(String.valueOf(p.getIdentificador())).get(String.valueOf(f.getId())) == null){
-                            inf.get(String.valueOf(p.getIdentificador())).put(String.valueOf(f.getId()), new ArrayList<Actividad>() );
-                             inf.get(String.valueOf(p.getIdentificador())).get(String.valueOf(f.getId())).add(a);
+                        inf.put(String.valueOf(p.getIdentificador()), new HashMap<String, ArrayList<Actividad>>());
+                        inf.get(String.valueOf(p.getIdentificador())).put(String.valueOf(f.getId()), new ArrayList<Actividad>());
+                        inf.get(String.valueOf(p.getIdentificador())).get(String.valueOf(f.getId())).add(a);
+
+                    } else {
+                        if (inf.get(String.valueOf(p.getIdentificador())).get(String.valueOf(f.getId())) == null) {
+                            inf.get(String.valueOf(p.getIdentificador())).put(String.valueOf(f.getId()), new ArrayList<Actividad>());
+                            inf.get(String.valueOf(p.getIdentificador())).get(String.valueOf(f.getId())).add(a);
                         }
-                         inf.get(String.valueOf(p.getIdentificador())).get(String.valueOf(f.getId())).add(a);
+                        inf.get(String.valueOf(p.getIdentificador())).get(String.valueOf(f.getId())).add(a);
                     }
                 }
             }
@@ -285,38 +283,33 @@ public class ProyectoDB {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("Antes de devolver el inf es :"+inf);
+        System.out.println("Antes de devolver el inf es :" + inf);
         return inf;
-    
-    
-    
-    
-    
+
     }
 
-    private static boolean comprobarFechaEntreFechas(String fechaI ,String fechaF, Proyecto p) {
-        
+    private static boolean comprobarFechaEntreFechas(String fechaI, String fechaF, Proyecto p) {
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             java.util.Date fechaIU = formatter.parse(fechaI);
             java.util.Date fechaFU = formatter.parse(fechaF);
             //java.util.Date fechaIA = formatter.parse(a.getFechaInicio());
             java.util.Date fechaFP = formatter.parse(p.getFechaFin());
-            
 
-            if ( fechaIU.compareTo(fechaFP) == 0 ) {
+            if (fechaIU.compareTo(fechaFP) == 0) {
                 System.out.println("holaaaa");
                 return true;
             }
-            if ( fechaFU.compareTo(fechaFP) == 0) {
-                 System.out.println("holaaaa");
+            if (fechaFU.compareTo(fechaFP) == 0) {
+                System.out.println("holaaaa");
                 return true;
             }
             if (fechaIU.compareTo(fechaFP) < 0 && fechaFU.compareTo(fechaFP) > 0) {
-                 System.out.println("holaaaa");
+                System.out.println("holaaaa");
                 return true;
             }
-            
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
