@@ -73,6 +73,10 @@
                     return true;
                 }
             }
+            
+            function validarPredecesoras(){
+                //Sin implementar 
+            }
         </script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">

@@ -9,6 +9,8 @@ import Business.Actividad;
 import Data.ActividadBD;
 import Data.PredecesorasDB;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -49,11 +51,12 @@ public class Actividades extends HttpServlet {
                     
                     Actividad.guardarNuevaActividad(getActividadFromParameters(request, 0, idFase, user, tipo));
                     int id = ActividadBD.obtenerUltimaEntrada();
-                    //Crear predecesoras
+                    String fechaIAct = ActividadBD.obtenerFechaInicio(id);
                     ArrayList<Actividad> predecesoras = new ArrayList<Actividad>();
                     predecesoras = (ArrayList<Actividad>) sesion.getAttribute("predecesoras");
                     for(int i=0;i<predecesoras.size();i++)
-                        PredecesorasDB.crearPredecesoras(id, predecesoras.get(i).getIdentificador());
+                        if(comprobarFechas(fechaIAct,predecesoras.get(i).getFechaFin()))
+                            PredecesorasDB.crearPredecesoras(id, predecesoras.get(i).getIdentificador());
                     url = getActividades(idFase, sesion, user);
                 } else if (accion.equals("verActividades")) {
                     url = getActividades(idFase, sesion, user);
@@ -142,6 +145,23 @@ public class Actividades extends HttpServlet {
         sesion.setAttribute("user", user);
         return "/vistaActividades.jsp";
     }
+    
+    /*date1.comparetp(date2) > 0 --> date1 esta después de date2
+     date1.comparetp(date2) < 0 --> date1 esta antes de date2*/
+    private boolean comprobarFechas(String fechaInicio, String fechaFin) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            java.util.Date fechaI = formatter.parse(fechaInicio);
+            java.util.Date fechaF = formatter.parse(fechaFin);
+            if (fechaI.compareTo(fechaF)==0)
+                return true;
+            if (fechaI.compareTo(fechaF)>0)
+                return true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -181,5 +201,7 @@ public class Actividades extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    
 
 }
