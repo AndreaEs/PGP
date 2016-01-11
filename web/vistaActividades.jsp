@@ -63,14 +63,9 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Lista de actividades
+                        Actividades
                     </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li><a href="vistaProyectos.jsp">Proyectos</a></li>
-                        <li><a href="vistaFases.jsp">Fases</a></li>
-                        <li class="active">Actividades</li>
-                    </ol>
+                    
                 </section>
 
                 <!-- Main content -->

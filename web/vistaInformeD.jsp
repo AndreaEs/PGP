@@ -62,7 +62,7 @@
                         Iterator it = inf.entrySet().iterator();
                         while (it.hasNext()) {
                             Entry par = (Entry) it.next();
-                            int valor = (int) par.getKey();
+                            int valor = (Integer) par.getKey();
                     %>
                     <h3>Semana: <%= valor%> </h3>
                     <h3>Actividades</h3>

@@ -54,12 +54,9 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Lista de proyectos
+                        Proyectos
                     </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Proyectos</li>
-                    </ol>
+                    
                 </section>
 
                 <!-- Main content -->

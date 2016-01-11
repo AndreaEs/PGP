@@ -70,7 +70,7 @@
                         <%}
                         %>
                     <h1>
-                        Lista de tareas </h1>
+                        Tareas </h1>
                 </section>
 
                 <!-- Main content -->

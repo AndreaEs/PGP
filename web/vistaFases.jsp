@@ -53,13 +53,9 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Lista de fases
+                        Fases
                     </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li><a href="Proyectos?proyecto=verProyectos">Proyectos</a></li>
-                        <li class="active">Fases</li>
-                    </ol>
+                    
                 </section>
 
                 <!-- Main content -->
