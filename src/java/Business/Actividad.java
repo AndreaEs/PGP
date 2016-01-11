@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -27,6 +28,7 @@ public class Actividad implements Serializable{
     private int duracionReal;
     private char estado;
     private int idFase;
+    private List<Integer> predecesoras;
 
 
     public Actividad(String login, String descripcion , String rolNecesario, int duracionEstimada, String fechaInicio, String fechaFin, int duracionReal, char estado, int idFase) {
@@ -108,6 +110,14 @@ public class Actividad implements Serializable{
 
     public void setEstado(char estado) {
         this.estado = estado;
+    }
+
+    public List<Integer> getPredecesoras() {
+        return predecesoras;
+    }
+
+    public void setPredecesoras(List<Integer> predecesoras) {
+        this.predecesoras = predecesoras;
     }
 
     public static void guardarNuevaActividad(Actividad a) {

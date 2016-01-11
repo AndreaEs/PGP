@@ -7,6 +7,7 @@ package Servlet;
 
 import Business.Actividad;
 import Data.ActividadBD;
+import Data.PredecesorasDB;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -100,9 +102,13 @@ public class InformeD extends HttpServlet {
                 for(int j=semanaI;j<=semanaF;j++){
                     if (inf.get(j) == null) 
                         inf.put(j, new ArrayList<Actividad>());
+                    List<Integer> predecesoras = new ArrayList<Integer>();
+                    predecesoras = PredecesorasDB.obtenerPredecesoras(actividades.get(i).getIdentificador());
+                    actividades.get(i).setPredecesoras(predecesoras);
                     inf.get(j).add(actividades.get(i));
                 }
         }
+        
         //sesion.setAttribute("login", login);
         sesion.setAttribute("user", login);
         sesion.setAttribute("fechaI", fechaI);

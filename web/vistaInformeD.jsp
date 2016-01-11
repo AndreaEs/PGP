@@ -74,7 +74,11 @@
                     <h4>Fecha Fin: <%= inf.get(valor).get(i).getFechaFin()%></h4>
                     <h4>Estado: <%= inf.get(valor).get(i).getEstado()%></h4>
                     <h4>Fase: <%= inf.get(valor).get(i).getIdFase()%></h4>
+                    <h4>Actividades predecesoras </h4>
+                    <% for(int j=0;j<inf.get(valor).get(i).getPredecesoras().size();j++){%>
+                    <h4><%= inf.get(valor).get(i).getPredecesoras().get(j)%></h4>
                     <%
+                                    }
                                 }
                             }
                         }
