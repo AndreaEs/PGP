@@ -147,18 +147,20 @@ public class FaseDB {
         String num = "";
         for (int i = 0; i < fecha.length(); i++) {
             if (fecha.charAt(i) != '/') {
-                num += fecha.charAt(i);
-                if (cont == 1) {
-                    fechas[1] = Integer.parseInt(num);
-                    num = "";
-                } else if (cont == 3) {
-                    fechas[0] = Integer.parseInt(num);
-                    num = "";
-                } else if (cont == 7) {
-                    fechas[2] = Integer.parseInt(num);
-                    num = "";
+                if (fecha.charAt(i) != '-') {
+                    num += fecha.charAt(i);
+                    if (cont == 1) {
+                        fechas[1] = Integer.parseInt(num);
+                        num = "";
+                    } else if (cont == 3) {
+                        fechas[0] = Integer.parseInt(num);
+                        num = "";
+                    } else if (cont == 7) {
+                        fechas[2] = Integer.parseInt(num);
+                        num = "";
+                    }
+                    cont++;
                 }
-                cont++;
             }
         }
         return fechas;

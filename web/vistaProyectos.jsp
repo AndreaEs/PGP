@@ -79,7 +79,7 @@
                                 <div class="box-body no-padding">
                                     <%
                                         String nif = (String) session.getAttribute("proyecto-nif");
-
+                                        session.setAttribute("desdeProyecto", false);
                                         String usuario = (String) session.getAttribute("user");
 
                                         ArrayList<Proyecto> proyectos = (ArrayList<Proyecto>) session.getAttribute("proyectos");

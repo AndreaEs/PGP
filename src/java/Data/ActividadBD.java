@@ -208,6 +208,7 @@ public class ActividadBD {
         String num = "";
         for (int i = 0; i < fecha.length(); i++) {
             if (fecha.charAt(i) != '/') {
+                if(fecha.charAt(i) != '-'){
                 num += fecha.charAt(i);
                 if (cont == 1) {
                     fechas[1] = Integer.parseInt(num);
@@ -220,6 +221,7 @@ public class ActividadBD {
                     num = "";
                 }
                 cont++;
+                }
             }
         }
         return fechas;

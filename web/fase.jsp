@@ -123,7 +123,7 @@
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
                                             <button type="submit" class="btn btn-primary" name="crearFase" value="crearFase" onclick="return validarFecha()">Crear Fase</button>
-                                            <a href="Fases?fase=verFases&idProyecto=<%= idProyecto %>"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Cancelar</button></a>
+                                            <a href="Fases?fase=verFases&idProyecto=<%= idProyecto %>"><span class="btn btn-default">Cancelar</span></a>
                                         </div>
                                     </form>
                                     <% } else {
@@ -174,10 +174,10 @@
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
                                             <% if (f.getEstado() == 'C') { %>
-                                            <a href="Fases?fase=verFases&idProyecto=<%= idProyecto %>"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Atrás</button></a>
+                                            <a href="Fases?fase=verFases&idProyecto=<%= idProyecto %>"><span class="btn btn-default">Atrás</span></a>
                                             <%} else{%>
                                             <button type="submit" class="btn btn-primary" name="actualizarFase" value="actualizarFase" onclick="return validarFecha()">Actualizar Fase</button>
-                                            <a href="Fases?fase=verFases&idProyecto=<%= idProyecto %>"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Cancelar</button></a>
+                                            <a href="Fases?fase=verFases&idProyecto=<%= idProyecto %>"><span class="btn btn-default">Atrás</span></a>
                                             <%}%>
                                         </div>
                                     </form>

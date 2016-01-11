@@ -48,6 +48,8 @@ public class Proyectos extends HttpServlet {
                     String numero = (String) request.getParameter("numero-participantes");
                     Proyecto.guardarNuevoProyecto(getProyectoFromParameters(request, 0, user,Integer.valueOf(numero)));
                     url = getTodosProyectos(sesion);
+                } else if (accion.equals("verTodosProyectos")) {
+                    url = getTodosProyectos(sesion);
                 } else if (accion.equals("verProyectos")) {
                     url = getProyectos(usuario, sesion);
                 } else if (accion.equals("crearNuevoProyecto")) {

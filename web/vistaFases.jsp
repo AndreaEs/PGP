@@ -68,7 +68,7 @@
                         <div class="col-md-3">
                             <div class="box box-solid">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Lista de proyectos</h3>
+                                    <h3 class="box-title">Lista de fases</h3>
                                     <div class="pull-right">
                                         <small class="text-light-blue">Sin comenzar.</small>&nbsp;&nbsp;&nbsp;&nbsp;
                                         <small class="text-red">En curso.</small>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -120,6 +120,11 @@
                                     <a class="btn btn-app" href="Fases?fase=crearNuevaFase&idProyecto=<%=idProyecto%>">
                                         <i class="fa fa-edit"></i> Nueva Fase
                                     </a>
+                                    <%if ((Boolean) session.getAttribute("desdeProyecto")) {%>
+                                    <a href="Proyectos?proyecto=actualizarUnProyecto&usuario=<%=usuario%>&idProyecto=<%=idProyecto%>"><span class="btn btn-default">Atrás</span></a>
+                                    <%} else {%>
+                                    <a href="Proyectos?proyecto=verProyectos"><span class="btn btn-default">Atrás</span></a>
+                                    <%}%>
                                 </div>
                             </div><!-- /. box -->
                         </div><!-- /.row -->
