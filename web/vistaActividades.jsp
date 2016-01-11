@@ -134,7 +134,7 @@
                                     <a class="btn btn-app" href="Actividades?actividad=crearNuevaActividad&idFase=<%= idFase%>">
                                         <i class="fa fa-edit"></i> Nueva Actividad
                                     </a>
-                                    <a href="<%=session.getAttribute("urlAnterior")%>"><input type="button" class="btn btn-default" name="actividad" value="Cancelar" onclick="url()"/></a>
+                                    <a href="<%=session.getAttribute("urlAnterior")%>"><input type="button" class="btn btn-default pull-right" name="actividad" value="Cancelar" onclick="url()"/></a>
                                 </div>
                                 <%}%>
                             </div><!-- /. box -->
