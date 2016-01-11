@@ -47,7 +47,7 @@
 
         <header class="main-header">
             <!-- Logo -->
-            <a href="" class="logo">
+            <a href="#" class="logo">
                 <!-- logo for regular state and mobile devices -->
                 <span class="logo-lg"><b>GTPROS</b></span>
             </a>
