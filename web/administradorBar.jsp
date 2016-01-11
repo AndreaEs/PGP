@@ -110,7 +110,7 @@
                 </a>
             </li>
             <li>
-               <a href="Proyectos?proyecto=verProyectos">
+               <a href="Proyectos?proyecto=verTodosProyectos">
                                <i class="fa fa-book"></i> <span>Proyectos</span> 
                             </a>
             </li>
