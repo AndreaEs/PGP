@@ -5,7 +5,6 @@
  */
 package Data;
 
-import Business.Actividad;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,10 +14,16 @@ import java.util.List;
 
 /**
  *
- * @author gil
+ * @author grupo06
+ * Funciones de acceso a la BBDD para realizar operaciones sobre la tabla de Predecesoras
  */
 public class PredecesorasDB {
     
+    /**
+     * Crea un nuevo par: actividad-predecesora
+     * @param actividad
+     * @param predecesora 
+     */
      public static void crearPredecesoras(int actividad,int predecesora) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -33,7 +38,12 @@ public class PredecesorasDB {
             e.printStackTrace();
         }
     }
-     
+    
+     /**
+      * Obtiene lista de predecesoras dada su actividad
+      * @param id
+      * @return 
+      */
     public static List<Integer> obtenerPredecesoras(int id){
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();

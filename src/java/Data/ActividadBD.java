@@ -20,10 +20,15 @@ import java.util.HashMap;
 
 /**
  *
- * @author andreaescribano
+ * @author grupo06
+ * Funciones de acceso a la BBDD para realizar operaciones sobre la tabla de Actividad
  */
 public class ActividadBD {
 
+    /**
+     * Inserta una actividad en la BBDD
+     * @param actividad --> Actividad a insertar
+     */
     public static void insertActividad(Actividad actividad) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -61,6 +66,11 @@ public class ActividadBD {
         }
     }
 
+    /**
+     * Obtiene actividades dada si idFase
+     * @param idFase --> ID de la fase en la que están las actividades
+     * @return Lista de actividades de la fase 
+     */
     public static ArrayList<Actividad> selectActividades(int idFase) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -87,6 +97,11 @@ public class ActividadBD {
         return actividades;
     }
 
+    /**
+     * Devuelve una actividad dado su ID
+     * @param idActividad --> ID de la actividad
+     * @return Actividad correspondiente con el ID
+     */
     public static Actividad selectActividad(int idActividad) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -112,6 +127,11 @@ public class ActividadBD {
         return a;
     }
 
+    /**
+     * Obtener las actividades de un usuarios
+     * @param login --> Login del usuario a obtener sus actividades
+     * @return Actividades del usuario
+     */
     public static ArrayList<Actividad> selectActividades(String login) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -138,6 +158,11 @@ public class ActividadBD {
         return actividades;
     }
     
+    /**
+     * Obtener Actividades de un usuario ordenadas cronológicamente
+     * @param login --> Login del usuario a obtener las actividades
+     * @return Actividades ordenadas
+     */
     public static ArrayList<Actividad> selectActividadesLoginOrdenadas(String login) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -164,6 +189,10 @@ public class ActividadBD {
         return actividades;
     }
 
+    /**
+     * Actualizar una actividad
+     * @param a --> Actividad a actualizar
+     */
     public static void updateActividad(Actividad a) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -202,6 +231,11 @@ public class ActividadBD {
         }
     }
 
+    /**
+     * Obtener una fecha en formato Array de enteros dado si formato como String
+     * @param fecha --> Fecha a formatear
+     * @return fecha formateada como int[]
+     */
     private static int[] getFechaInt(String fecha) {
         int[] fechas = new int[3];
         int cont = 0;
@@ -227,8 +261,14 @@ public class ActividadBD {
         return fechas;
     }
 
-    /*Comprueba el número de actividades que tiene asignadas un usuario en la 
-     semana en que se encuentra la fecha dada*/
+    /**
+     * Comprueba el número de actividades que tiene asignadas un usuario en la 
+     semana en que se encuentra la fecha dada
+     * @param login 
+     * @param f
+     * @return
+     * @throws ParseException 
+     */
     public static boolean actividadesSemana(String login, String f) throws ParseException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -278,13 +318,19 @@ public class ActividadBD {
         }
     }
 
-    /*Comprueba que el usuario "login" no lleva más de 40 horas asignadas  a 
+    /**
+     * Comprueba que el usuario "login" no lleva más de 40 horas asignadas  a 
      actividades de todos los proyectos en la semana en la que se encuetra "fecha"
      Es decir, comprueba esta parte del enunciado:
      La suma del tiempo dedicado a todas las actividades de todos los proyectos en los
      que puede estar implicadas no debiera superar las cuarenta horas semanales
      PARA QUE FUNCIONE (JEFE DE PROYECTOS): Hay que pasarle un dia de la semana en la que se va a 
-     encontrar la Actividad*/
+     encontrar la Actividad
+     * @param login
+     * @param fecha
+     * @return
+     * @throws ParseException 
+     */
     public static boolean horasSemana(String login, String fecha) throws ParseException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -333,6 +379,14 @@ public class ActividadBD {
         }
     }
 
+    /**
+     * Obtener actividades para un informe
+     * @param login
+     * @param fechaI
+     * @param fechaF
+     * @return
+     * @throws ParseException 
+     */
     public static ArrayList<Actividad> selectActividadesInforme(String login, String fechaI, String fechaF) throws ParseException {
         //Comprobar que la fecha de Inicio no es posterior a hoy
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -373,54 +427,15 @@ public class ActividadBD {
         }
     }
 
-    //TYA = Trabajadores y sus actividades
-    //Solución muy completa pero no funciona
-    /*public static HashMap<User,ArrayList<Actividad>> selectInformeTYA(String fechaI, String fechaF) throws ParseException {
-     ConnectionPool pool = ConnectionPool.getInstance();
-     Connection connection = pool.getConnection();
-     PreparedStatement ps = null;
-     ResultSet rs = null;
-     HashMap<User,ArrayList<Actividad>> inf = new HashMap<User,ArrayList<Actividad>>();
-     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-     //Selecciona actividades de fase de proyectos "En Curso" de determinado usuario;
-     String query = "SELECT * FROM Usuarios u, Actividades a WHERE a.login=u.login";
-     ArrayList<Actividad> actividades = new ArrayList<Actividad>();
-     try {
-     ps = connection.prepareStatement(query);
-     rs = ps.executeQuery();
-     while (rs.next()) {
-     String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt("anoinicio"), rs.getInt("mesinicio"),rs.getInt("diainicio"));
-     String fechaFin = String.format("%04d-%02d-%02d", rs.getInt("anofin"), rs.getInt("mesfin"),rs.getInt("diafin"));
-     //Pasar String a Calendar
-     Calendar fechaIA = Calendar.getInstance();
-     fechaIA.setTime(formatter.parse(fechaInicio));
-     Calendar fechaFA = Calendar.getInstance();
-     fechaFA.setTime(formatter.parse(fechaFin));
-                
-     User u = new User(rs.getString("login"),rs.getString("pass"),rs.getString("tipo").charAt(0),rs.getString("nif"),rs.getString("infogeneral"),rs.getInt("maxproy"));
-     Actividad a = new Actividad(rs.getInt("id"),rs.getString("login"), rs.getString("descripcion"), rs.getString("rol"), rs.getInt("duracionestimada"), fechaInicio, fechaFin, rs.getInt("duracionreal"), rs.getString("estado").charAt(0), rs.getInt("idfase"));
-                
-     //Comprobar si la actividad obtenida está entre el rango de fechas introducido por el usuario
-     if(comprobarFechaEntreFechas(fechaI,fechaF,a)){
-     if(inf.get(u.getLogin())==null){
-     //Esto no lo hace bien. Cree que es la 1º vez que ve ese usuario...
-     System.out.println(u.getLogin()+" "+u.getNif());
-     inf.put(u, new ArrayList<Actividad>());
-     }   
-     inf.get(u).add(a);
-     }
-     }
-     rs.close();
-     ps.close();
-     pool.freeConnection(connection);
-     } catch (SQLException e) {
-     e.printStackTrace();
-     }
-        
-     return inf;
-     }*/
-    //TYA = Trabajadores y sus actividades
-    //Solución alternativa
+    /**
+     * Obtener el informe: Relación de trabajadores y sus actividades 
+     * asignadas durante un periodo (semanal) determinado.
+     * @param fechaI
+     * @param fechaF
+     * @param login
+     * @return
+     * @throws ParseException 
+     */
     public static HashMap<String, ArrayList<Actividad>> selectInformeTYA(String fechaI, String fechaF, String login) throws ParseException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -464,6 +479,13 @@ public class ActividadBD {
 
     /*date1.comparetp(date2) > 0 --> date1 esta después de date2
      date1.comparetp(date2) < 0 --> date1 esta antes de date2*/
+    /**
+     * Comrpobar si un rango de fechas está dentro de otro rango de fecha
+     * @param fechaI
+     * @param fechaF
+     * @param a
+     * @return 
+     */
     public static boolean comprobarFechaEntreFechas(String fechaI, String fechaF, Actividad a) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -471,11 +493,6 @@ public class ActividadBD {
             java.util.Date fechaFU = formatter.parse(fechaF);
             java.util.Date fechaIA = formatter.parse(a.getFechaInicio());
             java.util.Date fechaFA = formatter.parse(a.getFechaFin());
-            System.out.println("Fecha inicio usuario "+fechaIU);
-            System.out.println("Fecha inicio actividad "+fechaIA);
-            System.out.println("Fecha fin usuario "+fechaFU);
-            System.out.println("Fecha fin actividad "+fechaFA);
-            
             
             if (fechaIU.compareTo(fechaIA) == 0 || fechaIU.compareTo(fechaFA) == 0) {
                 return true;
@@ -501,6 +518,15 @@ public class ActividadBD {
         return false;
     }
 
+    /**
+     * Obtener el informe: Relación de actividades activas o finalizadas en una fecha concreta o en un
+     * periodo de tiempo, viendo el tiempo planificado y el tiempo realizado de cada una de ellas.
+     * @param fechaI
+     * @param fechaF
+     * @param login
+     * @return
+     * @throws ParseException 
+     */
     public static ArrayList<Actividad> selectInformeAFF(String fechaI, String fechaF, String login) throws ParseException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -533,6 +559,15 @@ public class ActividadBD {
         return actividades;
     }
 
+    /**
+     * Obtener el informe: Actividades a realizar, así como los recursos asignados, 
+     * durante un periodo de tiempo determinado posterior a la fecha actual.
+     * @param fechaI
+     * @param fechaF
+     * @param login
+     * @return
+     * @throws ParseException 
+     */
     public static ArrayList<Actividad> selectInformeAAR(String fechaI, String fechaF, String login) throws ParseException {
         //Comprobar que la fecha de Inicio no es anterior a hoy
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -570,6 +605,16 @@ public class ActividadBD {
             return actividades;
         }
     }
+    
+    /**
+     * Obtener el informe: Relación de actividades que han 
+     * consumido o están consumiendo más tiempo del planificado.
+     * @param fechaI
+     * @param fechaF
+     * @param login
+     * @return
+     * @throws ParseException 
+     */
     public static ArrayList<Actividad> selectInformeCA(String fechaI, String fechaF, String login) throws ParseException {
         
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -613,6 +658,14 @@ public class ActividadBD {
         }
     }
 
+    /**
+     * Obtener el informe: 
+     * @param fechaI
+     * @param fechaF
+     * @param login
+     * @return
+     * @throws ParseException 
+     */
     public static HashMap<String, ArrayList<Actividad>> selectInformeAF(String fechaI, String fechaF, String login) throws ParseException {
         
           ConnectionPool pool = ConnectionPool.getInstance();
@@ -655,6 +708,11 @@ public class ActividadBD {
         return inf;
     }
 
+    /**
+     * Obtener actividades de un proyecto
+     * @param idProyecto
+     * @return 
+     */
     public static ArrayList<Actividad> selectActividadesProyecto(int idProyecto) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -681,6 +739,10 @@ public class ActividadBD {
         return actividades;
     }
     
+    /**
+     * Obtener la última entrada en la tabla de Actividades
+     * @return 
+     */
     public static int obtenerUltimaEntrada(){
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -703,6 +765,11 @@ public class ActividadBD {
         return id;
     }
     
+    /**
+     * Obtener la fecha de inicio de una actividad dado su ID
+     * @param id
+     * @return 
+     */
     public static String obtenerFechaInicio(int id){
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -726,6 +793,10 @@ public class ActividadBD {
         return fechaInicio;
     }
     
+    /**
+     * Actualizar la actividad de un usuario
+     * @param a 
+     */
     public static void updateActividadUsuario(Actividad a) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();

@@ -5,9 +5,7 @@
  */
 package Data;
 
-import Business.Actividad;
 import Business.Vacaciones;
-import Business.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,10 +15,16 @@ import java.util.List;
 
 /**
  *
- * @author gil
+ * @author grupo06
+ * Funciones de acceso a la BBDD para realizar operaciones sobre la tabla de Vacaciones
  */
 public class VacacionesDB {
     
+    /**
+     * Obtiene todas las vacaciones
+     * @param login
+     * @return 
+     */
     public static List<Vacaciones> obtenerVacaciones(String login){
         
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -49,7 +53,10 @@ public class VacacionesDB {
         
     }
     
-    /*Terminar la función para insertar vacaciones --> Cambiar tabla de calendario a vacaciones*/
+    /**
+     * Inserta Vacaciones en la BBDD
+     * @param v 
+     */
     public static void insertVacaciones(Vacaciones v) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -68,6 +75,10 @@ public class VacacionesDB {
         }
     }
     
+    /**
+     * Elimina vacaciones de la BBDD
+     * @param v 
+     */
     public static void delete(Vacaciones v) {
         System.out.println("borramos");
         ConnectionPool pool = ConnectionPool.getInstance();

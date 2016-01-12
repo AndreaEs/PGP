@@ -20,10 +20,15 @@ import static Data.ActividadBD.comprobarFechaEntreFechas;
 
 /**
  *
- * @author andreaescribano
+ * @author grupo06
+ * Funciones de acceso a la BBDD para realizar operaciones sobre la tabla de Proyectos
  */
 public class ProyectoDB {
 
+    /**
+     * Crea un nuevo proyecto
+     * @param proyecto 
+     */
     public static void insert(Proyecto proyecto) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -57,6 +62,11 @@ public class ProyectoDB {
         }
     }
 
+    /**
+     * Obtiene los proyectos de los que un usuario es jefe ordenados
+     * @param usuario
+     * @return 
+     */
     public static ArrayList<Proyecto> selectProyectos(String usuario) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -83,6 +93,11 @@ public class ProyectoDB {
         return proyectos;
     }
 
+    /**
+     * Obtiene los proyectos de los que un usuario es jefe sin ordenados
+     * @param usuario
+     * @return 
+     */
     public static ArrayList<Proyecto> selectProyectosSinOrdenar(String usuario) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -109,6 +124,11 @@ public class ProyectoDB {
         return proyectos;
     }
 
+    /**
+     * Obtiene un proyecto dado su ID
+     * @param idProyecto
+     * @return 
+     */
     public static Proyecto selectProyecto(int idProyecto) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -135,6 +155,10 @@ public class ProyectoDB {
 
     }
 
+    /**
+     * Actualiza datos de un proyecto
+     * @param p 
+     */
     public static void updateProyecto(Proyecto p) {
         System.out.println(p.getEstado());
         System.out.println(p.getIdentificador());
@@ -172,6 +196,11 @@ public class ProyectoDB {
 
     }
 
+    /**
+     * Formatea una fecha. De String a int[]
+     * @param fecha
+     * @return 
+     */
     private static int[] getFechaInt(String fecha) {
         int[] fechas = new int[3];
         int cont = 0;
@@ -197,6 +226,10 @@ public class ProyectoDB {
         return fechas;
     }
 
+    /**
+     * Obtiene todos los proyectos ordenados cronológicamente
+     * @return 
+     */
     public static ArrayList<Proyecto> selectTodosProyectos() {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -223,6 +256,13 @@ public class ProyectoDB {
         return proyectos;
     }
 
+    /**
+     * 
+     * @param fechaI
+     * @param fechaF
+     * @param login
+     * @return 
+     */
     public static HashMap<String, HashMap<String, ArrayList<Actividad>>> selectInformePC(String fechaI, String fechaF, String login) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -288,13 +328,19 @@ public class ProyectoDB {
 
     }
 
+    /**
+     * Comprueba si una fecha está entre un rango de fechas dado
+     * @param fechaI
+     * @param fechaF
+     * @param p
+     * @return 
+     */
     private static boolean comprobarFechaEntreFechas(String fechaI, String fechaF, Proyecto p) {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             java.util.Date fechaIU = formatter.parse(fechaI);
             java.util.Date fechaFU = formatter.parse(fechaF);
-            //java.util.Date fechaIA = formatter.parse(a.getFechaInicio());
             java.util.Date fechaFP = formatter.parse(p.getFechaFin());
 
             if (fechaIU.compareTo(fechaFP) == 0) {

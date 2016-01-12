@@ -13,10 +13,17 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Sandra
+ * @author grupo06
+ * Funciones de acceso a la BBDD para realizar operaciones sobre la tabla de Roles
  */
 public class TablaRolesDB {
 
+    /**
+     * Insertar nuevo conjunto: Proyecto - participante - categoría
+     * @param idProyecto
+     * @param desarrollador
+     * @param categoria 
+     */
     public static void insert(int idProyecto, String desarrollador, String categoria) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -38,6 +45,11 @@ public class TablaRolesDB {
         }
     }
 
+    /**
+     * Comprobar si existe un proyecto en la tabla de roles dado su ID
+     * @param idP
+     * @return 
+     */
     public static boolean exist(int idP) {
         ConnectionPool pool = ConnectionPool.getInstance(); 
         Connection connection = pool.getConnection();
@@ -61,6 +73,11 @@ public class TablaRolesDB {
         
     }
     
+    /**
+     * Obtener participantes de un proyecto
+     * @param idProyecto
+     * @return 
+     */
     public static ArrayList<String> getIdParticipante(int idProyecto){
         ConnectionPool pool = ConnectionPool.getInstance(); 
         Connection connection = pool.getConnection();

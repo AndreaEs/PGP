@@ -17,10 +17,15 @@ import java.util.Calendar;
 
 /**
  *
- * @author Jennifer
+ * @author grupo06
+ * Funciones de acceso a la BBDD para realizar operaciones sobre la tabla de Tareas Personales
  */
 public class TareaDB {
 
+    /**
+     * Insertar una nueva tarea personal
+     * @param tarea 
+     */
     public static void insert(TareaPersonal tarea) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -39,6 +44,11 @@ public class TareaDB {
         }
     }
 
+    /**
+     * Buscar todas las tareas personales de un usuario
+     * @param login
+     * @return 
+     */
     public static ArrayList<TareaPersonal> findAll(String login) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -66,6 +76,11 @@ public class TareaDB {
 
     }
 
+    /**
+     * Buscar una tarea personal dado su ID
+     * @param idTarea
+     * @return 
+     */
     public static TareaPersonal find(int idTarea) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -89,6 +104,10 @@ public class TareaDB {
         return tp;
     }
 
+    /**
+     * Actualizar una tarea personal
+     * @param tp 
+     */
     public static void updateTarea(TareaPersonal tp) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -108,12 +127,18 @@ public class TareaDB {
         }
     }
 
-    /*Comprueba el número de tateas personales que tiene asignadas un usuario en la 
+    /**
+     * Comprueba el número de tateas personales que tiene asignadas un usuario en la 
      semana en que se encuentra la fecha dada
      Es decir, comprueba esta parte del enunciado:
      El número de “tareas personales” que una persona puede realizar por semana no
      debe superar las 24 entre todos los proyectos en los que esté trabajando durante la
-     misma.*/
+     misma.
+     * @param login
+     * @param f
+     * @return
+     * @throws ParseException 
+     */
     public static boolean tareasPersonalesSemana(String login, String f) throws ParseException {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -157,6 +182,10 @@ public class TareaDB {
         }
     }
 
+    /**
+     * Eliminar una tarea personal
+     * @param tarea 
+     */
     public static void delete(TareaPersonal tarea) {
          ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -178,6 +207,11 @@ public class TareaDB {
         }
     }
 
+    /**
+     * Obtener las tareas personales de un usuario
+     * @param login
+     * @return 
+     */
     public static ArrayList<TareaPersonal> getTareas(String login) {
        ArrayList<TareaPersonal> tareas = new ArrayList();
        ConnectionPool pool = ConnectionPool.getInstance();

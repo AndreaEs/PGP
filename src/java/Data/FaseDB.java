@@ -14,10 +14,15 @@ import java.util.ArrayList;
 
 /**
  *
- * @author andreaescribano
+ * @author grupo06
+ * Funciones de acceso a la BBDD para realizar operaciones sobre la tabla de Fase
  */
 public class FaseDB {
 
+    /**
+     * Insertar una fase en la BBDD
+     * @param fase 
+     */
     public static void insert(Fase fase) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -53,6 +58,11 @@ public class FaseDB {
 
     }
 
+    /**
+     * Obtener fases de un proyecto
+     * @param idProyecto
+     * @return 
+     */
     public static ArrayList<Fase> selectFases(int idProyecto) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -80,6 +90,11 @@ public class FaseDB {
 
     }
 
+    /**
+     * Obtener una fase dado su ID
+     * @param idFase
+     * @return 
+     */
     public static Fase selectFase(int idFase) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -106,6 +121,10 @@ public class FaseDB {
 
     }
 
+    /**
+     * Actualizar una fase
+     * @param f 
+     */
     public static void updateFase(Fase f) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -141,6 +160,11 @@ public class FaseDB {
 
     }
 
+    /**
+     * Formatear el formato de una fecha
+     * @param fecha
+     * @return 
+     */
     private static int[] getFechaInt(String fecha) {
         int[] fechas = new int[3];
         int cont = 0;
