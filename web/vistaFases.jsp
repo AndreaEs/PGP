@@ -78,6 +78,11 @@
                                         String usuario = (String) session.getAttribute("user");
                                         ArrayList<Fase> fases = (ArrayList<Fase>) session.getAttribute("fases");
                                         String colorClase = "";
+                                        if(session.getAttribute("mensaje")!=null){%>
+                                        <h1><%=session.getAttribute("mensaje")%></h1>
+                                        <%
+                                        session.setAttribute("mensaje",null);
+                                        }
                                         for (Fase f : fases) {
                                     %>
                                     <ul class="nav nav-pills nav-stacked">

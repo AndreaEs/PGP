@@ -89,6 +89,11 @@
                                         int idFase = (Integer) session.getAttribute("idFase");
                                         ArrayList<Actividad> actividades = (ArrayList<Actividad>) session.getAttribute("actividades");
                                         String colorClase = "";
+                                        if(session.getAttribute("mensaje")!=null){%>
+                                        <h1><%=session.getAttribute("mensaje")%></h1>
+                                        <%
+                                        session.setAttribute("mensaje",null);
+                                        }
                                         for (Actividad a : actividades) {
                                     %>
                                     <ul class="nav nav-pills nav-stacked">

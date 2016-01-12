@@ -6,12 +6,15 @@
 package Servlet;
 
 import Business.Actividad;
+import Business.Fase;
+import Business.Proyecto;
 import Data.ActividadBD;
 import Data.PredecesorasDB;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,8 +51,11 @@ public class Actividades extends HttpServlet {
             String accion = request.getParameter("actividad");
             if (accion != null) {
                 if (accion.equals("crearActividad")) {
-                    
-                    Actividad.guardarNuevaActividad(getActividadFromParameters(request, 0, idFase, user, tipo));
+                    if(!comprobarFechas(request)){
+                         sesion.setAttribute("mensaje","Las fechas no se encuentran dentro de la indicada");
+                    } else {
+                        Actividad.guardarNuevaActividad(getActividadFromParameters(request, 0, idFase, user, tipo));
+                    }
                     int id = ActividadBD.obtenerUltimaEntrada();
                     String fechaIAct = ActividadBD.obtenerFechaInicio(id);
                     ArrayList<Actividad> predecesoras = new ArrayList<Actividad>();
@@ -195,6 +201,29 @@ public class Actividades extends HttpServlet {
             e.printStackTrace();
         }
         return false;
+    }
+    
+    private boolean comprobarFechas(HttpServletRequest request){
+        String fechaInicioyFin = request.getParameter("fechaInicioyFin");
+        String fechaInicio = "";
+        boolean encontrado = false;
+        int i = 0;
+        while (i < fechaInicioyFin.length() && !encontrado) {
+            if (fechaInicioyFin.charAt(i) != ' ') {
+                fechaInicio += fechaInicioyFin.charAt(i);
+            } else {
+                encontrado = true;
+            }
+            i++;
+        }
+        
+        String fechaFin = fechaInicioyFin.substring(i + 2);
+        Date f1 = new Date(fechaInicio);
+        Date f2 = new Date(fechaFin);
+        Fase p = Fase.getPhase(Integer.parseInt(request.getParameter("idFase")));
+        Date p1 = new Date(p.getFechaInicio());
+        Date p2 = new Date(p.getFechaFin());
+        return !(f1.before(p1) || f2.after(p2));
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -6,8 +6,10 @@
 package Servlet;
 
 import Business.Fase;
+import Business.Proyecto;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,7 +44,11 @@ public class Fases extends HttpServlet {
             String accion = request.getParameter("fase");
             if (accion != null) {
                 if (accion.equals("crearFase")) {
-                    Fase.crearNuevaFase(getFaseFromParameters(request, idProyecto, 0));
+                    if(!comprobarFechas(request)){
+                        sesion.setAttribute("mensaje","Las fechas no se encuentran dentro del proyecto indicado");
+                    } else {
+                        Fase.crearNuevaFase(getFaseFromParameters(request, idProyecto, 0));
+                    }
                     url = getFases(sesion, idProyecto);
                 } else if (accion.equals("verFases")) {
                     url = getFases(sesion, idProyecto);
@@ -109,6 +115,29 @@ public class Fases extends HttpServlet {
         }else{
             return new Fase(idFase, nombre, fechaInicio, fechaFin, estado, idProyecto);
         }
+    }
+    
+    private boolean comprobarFechas(HttpServletRequest request){
+        String fechaInicioyFin = request.getParameter("fechaInicioyFin");
+        String fechaInicio = "";
+        boolean encontrado = false;
+        int i = 0;
+        while (i < fechaInicioyFin.length() && !encontrado) {
+            if (fechaInicioyFin.charAt(i) != ' ') {
+                fechaInicio += fechaInicioyFin.charAt(i);
+            } else {
+                encontrado = true;
+            }
+            i++;
+        }
+        
+        String fechaFin = fechaInicioyFin.substring(i + 2);
+        Date f1 = new Date(fechaInicio);
+        Date f2 = new Date(fechaFin);
+        Proyecto p = Proyecto.getProject(Integer.parseInt(request.getParameter("idProyecto")));
+        Date p1 = new Date(p.getFechaInicio());
+        Date p2 = new Date(p.getFechaFin());
+        return !(f1.before(p1) || f2.after(p2));
     }
 
     /**
