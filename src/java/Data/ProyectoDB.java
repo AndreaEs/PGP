@@ -256,7 +256,6 @@ public class ProyectoDB {
         return proyectos;
     }
 
-<<<<<<< HEAD
     /**
      * 
      * @param fechaI
@@ -264,10 +263,8 @@ public class ProyectoDB {
      * @param login
      * @return 
      */
-    public static HashMap<String, HashMap<String, ArrayList<Actividad>>> selectInformePC(String fechaI, String fechaF, String login) {
-=======
     public static HashMap<String, HashMap<String, ArrayList<Actividad>>> selectInformePC(String fechaI, String fechaF) {
->>>>>>> origin/master
+
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
