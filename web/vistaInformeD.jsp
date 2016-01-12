@@ -75,7 +75,7 @@
                     <h4>Estado: <%= inf.get(valor).get(i).getEstado()%></h4>
                     <h4>Fase: <%= inf.get(valor).get(i).getIdFase()%></h4>
                     <h4>Actividades predecesoras </h4>
-                    <% for(int j=0;j<inf.get(valor).get(i).getPredecesoras().size();j++){%>
+                    <% for (int j = 0; j < inf.get(valor).get(i).getPredecesoras().size(); j++) {%>
                     <h4><%= inf.get(valor).get(i).getPredecesoras().get(j)%></h4>
                     <%
                                     }
@@ -84,10 +84,11 @@
                         }
                     %>
                     <div class="row no-print">
-                        <div>
-                            <a href="informesD.jsp"><button type="button" class="btn btn-default pull-right">Cancelar</button></a>
-                        </div>
+
                         <div class="col-xs-12">
+                            <div>
+                                <a href="informesD.jsp"><button type="button" class="btn btn-default pull-right">Cancelar</button></a>
+                            </div>
                             <button class="btn btn-primary pull-right" style="margin-right: 5px;" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
                         </div>
 
