@@ -29,8 +29,8 @@ public class Participante implements Serializable{
     
     public Participante(int idActividad, String login, double porcentaje, String rol, String idParticipante){
         this.idActividad=idActividad;
-        if(comprobarLogin(login, idActividad)) this.login=login;
-        if(comprobarPorcentaje(login, porcentaje)) this.porcentaje=porcentaje;
+        this.login=login;
+        this.porcentaje=porcentaje;
         if(comprobarRol(rol)) this.rol=rol;
         this.idParticipante=idParticipante;
     }
@@ -60,13 +60,12 @@ public class Participante implements Serializable{
     }
     
     public void setLogin(String login){
-        if(comprobarLogin(login, idActividad)) this.login=login;
+        this.login=login;
     }
     
     public void setPorcentaje(double porcentaje){
-        if(comprobarPorcentaje(login, porcentaje)){
             this.porcentaje=porcentaje;
-        } 
+
     }
     
     public void setRol(String rol){
@@ -146,53 +145,5 @@ public class Participante implements Serializable{
             default:
                 return false;
         }
-    }
-    
-    /**
-     * Llama a ParticipantesBD.getPorcentaje para comprobar si el porcentaje
-     * asignado a un usuario es correcto
-     * @param login --> Usuario a comprobar su porcentaje de participación
-     * @param porcentaje --> Porcentaje a comprobar
-     * @return true si se puede asignar ese porcentaje a ese usuario, false en 
-     * caso contrario
-     */
-    private boolean comprobarPorcentaje(String login, double porcentaje){
-        if ((ParticipantesBD.getPorcentaje(login)+porcentaje)<100){
-            return true;
-        }
-        return false;
-    }
-    
-    /**
-     * Llama a una función que obtiene de la BBDD los proyectos de 
-     * los que es jefe un usuario
-     * @param login --> Del usuario a comprobar su estado
-     * @param idActividad --> 
-     * @return va a comprobarVacaciones 
-     */
-    private boolean comprobarLogin(String login, int idActividad){
-        ArrayList<Proyecto> proy = Proyecto.getProyectos(login);
-        if(ParticipantesBD.exist(login) && proy.size()>0){
-            return false;
-        }
-        return comprobarVacaciones(login, idActividad);
-    }
-    
-    /**
-     * Comprueba si a un participante se le quiere añadir actividades
-     * cuando ya tiene asignadas vacaciones
-     * @param login --> Usuario del que comprobar las vacaciones
-     * @param idActividad --> Actividad a asignar al usuario
-     * @return true si se le puede asignar las vacaciones, false en caso contrario
-     */
-    private boolean comprobarVacaciones(String login, int idActividad){
-        Actividad a = Actividad.getActivity(idActividad);
-        List<Vacaciones> tmp = VacacionesDB.obtenerVacaciones(login);
-        for (Vacaciones tmp1 : tmp) {
-            if (tmp1.comprobarRangosEntreFechas(a.getFechaInicio(), a.getFechaFin(), tmp1)) {
-                return false;
-            }
-        }
-        return true;
     }
 }
