@@ -7,9 +7,11 @@ package Business;
 
 import Data.ActividadBD;
 import Data.ParticipantesBD;
+import Data.ProyectoDB;
 import Data.TareaDB;
 import Data.UserDB;
 import Data.VacacionesDB;
+import Servlet.Proyectos;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -127,6 +129,8 @@ public class User implements Serializable{
      * @param user --> Usuario a borrar
      */
     public static void delete(User user){
+        
+        if(user.getTipo() == 'D'){
         ArrayList<TareaPersonal> tareas = new ArrayList();
         tareas = TareaDB.getTareas(user.getLogin()); 
         for(int i =0; i<tareas.size(); i++){
@@ -134,7 +138,6 @@ public class User implements Serializable{
         }
         ArrayList<Participante> participaciones = new ArrayList();
         participaciones = ParticipantesBD.getParticipaciones(user.getLogin());
-        System.out.println("vamos a borrar a los participantes");
         for(int i = 0; i<participaciones.size(); i++){
            ParticipantesBD.delete(user.getLogin());
         }
@@ -146,8 +149,17 @@ public class User implements Serializable{
                     actividades.get(i).getFechaFin(), actividades.get(i).getDuracionReal(),actividades.get(i).getEstado(),actividades.get(i).getIdFase());
             ActividadBD.updateActividadUsuario(a);
         }
-        System.out.println("justo aqui");
-        
+        }
+        if(user.getTipo() == 'J'){
+            ArrayList<Proyecto> proyectos = new ArrayList();
+            proyectos = ProyectoDB.selectProyectos(user.getNif());
+            for(int i =0; i<proyectos.size(); i++){
+                Proyecto p = new Proyecto(proyectos.get(i).getIdentificador(), proyectos.get(i).getNombre(),  proyectos.get(i).getFechaInicio(),
+                 proyectos.get(i).getFechaFin() ,  proyectos.get(i).getEstado() ,  null ,  proyectos.get(i).getNumP());
+                
+                ProyectoDB.updateProyecto(p);
+            }
+        }
         ArrayList<Vacaciones> vacaciones = new ArrayList();
         vacaciones = (ArrayList) VacacionesDB.obtenerVacaciones(user.getLogin());
         for(int i =0; i<vacaciones.size(); i++){
