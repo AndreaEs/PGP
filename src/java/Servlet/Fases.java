@@ -64,6 +64,12 @@ public class Fases extends HttpServlet {
                     int idFase = Integer.parseInt(request.getParameter("idFase"));
                     Fase.actualizarFase(getFaseFromParameters(request, idProyecto, idFase));
                     url = getFases(sesion, idProyecto);
+                } else if(accion.equals("finalizar")){
+                    int idFase = Integer.parseInt(request.getParameter("idFase"));
+                    Fase f = Fase.getPhase(idFase);
+                    f.setEstado('C');
+                    Fase.actualizarFase(f);
+                    url="/vistaFases.jsp";
                 }
 
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);

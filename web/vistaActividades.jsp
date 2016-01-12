@@ -117,7 +117,12 @@
                                                 <%} else { %>
                                                 <button disabled="true" class="btn btn-block btn-info btn-flat">Add participantes</button>
                                                 <%}%>
+                                                
                                             </a>
+                                                <%if(session.getAttribute("tipo").equals("JP")){%>
+                                                    <a href="Actividades?actividad=finalizar&idActividad=<%= a.getIdentificador()%>"><button type="button" class="btn btn-default">Finalizar</button></a>
+
+                                                    <%}%>
                                             <%}%>
                                         </div>
                                     </ul>

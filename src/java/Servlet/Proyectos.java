@@ -77,6 +77,12 @@ public class Proyectos extends HttpServlet {
                     }
                     }
                     url = getTodosProyectos(sesion);
+                } else if(accion.equals("finalizar")){
+                    int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
+                    Proyecto p = Proyecto.getProject(idProyecto);
+                    p.setEstado('C');
+                    Proyecto.actualizarProyecto(p);
+                    url="/vistaProyectos.jsp";
                 }
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
                 respuesta.forward(request, response);
@@ -93,7 +99,8 @@ public class Proyectos extends HttpServlet {
      * @return 
      */
      private Proyecto getProyectoFromParameters(HttpServletRequest request, int idProyecto, String user, int numP) {
-        String nombre = request.getParameter("nombre");
+        String nombre = request.getParameter("nombreProyecto");
+        System.err.println(nombre);
         String fechaInicioyFin = request.getParameter("fechaInicioyFin");
         String fechaInicio = "";
         boolean encontrado = false;

@@ -79,6 +79,12 @@ public class Actividades extends HttpServlet {
                     int idActividad = Integer.parseInt(request.getParameter("idActividad"));
                     Actividad.actualizarActividad(getActividadFromParameters(request, idActividad, idFase, user, tipo));
                     url = getActividades(idFase, sesion, user);
+                } else if(accion.equals("finalizar")){
+                    int idActividad = Integer.parseInt(request.getParameter("idActividad"));
+                    Actividad a = Actividad.getActivity(idActividad);
+                    a.setEstado('C');
+                    Actividad.actualizarActividad(a);
+                    url="/vistaActividades.jsp";
                 }
                 
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);

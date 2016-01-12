@@ -269,8 +269,11 @@
                                             <button type="submit" class="btn btn-primary" name="actualizarProyecto" value="actualizarProyecto" onclick="return validar()">Actualizar Proyecto</button>
                                             <a href="vistaProyectos.jsp"><span class="btn btn-default">Cancelar</span></a>
                                             <%} else {%>
+                                            <%if(session.getAttribute("tipo").equals("JP")){%>
+                                            <a href="Proyectos?proyecto=actualizarUnProyecto&usuario=<%=user%>&idProyecto=<%=p.getIdentificador()%>"><span class="btn btn-default">Cancelar</span></a>
+                                            <%} else {%>
                                             <a href="vistaProyectos.jsp"><span class="btn btn-default">Atrás</span></a>
-                                            <%}%>
+                                            <%}}%>
                                         </div>
                                     </form>
                                     <div class="btn pull-right">

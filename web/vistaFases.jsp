@@ -102,6 +102,10 @@
                                                     </a>
                                                 </div>
                                                 <div class="btn pull-right">
+                                                    <%if(session.getAttribute("tipo").equals("JP")){%>
+                                                    <a href="Fases?fase=finalizar&idFase=<%= f.getId()%>"><button type="button" class="btn btn-default">Finalizar</button></a>
+
+                                                    <%}%>
                                                     <a href="Actividades?actividad=verActividades&idFase=<%= f.getId()%>"><button type="button" class="btn btn-default">Actividades</button></a>
                                                 </div>
                                             </div>

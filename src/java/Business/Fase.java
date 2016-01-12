@@ -75,6 +75,10 @@ public class Fase implements Serializable{
         return idProyecto;
     }
     
+    public void setEstado(char estado){
+        this.estado=estado;
+    }
+    
     /**
      * Llama a FaseDB.insert para insertar una nueva fase en la BBDD
      * @param f --> Fase a insertar
