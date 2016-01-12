@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author andreaescribano
+ * @author grupo06
  */
 @WebServlet(name = "Fases", urlPatterns = {"/Fases"})
 public class Fases extends HttpServlet {
@@ -73,6 +73,13 @@ public class Fases extends HttpServlet {
 
     }
 
+    /**
+     * 
+     * @param request
+     * @param idProyecto
+     * @param idFase
+     * @return 
+     */
     private Fase getFaseFromParameters(HttpServletRequest request, int idProyecto, int idFase) {
         String nombre = request.getParameter("nombre");
         String fechaInicioyFin = request.getParameter("fechaInicioyFin");
@@ -98,6 +105,12 @@ public class Fases extends HttpServlet {
         }
     }
 
+    /**
+     * 
+     * @param sesion
+     * @param idProyecto
+     * @return 
+     */
     private String getFases(HttpSession sesion, int idProyecto) {
         ArrayList<Fase> fases = Fase.getFase(idProyecto);
         sesion.setAttribute("idProyecto", idProyecto);

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Jennifer
+ * @author grupos06
  */
 @WebServlet(name = "Participantes", urlPatterns = {"/Participantes"})
 public class Participantes extends HttpServlet {
@@ -40,21 +40,21 @@ public class Participantes extends HttpServlet {
         String usuario = (String) sesion.getAttribute("user");
         int idActividad = Integer.parseInt(request.getParameter("idActividad"));
         double porcentaje = Double.parseDouble(request.getParameter("porcentaje"));
-        String url=null;
-        if(usuario!=null){
+        String url = null;
+        if (usuario != null) {
             String accion = request.getParameter("accion");
-            if(accion!=null){
-                if(accion.equals("crearParticipacion")){
-                    if(!comprobarLogin(usuario, idActividad)){
+            if (accion != null) {
+                if (accion.equals("crearParticipacion")) {
+                    if (!comprobarLogin(usuario, idActividad)) {
                         sesion.setAttribute("mensaje", "El usuario ya tiene el maximo de proyecto asignado");
                     } else if (!comprobarPorcentaje(usuario, porcentaje)) {
                         sesion.setAttribute("mensaje", "El porcentaje añadido debe ser menor.");
-                    } else if (!comprobarVacaciones(usuario, idActividad)){
+                    } else if (!comprobarVacaciones(usuario, idActividad)) {
                         sesion.setAttribute("mensaje", "El usuario se encuentra de vacaciones durante la actividad");
                     } else {
                         Participante.insertar(getParticipanteFromParameter(request));
                     }
-                    url=getParticipante(sesion,Integer.parseInt(request.getParameter("idActividad")));
+                    url = getParticipante(sesion, Integer.parseInt(request.getParameter("idActividad")));
                 }
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
                 respuesta.forward(request, response);
@@ -62,14 +62,19 @@ public class Participantes extends HttpServlet {
         }
     }
 
-    private Participante getParticipanteFromParameter(HttpServletRequest request){
-        int idActividad= Integer.parseInt(request.getParameter("idActividad"));
+    /**
+     * 
+     * @param request
+     * @return 
+     */
+    private Participante getParticipanteFromParameter(HttpServletRequest request) {
+        int idActividad = Integer.parseInt(request.getParameter("idActividad"));
         System.err.println(idActividad);
         String login = request.getParameter("login");
         System.err.println(login);
-        double porcentaje=0;
-        if(request.getParameter("porcentaje").equals("")){
-            porcentaje=100;
+        double porcentaje = 0;
+        if (request.getParameter("porcentaje").equals("")) {
+            porcentaje = 100;
         } else {
             porcentaje = Double.parseDouble(request.getParameter("porcentaje"));
         }
@@ -77,35 +82,62 @@ public class Participantes extends HttpServlet {
         String rol = ActividadBD.selectActividad(idActividad).getRolNecesario();
         System.err.println(rol);
         String idParticipante = request.getParameter("idParticipante");
-        return new Participante(idActividad, login, porcentaje, rol,idParticipante);
+        return new Participante(idActividad, login, porcentaje, rol, idParticipante);
     }
-    
-    private String getParticipante(HttpSession sesion, int idActividad){
+
+    /**
+     * 
+     * @param sesion
+     * @param idActividad
+     * @return 
+     */
+    private String getParticipante(HttpSession sesion, int idActividad) {
         ArrayList<Participante> participaciones = Participante.getParticipantes(idActividad);
         sesion.setAttribute("idActividad", idActividad);
         sesion.setAttribute("participaciones", participaciones);
         return "/vistaParticipantes.jsp";
     }
-    
-    private boolean comprobarPorcentaje(String login, double porcentaje){
-        if ((ParticipantesBD.getPorcentaje(login)+porcentaje)<100){
+
+    /**
+     * Comprobar si un usuario a superado el porcentaje de participacion en un proyecto 
+     * al que fue asignado
+     * @param login
+     * @param porcentaje
+     * @return 
+     */
+    private boolean comprobarPorcentaje(String login, double porcentaje) {
+        if ((ParticipantesBD.getPorcentaje(login) + porcentaje) < 100) {
             return true;
         }
         return false;
     }
-    
-     private boolean comprobarLogin(String login, int idActividad){
+
+    /**
+     * 
+     * @param login
+     * @param idActividad
+     * @return 
+     */
+    private boolean comprobarLogin(String login, int idActividad) {
         ArrayList<Proyecto> proy = Proyecto.getProyectos(login);
-        if(ParticipantesBD.exist(login) && proy.size()>0){
+        if (ParticipantesBD.exist(login) && proy.size() > 0) {
             return false;
         }
-        if(ParticipantesBD.getParticipaciones(login).size()>2){
+        if (ParticipantesBD.getParticipaciones(login).size() > 2) {
             return false;
         }
         return comprobarVacaciones(login, idActividad);
     }
-    
-    private boolean comprobarVacaciones(String login, int idActividad){
+
+    /**
+     * Comprobar si un usuario tiene asignadas vacaciones en la fecha de la
+     * actividad a asignar
+     *
+     * @param login
+     * @param idActividad
+     * @return
+     */
+    private boolean comprobarVacaciones(String login, int idActividad) {
         Actividad a = Actividad.getActivity(idActividad);
         List<Vacaciones> tmp = VacacionesDB.obtenerVacaciones(login);
         for (Vacaciones tmp1 : tmp) {
@@ -115,7 +147,7 @@ public class Participantes extends HttpServlet {
         }
         return true;
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

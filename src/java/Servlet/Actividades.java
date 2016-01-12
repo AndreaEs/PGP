@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author andreaescribano
+ * @author grupo06
  */
 @WebServlet(name = "Actividades", urlPatterns = {"/Actividades"})
 public class Actividades extends HttpServlet {
@@ -104,6 +104,15 @@ public class Actividades extends HttpServlet {
 
     }
 
+    /**
+     * 
+     * @param request
+     * @param idActividad
+     * @param idFase
+     * @param user
+     * @param tipo
+     * @return 
+     */
     private Actividad getActividadFromParameters(HttpServletRequest request, int idActividad, int idFase, String user, String tipo) {
         if (!tipo.equals("D")) {
             String descripcion = request.getParameter("descripcion");
@@ -144,6 +153,13 @@ public class Actividades extends HttpServlet {
 
     }
 
+    /**
+     * 
+     * @param idFase
+     * @param sesion
+     * @param user
+     * @return 
+     */
     private String getActividades(int idFase, HttpSession sesion, String user) {
         ArrayList<Actividad> actividades = Actividad.getFase(idFase);
         sesion.setAttribute("idFase", idFase);
@@ -154,6 +170,12 @@ public class Actividades extends HttpServlet {
     
     /*date1.comparetp(date2) > 0 --> date1 esta después de date2
      date1.comparetp(date2) < 0 --> date1 esta antes de date2*/
+    /**
+     * 
+     * @param fechaInicio
+     * @param fechaFin
+     * @return 
+     */
     private boolean comprobarFechas(String fechaInicio, String fechaFin) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         try {

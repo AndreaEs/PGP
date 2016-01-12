@@ -29,7 +29,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author gil
+ * @author grupo06
  */
 @WebServlet(name = "InformeD", urlPatterns = {"/InformeD"})
 public class InformeD extends HttpServlet {
@@ -80,6 +80,15 @@ public class InformeD extends HttpServlet {
         
     }
     
+    /**
+     * 
+     * @param sesion
+     * @param login
+     * @param fechaI
+     * @param fechaF
+     * @return
+     * @throws ParseException 
+     */
     private String getInforme(HttpSession sesion, String login, String fechaI, String fechaF) throws ParseException{
         
         //Obtener actividades del usuario login entre las fechas indicadas
@@ -116,6 +125,14 @@ public class InformeD extends HttpServlet {
         return "/vistaInformeD.jsp";
     }
     
+    /**
+     * 
+     * @param sesion
+     * @param fechaI
+     * @param fechaF
+     * @param login
+     * @return 
+     */
     private String getInformePC(HttpSession sesion, String fechaI, String fechaF, String login) {
         HashMap<String, HashMap<String, ArrayList<Actividad>>> inf
                 = new HashMap<String, HashMap<String, ArrayList<Actividad>>>();

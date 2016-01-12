@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 /**
  *
  * @author grupo06
+ * Pool de conexión a la BBDD
  */
 public class ConnectionPool {
 

@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Jennifer
+ * @author grupo06
  */
 @WebServlet(name = "Acceder", urlPatterns = {"/Acceder"})
 public class Acceder extends HttpServlet {
@@ -82,18 +82,14 @@ public class Acceder extends HttpServlet {
             throws ServletException, IOException {
         
         String user = request.getParameter("user");
-        System.out.println(user);
         String password = request.getParameter("pass");
-        System.out.println(password);
         String rol = request.getParameter("tipo");
-        System.out.println(rol);
         HttpSession sesion = request.getSession();
         
         String url="", msg=" ";
         
         if(UserDB.identificar(user, password, rol)){
             msg=" ";
-            //url = "/indexUsuario.jsp";
             sesion.setAttribute("user", user);
             sesion.setAttribute("pass", password);
             sesion.setAttribute("tipo", rol);
@@ -116,9 +112,7 @@ public class Acceder extends HttpServlet {
                 }
             }
         }else{
-            //Se puede poner una pagina igual que la inicial de login aÃ±adiendo 
-            //un mensaje que ponga algun dato esta mal , es mas sencillo de momento
-            //que mirar campo por campo
+            
             msg = "El usuario, el rol y/o password no son correctos";
             url= "/index.jsp";
         }

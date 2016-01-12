@@ -30,7 +30,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author gil
+ * @author grupo06
  */
 @WebServlet(name = "CalendarioD", urlPatterns = {"/CalendarioD"})
 public class CalendarioD extends HttpServlet {

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author andreaescribano
+ * @author grupo06
  */
 @WebServlet(name = "Proyectos", urlPatterns = {"/Proyectos"})
 public class Proyectos extends HttpServlet {
@@ -84,29 +84,14 @@ public class Proyectos extends HttpServlet {
         
     }
 
-   /* private Proyecto getProyectoFromParameters(HttpServletRequest request, int idProyecto, String user) {
-        String nombre = request.getParameter("nombre");
-        String fechaInicioyFin = request.getParameter("fechaInicioyFin");
-        String fechaInicio = "";
-        boolean encontrado = false;
-        int i = 0;
-        while (i < fechaInicioyFin.length() && !encontrado) {
-            if (fechaInicioyFin.charAt(i) != ' ') {
-                fechaInicio += fechaInicioyFin.charAt(i);
-            } else {
-                encontrado = true;
-            }
-            i++;
-        }
-        String fechaFin = fechaInicioyFin.substring(i + 2);
-
-        char estado = request.getParameter("estado").charAt(0);
-        if (idProyecto == 0) {
-            return new Proyecto(nombre, fechaInicio, fechaFin, estado, user);
-        } else {
-            return new Proyecto(idProyecto, nombre, fechaInicio, fechaFin, estado, user);
-        }
-    }*/
+    /**
+     * Obtener nuevo proyecto
+     * @param request
+     * @param idProyecto
+     * @param user
+     * @param numP
+     * @return 
+     */
      private Proyecto getProyectoFromParameters(HttpServletRequest request, int idProyecto, String user, int numP) {
         String nombre = request.getParameter("nombre");
         String fechaInicioyFin = request.getParameter("fechaInicioyFin");
@@ -131,6 +116,12 @@ public class Proyectos extends HttpServlet {
         }
     }
 
+     /**
+      * Obtener proyectos de los que un usuario es jefe
+      * @param user
+      * @param sesion
+      * @return 
+      */
     private String getProyectos(String user, HttpSession sesion) {
         ArrayList<Proyecto> proyectos = Proyecto.getProyectos(user);
         sesion.setAttribute("user", user);
@@ -138,6 +129,11 @@ public class Proyectos extends HttpServlet {
         return "/vistaProyectos.jsp";
     }
     
+    /**
+     * Obtener todos los proyectos
+     * @param sesion
+     * @return 
+     */
     private String getTodosProyectos(HttpSession sesion){
          ArrayList<Proyecto> proyectos = Proyecto.getTodosProyectos();
         sesion.setAttribute("proyectos", proyectos);

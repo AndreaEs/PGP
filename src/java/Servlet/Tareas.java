@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Jennifer
+ * @author grupo06
  */
 @WebServlet(name = "Tareas", urlPatterns = {"/Tareas"})
 public class Tareas extends HttpServlet {
@@ -140,6 +140,13 @@ public class Tareas extends HttpServlet {
         }
     }
 
+    /**
+     * Crear una tarea
+     * @param request
+     * @param idTarea
+     * @param usuario
+     * @return 
+     */
     private TareaPersonal getTareaFromParameter(HttpServletRequest request, int idTarea, String usuario) {
         String tipo = request.getParameter("tipoTarea");
         String fecha = request.getParameter("fecha");
@@ -150,12 +157,23 @@ public class Tareas extends HttpServlet {
         }
     }
 
+    /**
+     * Obtener tareas de un usuario
+     * @param usuario
+     * @param sesion
+     * @return 
+     */
     private String getTareas(String usuario, HttpSession sesion) {
         ArrayList<TareaPersonal> tareas = TareaPersonal.getTareas(usuario);
         sesion.setAttribute("tareas", tareas);
         return "/vistaTareas.jsp";
     }
     
+    /**
+     * Comprobar si una fecha es la de hoy
+     * @param fecha
+     * @return 
+     */
     private boolean comprobarFechaActual(String fecha){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try{

@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author gil
+ * @author grupo06
  */
 @WebServlet(name = "InformeJP", urlPatterns = {"/InformeJP"})
 public class InformeJP extends HttpServlet {
@@ -167,6 +167,15 @@ public class InformeJP extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    /**
+     * 
+     * @param sesion
+     * @param fechaI
+     * @param fechaF
+     * @param login
+     * @return
+     * @throws ParseException 
+     */
     private String getInformeTYA(HttpSession sesion, String fechaI, String fechaF, String login) throws ParseException {
         //Obtener relación de actividades y usuarios entre esas fechas
         //HashMap<User,ArrayList<Actividad>> inf = new HashMap<User,ArrayList<Actividad>>();
@@ -177,6 +186,15 @@ public class InformeJP extends HttpServlet {
         return "/vistaInformeJP.jsp";
     }
 
+    /**
+     * 
+     * @param sesion
+     * @param fechaI
+     * @param fechaF
+     * @param login
+     * @return
+     * @throws ParseException 
+     */
     private String getInformeAAF(HttpSession sesion, String fechaI, String fechaF, String login) throws ParseException {
         ArrayList<Actividad> inf = new ArrayList<Actividad>();
         User u = UserDB.getUsuario(login);
@@ -185,6 +203,15 @@ public class InformeJP extends HttpServlet {
         return "/vistaInformeJP.jsp";
     }
 
+    /**
+     * 
+     * @param sesion
+     * @param fechaI
+     * @param fechaF
+     * @param login
+     * @return
+     * @throws ParseException 
+     */
     private String getInformeAAR(HttpSession sesion, String fechaI, String fechaF, String login) throws ParseException {
         ArrayList<Actividad> inf = new ArrayList<Actividad>();
         User u = UserDB.getUsuario(login);
@@ -195,6 +222,15 @@ public class InformeJP extends HttpServlet {
         return "/vistaInformeJP.jsp";
     }
 
+    /**
+     * 
+     * @param sesion
+     * @param fechaI
+     * @param fechaF
+     * @param login
+     * @return
+     * @throws ParseException 
+     */
     private String getInformeCA(HttpSession sesion, String fechaI, String fechaF, String login) throws ParseException {
         ArrayList<Actividad> inf = new ArrayList<Actividad>();
         User u = UserDB.getUsuario(login);
@@ -206,6 +242,15 @@ public class InformeJP extends HttpServlet {
         return "/vistaInformeJP.jsp";
     }
 
+    /**
+     * 
+     * @param sesion
+     * @param fechaI
+     * @param fechaF
+     * @param login
+     * @return
+     * @throws ParseException 
+     */
     private String getInformeAF(HttpSession sesion, String fechaI, String fechaF, String login) throws ParseException {
         HashMap<String, ArrayList<Actividad>> inf = new HashMap<String, ArrayList<Actividad>>();
         User u = UserDB.getUsuario(login);
@@ -216,6 +261,14 @@ public class InformeJP extends HttpServlet {
         return "/vistaInformeJP.jsp";
     }
 
+    /**
+     * 
+     * @param sesion
+     * @param fechaI
+     * @param fechaF
+     * @param login
+     * @return 
+     */
     private String getInformePC(HttpSession sesion, String fechaI, String fechaF, String login) {
         HashMap<String, HashMap<String, ArrayList<Actividad>>> inf
                 = new HashMap<String, HashMap<String, ArrayList<Actividad>>>();
