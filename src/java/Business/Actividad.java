@@ -14,7 +14,8 @@ import java.util.List;
 
 /**
  *
- * @author andreaescribano
+ * @author grupo06
+ * Representación de las actividades de una fase de un proyecto
  */
 public class Actividad implements Serializable{
 
@@ -120,34 +121,71 @@ public class Actividad implements Serializable{
         this.predecesoras = predecesoras;
     }
 
+    /**
+     * Pasa a la función ActividadBD.insertActividad una actividad
+     * @param a 
+     */
     public static void guardarNuevaActividad(Actividad a) {
         ActividadBD.insertActividad(a);
     }
 
+    /**
+     * Llama a la función ActividadBD.selectActividades para obtener
+     * las actividades de una fase
+     * @param idFase --> ID de la fase en la que está la actividad
+     * @return ArrayList de actividades
+     */
     public static ArrayList<Actividad> getFase(int idFase) {
         return ActividadBD.selectActividades(idFase);   
     }
 
+    /**
+     * Llama a ActividadBD.updateActividad para actualizar una actividad
+     * @param a --> Actividad a actualizar
+     */
     public static void actualizarActividad(Actividad a) {
         ActividadBD.updateActividad(a);
     }
 
+    /**
+     * Llama a ActividadBD.selectActividad para obtener una actividad
+     * @param idActividad --> ID de la actividad a devolver
+     * @return Actividad encontrada
+     */
     public static Actividad getActivity(int idActividad) {
         return ActividadBD.selectActividad(idActividad);
     }
     
+    /**
+     * Llama a ActividadBD.selectActividades para obtener las actividades
+     * de un usuario
+     * @param user --> Usuario del que se quieren obtener las actividades
+     * @return ArrayList con las actividades del usuario
+     */
     public static ArrayList<Actividad> getActividades(String user) {
         return ActividadBD.selectActividades(user);
     }
     
+    /**
+     * Llama a ActividadBD.selectActividadesLoginOrdenadas para obtener 
+     * actividades de usuario ordenadas cronológicamente
+     * @param user --> Usuario del que se quieren obtener las actividades
+     * @return Actividades ordenadas cronológicamente
+     */
     public static ArrayList<Actividad> getActividadesLoginOrdenadas(String user) {
         return ActividadBD.selectActividadesLoginOrdenadas(user);
     }
-
-    
     
     /*date1.comparetp(date2) > 0 --> date1 esta después de date2
      date1.comparetp(date2) < 0 --> date1 esta antes de date2*/
+    /**
+     * Comprueba si en la fecha en la que se quiere añadir una tarea  
+     * personal existe una actividad programada 
+     * @param fecha --> De la tarea personal
+     * @param a --> Actividad a comprobar sus fechas
+     * @return true si la fecha de la tarea personal entra en el rango
+     * de las fechas de la actividad, false en caso contrario
+     */
     public boolean comprobarFechaEntreFechas(String fecha, Actividad a) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {

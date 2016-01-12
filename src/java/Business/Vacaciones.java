@@ -15,7 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  *
- * @author gil
+ * @author grupo06
+ * Representacion de Vacaciones
  */
 public class Vacaciones implements Serializable{
 
@@ -59,6 +60,11 @@ public class Vacaciones implements Serializable{
         this.usuario = usuario;
     }
 
+    /**
+     * Obtiene días de vacaciones
+     * @param cal --> Lista de vacaciones a sumar
+     * @return días de vacaciones
+     */
     public long comprobarDiasVacaciones(List<Vacaciones> cal) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         long diff = 0;
@@ -77,6 +83,13 @@ public class Vacaciones implements Serializable{
 
     /*date1.comparetp(date2) > 0 --> date1 esta después de date2
      date1.comparetp(date2) < 0 --> date1 esta antes de date2*/
+    /**
+     * Comprueba que no se asigne un rango de fechas coincidiendo con otro rango
+     * @param fechaIn --> Fecha de inicio
+     * @param fechaFi --> Fecha de fin
+     * @param cal --> Vacaciones a comprobar rango de fechas
+     * @return true si coinciden, false en caso contrario
+     */
     public boolean comprobarRangosEntreFechas(String fechaIn, String fechaFi, Vacaciones cal) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -96,6 +109,12 @@ public class Vacaciones implements Serializable{
         return false;
     }
 
+    /**
+     * Llama a VacacionesDB.obtenerVacaciones para obtener las vacaciones
+     * de un usuario
+     * @param user --> Usuario a obtener vacaciones
+     * @return ArrayList con las vacaciones del usuario
+     */
     public static ArrayList<Vacaciones> getVacaciones(String user) {
         return (ArrayList)VacacionesDB.obtenerVacaciones(user);    
     }

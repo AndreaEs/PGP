@@ -14,7 +14,8 @@ import java.util.Calendar;
 
 /**
  *
- * @author gil
+ * @author grupo06
+ * Representación de una tarea personal
  */
 public class TareaPersonal implements Serializable{
 
@@ -79,14 +80,29 @@ public class TareaPersonal implements Serializable{
         return TareaDB.findAll(usuario);
     }
 
+    /**
+     * Llama a TareaDB.find para buscar una tarea
+     * @param idTarea --> ID de la tarea a buscar
+     * @return Tarea
+     */
     public static TareaPersonal getTarea(int idTarea) {
         return TareaDB.find(idTarea);
     }
 
+    /**
+     * Llama a TareaDB.updateTarea para actualizar una tarea
+     * @param tp --> Tarea a actualizar
+     */
     public static void actualizarTarea(TareaPersonal tp) {
         TareaDB.updateTarea(tp);
     }
     
+    /**
+     * Comprueba si se quiere asignar una tarea en fin de semana
+     * @param fecha --> Fecha a comprobar
+     * @return false si cae en fin de semana, true en caso contrario
+     * @throws ParseException 
+     */
     public boolean tareaFinSemana(String fecha) throws ParseException{
         //Pasar String a Calendar
         Calendar f = Calendar.getInstance();

@@ -12,7 +12,8 @@ import java.util.ArrayList;
 
 /**
  *
- * @author andreaescribano
+ * @author grupo06
+ * Representación de un proyecto
  */
 public class Proyecto implements Serializable {
 
@@ -101,27 +102,57 @@ public class Proyecto implements Serializable {
         this.numP = numP;
     }
 
+    /**
+     * Llama a ProyectoDB.insert para insertar un proyecto en la BBDD
+     * @param p --> Proyecto a insertar
+     */
     public static void guardarNuevoProyecto(Proyecto p) {
         ProyectoDB.insert(p);
     }
 
+    /**
+     * Llama a ProyectoDB.selectProyectos para obtener los proyectos
+     * de los que un usuario es jefe
+     * @param usuario --> Usuario a obtener los proyectos de los que es jefe
+     * @return Proyectos de los que es jefe
+     */
     public static ArrayList<Proyecto> getProyectos(String usuario) {
         User u = UserDB.getUsuario(usuario);
         return ProyectoDB.selectProyectos(u.getNif());
     }
 
+    /**
+     * Llama a ProyectoDB.selectTodosProyectos para obtener todos los proyectos
+     * de la BBDD
+     * @return ArrayList con todos los proyectos
+     */
     public static ArrayList<Proyecto> getTodosProyectos() {
         return ProyectoDB.selectTodosProyectos();
     }
 
+    /**
+     * Llama a ProyectoDB.selectProyecto para obtener un proyecto dado su ID
+     * @param idProyecto --> ID del proyecto a obtener
+     * @return Proyecto con dicho ID
+     */
     public static Proyecto getProject(int idProyecto) {
         return ProyectoDB.selectProyecto(idProyecto);
     }
 
+    /**
+     * Llama a ProyectoDB.updateProyecto para actualizar un proyecto
+     * @param p --> Proyecto a actualizar
+     */
     public static void actualizarProyecto(Proyecto p) {
         ProyectoDB.updateProyecto(p);
     }
 
+    /**
+     * Llama a ProyectoDB.selectProyectosSinOrdenar para obtener los proyectos
+     * de un usuario sin ordenar
+     * @param usuario --> Usuario a obtener los proyectos
+     * @return ArrayList de Proyectos
+     */
     public static ArrayList<Proyecto> getProyectosSinOrdenar(String usuario) {
         User u = UserDB.getUsuario(usuario);
         return ProyectoDB.selectProyectosSinOrdenar(u.getNif());

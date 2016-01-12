@@ -11,7 +11,8 @@ import java.util.ArrayList;
 
 /**
  *
- * @author andreaescribano
+ * @author grupo06
+ * Representación de una fase de un proyecto
  */
 public class Fase implements Serializable{
 
@@ -74,20 +75,39 @@ public class Fase implements Serializable{
         return idProyecto;
     }
     
+    /**
+     * Llama a FaseDB.insert para insertar una nueva fase en la BBDD
+     * @param f --> Fase a insertar
+     */
     public static void crearNuevaFase(Fase f){
         FaseDB.insert(f);
     }
     
+    /**
+     * Llama a FaseDB.selectFases para obtener las fases de un proyecto
+     * dado su ID
+     * @param idProyecto --> ID del proyecto 
+     * @return --> ArrayList de fases en el proyecto
+     */
     public static ArrayList<Fase> getFase(int idProyecto) {
         return FaseDB.selectFases(idProyecto);
     }
     
+    /**
+     * Llama a FaseDB.selectFase para obtener una fase dado su ID
+     * @param idFase --> ID de la fase a obtener
+     * @return Fase a la que corresponde dicho ID
+     */
     public static Fase getPhase(int idFase) {		
         return FaseDB.selectFase(idFase);		
     }		
  		
-     public static void actualizarFase(Fase f) {		
-         FaseDB.updateFase(f);		
-     }
+    /**
+     * Llama a FaseDB.updateFase para actualizar una fase
+     * @param f --> Fase a actualizar
+     */
+    public static void actualizarFase(Fase f) {		
+        FaseDB.updateFase(f);		
+    }
 
 }

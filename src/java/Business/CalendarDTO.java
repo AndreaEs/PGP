@@ -7,7 +7,8 @@ package Business;
 
 /**
  *
- * @author andreaescribano
+ * @author grupo06
+ * DTO del Calendario
  */
 public class CalendarDTO {
     public int id;

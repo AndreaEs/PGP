@@ -15,7 +15,8 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Jennifer
+ * @author grupo06
+ * Representación de un usuario
  */
 public class User implements Serializable{
     
@@ -104,14 +105,27 @@ public class User implements Serializable{
         this.infoGeneral=infoGeneral;
     }
     
+    /**
+     * Llama a UserDB.exist para comprobar la existencia de un usuario
+     * @param login --> Login a comprobar la existencia
+     * @return true si existe, false en caso contrario
+     */
     public static boolean exist(String login){
         return UserDB.exist(login);
     }
     
+    /**
+     * Llama a UserDB.insert para insertar un usuario en la BBDD
+     * @param user --> Usuario a insertar
+     */
     public static void insert(User user){
         UserDB.insert(user);
     }
     
+    /**
+     * Borra un usuario
+     * @param user --> Usuario a borrar
+     */
     public static void delete(User user){
         ArrayList<TareaPersonal> tareas = new ArrayList();
         tareas = TareaDB.getTareas(user.getLogin()); 
@@ -142,13 +156,29 @@ public class User implements Serializable{
         
         UserDB.delete(user);
     }
+    
+    /**
+     * Llama a UserDB.update para actualizar la información de un usuario
+     * @param user --> Usuario a actualizar
+     */
     public static void update(User user){
         UserDB.update(user);
     }
+    
+    /**
+     * Llama a UserDB.getPosiblesJefes para obtener usuarios candidatos a 
+     * Jefe de proyecto
+     * @return Array de usuarios posibles
+     */
     public static ArrayList<String> getPosiblesJefes(){
         return UserDB.getPosiblesJefes();
     }
     
+    /**
+     * Llama a UserDB.getJefe para obtener un jefe dado su DNI
+     * @param dni --> DNI del jefe a buscar
+     * @return Login del jefe de proyecto
+     */
     public static String getJefe(String dni){
         return UserDB.getJefe(dni);
     }

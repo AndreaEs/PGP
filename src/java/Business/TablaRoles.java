@@ -11,7 +11,8 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Sandra
+ * @author grupo06
+ * Representación de la Tabla de roles
  */
 public class TablaRoles implements Serializable {
 
@@ -57,13 +58,31 @@ public class TablaRoles implements Serializable {
         this.categoria = categoria;
     }
     
+    /**
+     * Llama a TablaRolesDB.insert para rellenar una fila de la tabla de roles
+     * @param idProyecto --> ID del proyecto
+     * @param desarrollador --> Login del desarrollador
+     * @param categoria --> Categoria a asignar a ese desarrollados en ese proyecto
+     */
     public static void insert(int idProyecto, String desarrollador, String categoria) {
         TablaRolesDB.insert(idProyecto,desarrollador,categoria);
     }
+    
+    /**
+     * Llama a TablaRolesDB.exist para comprobar la existencia de un proyecto
+     * @param idP --> ID del proyecto
+     * @return true si existe, false en caso contrario
+     */
     public static boolean exist(int idP){
         return TablaRolesDB.exist(idP);
     }
     
+    /**
+     * Llama a TablaRolesDB.getIdParticipante para obtener los participantes de 
+     * un proyecto
+     * @param idProyecto --> ID del proyecto a obtener los participantes
+     * @return ArrayList de participantes
+     */
     public static ArrayList<String> getParticipantes(int idProyecto){
         return TablaRolesDB.getIdParticipante(idProyecto);
     }
