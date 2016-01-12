@@ -189,7 +189,7 @@
 
                     <%
                         HashMap<String, HashMap<String, ArrayList<Actividad>>> inf = (HashMap<String, HashMap<String, ArrayList<Actividad>>>) session.getAttribute("informe");
-                        System.out.println("inf " + inf);
+                        System.err.println("inf " + inf);
                         if (inf != null) {
                             Iterator it1 = inf.entrySet().iterator();
                             while (it1.hasNext()) {
@@ -230,7 +230,12 @@
                     <div class="row no-print">
                         <div class="col-xs-12">
                             <div>
+                                <%if(session.getAttribute("tipo").equals("JP")){%>
                                 <a href="informesJP.jsp"><button type="button" class="btn btn-default pull-right">Cancelar</button></a>
+                                <%} else {%>
+                                <a href="informesD.jsp"><button type="button" class="btn btn-default pull-right">Cancelar</button></a>
+
+                                <%}%>
                             </div>
                             <button class="btn btn-primary pull-right" style="margin-right: 5px;" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
                             

@@ -148,7 +148,7 @@
                                             </div><!-- /.form group -->
                                             <div class="form-group">
                                                 <label>Estado</label>
-                                                <select class="form-control select2" style="width: 100%;" name="estado">
+                                                <select <%if(f.getEstado()=='C'){%> disabled <%}%> class="form-control select2" style="width: 100%;" name="estado">
                                                     <option 
                                                         <% if (f.getEstado() == 'S') {%>
                                                         selected="selected"

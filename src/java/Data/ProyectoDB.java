@@ -256,6 +256,7 @@ public class ProyectoDB {
         return proyectos;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * @param fechaI
@@ -264,6 +265,9 @@ public class ProyectoDB {
      * @return 
      */
     public static HashMap<String, HashMap<String, ArrayList<Actividad>>> selectInformePC(String fechaI, String fechaF, String login) {
+=======
+    public static HashMap<String, HashMap<String, ArrayList<Actividad>>> selectInformePC(String fechaI, String fechaF) {
+>>>>>>> origin/master
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
@@ -279,14 +283,12 @@ public class ProyectoDB {
                 + " a.id as idActividad , a.login as loginA , a.descripcion as descripcionA , a.rol , a.duracionEstimada , "
                 + "a.diainicio as diA , a.mesinicio as miA , a.anoinicio as aiA , a.diafin as dfA , a.mesfin as mfA , a.anofin as afA , "
                 + "a.duracionreal , a.estado as estadoA , a.idFase as idFa "
-                + "FROM  Actividades a,Fases f, Proyectos p WHERE p.login=? AND p.estado=? AND a.idfase=f.id AND f.idproyecto=p.id ";
+                + "FROM  Actividades a,Fases f, Proyectos p WHERE p.estado='C' AND a.idFase=f.id AND f.idProyecto=p.id ";
         HashMap<String, ArrayList<Actividad>> fases = new HashMap<String, ArrayList<Actividad>>();
         ArrayList<Actividad> actividades = new ArrayList<Actividad>();
         try {
 
             ps = connection.prepareStatement(query);
-            ps.setString(1, login);
-            ps.setString(2, "C");
             rs = ps.executeQuery();
 
             while (rs.next()) {

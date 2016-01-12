@@ -77,6 +77,11 @@
                     
                                         for (Participante a : participantes) {
                                     %>
+                                    
+                                    <%if(session.getAttribute("mensaje")!=null){%>
+                                    <h1><%=session.getAttribute("mensaje")%></h1>
+                                    <%}%>
+                                    
                                     <ul class="nav nav-pills nav-stacked">
                                         <div class="btn pull-left">
                                                 <div>

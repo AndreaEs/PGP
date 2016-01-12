@@ -88,7 +88,13 @@ public class Actividades extends HttpServlet {
             String accion = request.getParameter("actividad");
             if (accion.equals("verActividadesDeUsuario")) {
                 ArrayList<Actividad> actividades = Actividad.getActividadesLoginOrdenadas(user);
-                sesion.setAttribute("actividades", actividades);
+                ArrayList<Actividad> tmp = new ArrayList<Actividad>();
+                for (Actividad actividad : actividades) {
+                    if(actividad.getEstado()!='C'){
+                        tmp.add(actividad);
+                    }
+                }
+                sesion.setAttribute("actividades", tmp);
                 sesion.setAttribute("user", user);
                 url = "/vistaActividades.jsp";
             }

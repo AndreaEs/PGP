@@ -10,9 +10,10 @@ import Business.TareaPersonal;
 import Data.ActividadBD;
 import Data.TareaDB;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,7 +58,7 @@ public class Tareas extends HttpServlet {
                     tp.setLogin(usuario);
                     tp.setTipo(tipo);
                     tp.setFecha(fecha);
-
+                    
                     try {
                         //Comprobaciones de un evento tipo Tarea Personal
                         //Comprobar que no quiere asignar una tarea en fin de semana
@@ -91,19 +92,21 @@ public class Tareas extends HttpServlet {
                     }
 
                     //Si no había ninguna actividad asignada --> avisar usuario
+                    //no hacer insert
                     if (actFecha.isEmpty()) {
                         mensaje = "No hay ninguna actividad en esa fecha";
                     }
                     //Si solo había una actividad --> asignar tarea a esa actividad
-                    if (actFecha.size() == 1) {
+                    if (actFecha.size() >= 1) {
+                        if(comprobarFechaActual(fecha)){
                         //Anadir tp a la bbdd
                         TareaDB.insert(tp);
                         correcto = true;
                         mensaje="¡Todo correcto! Asignada Tarea";
-                    } else {
-                        //Anadir tp a la bbdd
-                        TareaDB.insert(tp);
-                    }
+                        } else {
+                            mensaje="La fecha es posterior a la actual";
+                        }
+                    } 
 
                     if (!correcto) {
                         url = "/Tareas?tarea=crearNuevaTarea";
@@ -151,6 +154,23 @@ public class Tareas extends HttpServlet {
         ArrayList<TareaPersonal> tareas = TareaPersonal.getTareas(usuario);
         sesion.setAttribute("tareas", tareas);
         return "/vistaTareas.jsp";
+    }
+    
+    private boolean comprobarFechaActual(String fecha){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+          Date actual = new Date();
+          java.util.Date f = formatter.parse(fecha);
+          if(f.before(actual)){
+              return false;
+          } else {
+              return true;
+          }
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+        
+        return false;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

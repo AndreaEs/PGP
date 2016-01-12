@@ -1,3 +1,5 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
 <%@page import="java.util.Map.Entry"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.HashMap"%>
@@ -58,6 +60,16 @@
                         String login = (String) session.getAttribute("login");
                         String fechaI = (String) session.getAttribute("fechaI");
                         String fechaF = (String) session.getAttribute("fechaF");
+                        
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                        Date actual = new Date();
+                        Date f = formatter.parse(fechaF);
+                        
+                        if(f.after(actual)){%>
+                        <h1>Ha seleccionado una fecha que aún no ha ocurrido</h1>
+                        <%} else {
+                        
+                        
                         HashMap<Integer, ArrayList<Actividad>> inf = (HashMap<Integer, ArrayList<Actividad>>) session.getAttribute("informe");
                         Iterator it = inf.entrySet().iterator();
                         while (it.hasNext()) {
@@ -72,7 +84,24 @@
                     <h4>Descripcion: <%= inf.get(valor).get(i).getDescripcion()%></h4>
                     <h4>Fecha Inicio: <%= inf.get(valor).get(i).getFechaInicio()%></h4>
                     <h4>Fecha Fin: <%= inf.get(valor).get(i).getFechaFin()%></h4>
-                    <h4>Estado: <%= inf.get(valor).get(i).getEstado()%></h4>
+                    <%
+                        String estado = "";
+                        switch(inf.get(valor).get(i).getEstado()){
+                        case 'S':
+                            estado= "Sin comenzar";
+                            break;
+                        case 'E':
+                            estado = "En curso";
+                            break;
+                        case 'F':
+                            estado = "Finalizada";
+                            break;
+                        case 'C':
+                            estado = "Cerrada";
+                            break;
+                        }
+                    %>
+                    <h4> Estado: <%=estado%> </h4>
                     <h4>Fase: <%= inf.get(valor).get(i).getIdFase()%></h4>
                     <h4>Actividades predecesoras </h4>
                     <% for (int j = 0; j < inf.get(valor).get(i).getPredecesoras().size(); j++) {%>
@@ -84,7 +113,7 @@
                         }
                     %>
                     <div class="row no-print">
-
+                    <%}%>
                         <div class="col-xs-12">
                             <div>
                                 <a href="informesD.jsp"><button type="button" class="btn btn-default pull-right">Cancelar</button></a>
@@ -93,6 +122,7 @@
                         </div>
 
                     </div>
+                    
                 </section>
 
             </div>

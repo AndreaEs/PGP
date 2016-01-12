@@ -1,3 +1,4 @@
+<%@page import="Data.ActividadBD"%>
 <%@page import="Data.ParticipantesBD"%>
 <%@page import="Business.Actividad"%>
 <%@page import="java.util.ArrayList"%>
@@ -111,7 +112,7 @@
                                             <% if (!session.getAttribute("tipo").equals("D")) {
                                                     boolean b = !ParticipantesBD.exist(a.getIdentificador());%>
                                             <a href="usuarios.jsp?participante=true&idActividad=<%=a.getIdentificador()%>">
-                                                <% if (b) { %> 
+                                                <% if (b && a.getEstado()!='C') { %> 
                                                 <button class="btn btn-block btn-info btn-flat">Add participantes</button>
                                                 <%} else { %>
                                                 <button disabled="true" class="btn btn-block btn-info btn-flat">Add participantes</button>

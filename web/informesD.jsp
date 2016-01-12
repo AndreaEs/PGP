@@ -56,9 +56,13 @@
             <div class="content-wrapper">
                 <form action="InformeD" method="post">
 
-
+                    <br><br>
                    
-                    
+                    <label>Tipo de informe</label>
+                    <select name="tipoI" style="width: 30%">
+                <option value="AS"> Actividades por semanas </option>
+                <option value="PC"> Proyectos Cerrados</option>
+                    </select>
 
                     <!--Añadir comprobador de que la fecha de Inicio va antes que la del Fin-->
                     <br><br>

@@ -219,9 +219,8 @@ public class InformeJP extends HttpServlet {
     private String getInformePC(HttpSession sesion, String fechaI, String fechaF, String login) {
         HashMap<String, HashMap<String, ArrayList<Actividad>>> inf
                 = new HashMap<String, HashMap<String, ArrayList<Actividad>>>();
-        User u = UserDB.getUsuario(login);
 
-        inf = ProyectoDB.selectInformePC(fechaI, fechaF, u.getNif());
+        inf = ProyectoDB.selectInformePC(fechaI, fechaF);
         if (inf != null) {
             sesion.setAttribute("informe", inf);
         }
