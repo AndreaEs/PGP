@@ -93,7 +93,7 @@ public class UserDB {
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String query = "SELECT pass FROM usuario "
+        String query = "SELECT pass FROM Usuarios "
                 + "WHERE pass = ?";
         try {
             ps = connection.prepareStatement(query);
@@ -182,7 +182,7 @@ public class UserDB {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
-        String query = "SELECT login FROM usuarios ";
+        String query = "SELECT login FROM Usuarios ";
         ResultSet rs = null;
         Statement st = connection.createStatement();
         //ResultSet rs = st.executeQuery("select * from contacto" );

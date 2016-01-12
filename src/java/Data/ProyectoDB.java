@@ -343,15 +343,12 @@ public class ProyectoDB {
             java.util.Date fechaFP = formatter.parse(p.getFechaFin());
 
             if (fechaIU.compareTo(fechaFP) == 0) {
-                System.out.println("holaaaa");
                 return true;
             }
             if (fechaFU.compareTo(fechaFP) == 0) {
-                System.out.println("holaaaa");
                 return true;
             }
             if (fechaIU.compareTo(fechaFP) < 0 && fechaFU.compareTo(fechaFP) > 0) {
-                System.out.println("holaaaa");
                 return true;
             }
 

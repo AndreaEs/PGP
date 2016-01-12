@@ -274,7 +274,6 @@ public class ParticipantesBD {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("vamos a salir de participaciones");
         return participaciones;
     }
 
