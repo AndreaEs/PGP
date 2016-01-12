@@ -80,8 +80,9 @@ public class Proyectos extends HttpServlet {
                 } else if(accion.equals("finalizar")){
                     int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
                     Proyecto p = Proyecto.getProject(idProyecto);
-                    p.setEstado('C');
-                    Proyecto.actualizarProyecto(p);
+                    Proyecto tmp = new Proyecto(p.getNombre(),p.getFechaInicio(),p.getFechaFin(),'C',p.getLogin(),p.getNumP());
+                   
+                    Proyecto.actualizarProyecto(tmp);
                     url="/vistaProyectos.jsp";
                 }
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);

@@ -106,7 +106,7 @@
                                                 </div>
                                                 <%if (!session.getAttribute("tipo").equals("A")) {%>
                                                 <div class="btn pull-right">
-                                                    <%if(session.getAttribute("tipo").equals("JP")){%>
+                                                    <%if(session.getAttribute("tipo").equals("J")){%>
                                                     <a href="Proyectos?proyecto=finalizar&idProyecto=<%= p.getIdentificador()%>"><button type="button" class="btn btn-default">Finalizar</button></a>
 
                                                     <%}%>

@@ -288,9 +288,7 @@
                                             </div><!-- /.form-group -->
                                             <div class="form-group">
                                                 <label for="duracionRealActividad">Duración real de la actividad</label>
-                                                <input <%if (session.getAttribute("tipo").equals("D")) {%>
-                                                    readonly
-                                                    <%}%>type="number" class="form-control" id="duracionRealActividad" name="duracionReal" value="<%= a.getDuracionReal()%>">
+                                                <input type="number" class="form-control" id="duracionRealActividad" name="duracionReal" value="<%=a.getDuracionReal()%>">
                                             </div>
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">

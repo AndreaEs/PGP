@@ -108,7 +108,12 @@
                                                     <i class="fa fa-file-text-o"></i> <%= a.getDescripcion()%>
                                                     <small> <%= a.getFechaInicio()%> - <%= a.getFechaFin()%>  </small>
                                                 </div>
+                                                
                                             </a>
+                                                <%if(session.getAttribute("tipo").equals("J")){%>
+                                                    <a href="Actividades?actividad=finalizar&idActividad=<%= a.getIdentificador()%>&idFase=<%=a.getIdFase()%>"><button type="button" class="btn btn-default">Finalizar</button></a>
+
+                                                    <%}%>
                                             <% if (!session.getAttribute("tipo").equals("D")) {
                                                     boolean b = !ParticipantesBD.exist(a.getIdentificador());%>
                                             <a href="usuarios.jsp?participante=true&idActividad=<%=a.getIdentificador()%>">
@@ -119,10 +124,7 @@
                                                 <%}%>
                                                 
                                             </a>
-                                                <%if(session.getAttribute("tipo").equals("JP")){%>
-                                                    <a href="Actividades?actividad=finalizar&idActividad=<%= a.getIdentificador()%>"><button type="button" class="btn btn-default">Finalizar</button></a>
-
-                                                    <%}%>
+                                                
                                             <%}%>
                                         </div>
                                     </ul>

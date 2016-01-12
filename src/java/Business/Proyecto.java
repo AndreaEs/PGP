@@ -101,11 +101,7 @@ public class Proyecto implements Serializable {
     public void setNumP(int numP) {
         this.numP = numP;
     }
-    
-    public void setEstado(char estado){
-        this.estado = estado;
-    }
-
+   
     /**
      * Llama a ProyectoDB.insert para insertar un proyecto en la BBDD
      * @param p --> Proyecto a insertar
