@@ -8,6 +8,7 @@ package Servlet;
 import Business.Actividad;
 import Data.ActividadBD;
 import Data.PredecesorasDB;
+import Data.ProyectoDB;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,6 +49,7 @@ public class InformeD extends HttpServlet {
             throws ServletException, IOException, ParseException {
         
         HttpSession sesion = request.getSession();
+        String tipoI = request.getParameter("tipoI");
         String fechaInicioyFin = request.getParameter("fechaInicioyFin");
         String fechaInicio = "";
         boolean encontrado = false;
@@ -65,17 +67,13 @@ public class InformeD extends HttpServlet {
         String fechaI = fechaInicio.substring(6)+"-"+fechaInicio.substring(0,2)+"-"+fechaInicio.substring(3,5);
         String fechaF = fechaFin.substring(6)+"-"+fechaFin.substring(0,2)+"-"+fechaFin.substring(3,5);
         String url = null;
+       
+        if(tipoI.equals("AS")){
+            url = getInforme(sesion,login,fechaI,fechaF);
+        } else if (tipoI.equals("PC")){
+            url = getInformePC(sesion, fechaI, fechaF, login);
+        }
         
-        
-        //Comprobar que la fecha de Inicio no es posterior a hoy
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date fechaIU = formatter.parse(fechaI);
-        Date hoy = Calendar.getInstance().getTime();
-        if(fechaIU.compareTo(hoy)>0){
-            System.out.println("No se pueden pedir informes posteriores a la fecha actual");
-        }         
-        
-        url = getInforme(sesion,login,fechaI,fechaF);
         
         RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
         respuesta.forward(request, response);
@@ -116,6 +114,19 @@ public class InformeD extends HttpServlet {
         sesion.setAttribute("informe", inf);
         
         return "/vistaInformeD.jsp";
+    }
+    
+    private String getInformePC(HttpSession sesion, String fechaI, String fechaF, String login) {
+        HashMap<String, HashMap<String, ArrayList<Actividad>>> inf
+                = new HashMap<String, HashMap<String, ArrayList<Actividad>>>();
+
+        inf = ProyectoDB.selectInformePC(fechaI, fechaF);
+        if (inf != null) {
+            sesion.setAttribute("informe", inf);
+        }
+        System.out.println("hola llegamos hasta aqui");
+
+        return "/vistaInformeJP.jsp";
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

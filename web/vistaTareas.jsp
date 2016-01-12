@@ -79,7 +79,7 @@
                         <div class="col-md-3">
                             <div class="box box-solid">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Lista de Participantes</h3>
+                                    <h3 class="box-title">Lista de tareas</h3>
                                 </div>
                                 <div class="box-body no-padding">
                                     <%

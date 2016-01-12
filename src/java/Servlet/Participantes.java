@@ -1,9 +1,15 @@
 package Servlet;
 
+import Business.Actividad;
 import Business.Participante;
+import Business.Proyecto;
+import Business.Vacaciones;
 import Data.ActividadBD;
+import Data.ParticipantesBD;
+import Data.VacacionesDB;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,12 +38,22 @@ public class Participantes extends HttpServlet {
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
         String usuario = (String) sesion.getAttribute("user");
+        int idActividad = Integer.parseInt(request.getParameter("idActividad"));
+        double porcentaje = Double.parseDouble(request.getParameter("porcentaje"));
         String url=null;
         if(usuario!=null){
             String accion = request.getParameter("accion");
             if(accion!=null){
                 if(accion.equals("crearParticipacion")){
-                    Participante.insertar(getParticipanteFromParameter(request));
+                    if(!comprobarLogin(usuario, idActividad)){
+                        sesion.setAttribute("mensaje", "El usuario ya tiene el maximo de proyecto asignado");
+                    } else if (!comprobarPorcentaje(usuario, porcentaje)) {
+                        sesion.setAttribute("mensaje", "El porcentaje añadido debe ser menor.");
+                    } else if (!comprobarVacaciones(usuario, idActividad)){
+                        sesion.setAttribute("mensaje", "El usuario se encuentra de vacaciones durante la actividad");
+                    } else {
+                        Participante.insertar(getParticipanteFromParameter(request));
+                    }
                     url=getParticipante(sesion,Integer.parseInt(request.getParameter("idActividad")));
                 }
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
@@ -69,6 +85,35 @@ public class Participantes extends HttpServlet {
         sesion.setAttribute("idActividad", idActividad);
         sesion.setAttribute("participaciones", participaciones);
         return "/vistaParticipantes.jsp";
+    }
+    
+    private boolean comprobarPorcentaje(String login, double porcentaje){
+        if ((ParticipantesBD.getPorcentaje(login)+porcentaje)<100){
+            return true;
+        }
+        return false;
+    }
+    
+     private boolean comprobarLogin(String login, int idActividad){
+        ArrayList<Proyecto> proy = Proyecto.getProyectos(login);
+        if(ParticipantesBD.exist(login) && proy.size()>0){
+            return false;
+        }
+        if(ParticipantesBD.getParticipaciones(login).size()>2){
+            return false;
+        }
+        return comprobarVacaciones(login, idActividad);
+    }
+    
+    private boolean comprobarVacaciones(String login, int idActividad){
+        Actividad a = Actividad.getActivity(idActividad);
+        List<Vacaciones> tmp = VacacionesDB.obtenerVacaciones(login);
+        for (Vacaciones tmp1 : tmp) {
+            if (tmp1.comprobarRangosEntreFechas(a.getFechaInicio(), a.getFechaFin(), tmp1)) {
+                return false;
+            }
+        }
+        return true;
     }
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -101,7 +101,7 @@
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                         <li><a href="vistaActividades.jsp">Actividades</a></li>
-                        <li class="active">Nueva Actividad</li>
+                        <li class="active">Actividad</li>
                     </ol>
                 </section>
 
@@ -294,11 +294,17 @@
                                             </div>
                                         </div><!-- /.box-body -->
                                         <div class="box-footer">
-                                            <% if (a.getEstado() == 'C') {%>
+                                            <% if(session.getAttribute("tipo").equals("JP")){
+                                                if (a.getEstado() == 'C') {%>
                                             <a href="Actividades?actividad=verActividades&idFase=<%= a.getIdFase()%>"><button type="button" class="btn btn-default" name="cancelar" value="cancelar">Atrás</button></a>
                                             <%} else {%>
                                             <button type="submit" class="btn btn-primary" name="actualizarActividad" value="actualizarActividad" onclick="return validar()">Actualizar Actividad</button>
-                                            <a href="Actividades?actividad=verActividades&idFase=<%= a.getIdFase()%>"><span class="btn btn-default">Cancelar</span></a>
+                                            <a href="Actividades?actividad=verActividades&idFase=<%= a.getIdFase() %>"><span class="btn btn-default">Cancelar</span></a>
+
+                                            <%}} else {%>
+                                            <button type="submit" class="btn btn-primary" name="actualizarActividad" value="actualizarActividad" onclick="return validar()">Actualizar Actividad</button>
+                                            <a href="Actividades?actividad=verActividadesDeUsuario&idFase=0"><span class="btn btn-default">Cancelar</span></a>
+  
                                             <%}%>
                                         </div>
 

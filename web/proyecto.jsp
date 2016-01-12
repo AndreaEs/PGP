@@ -179,7 +179,7 @@
                                                 <input  <%if (p.getEstado() == 'C') {%>
                                                     readonly
                                                     <%}%>
-                                                    type="text" class="form-control" id="nombreProyecto" name="nombre" value="<%= p.getNombre()%>">
+                                                    type="text" class="form-control" disabled id="nombreProyecto" name="nombre" value="<%= p.getNombre()%>">
                                             </div>
                                             <!-- Date range -->
                                             <div class="form-group">
@@ -269,7 +269,7 @@
                                             <button type="submit" class="btn btn-primary" name="actualizarProyecto" value="actualizarProyecto" onclick="return validar()">Actualizar Proyecto</button>
                                             <a href="vistaProyectos.jsp"><span class="btn btn-default">Cancelar</span></a>
                                             <%} else {%>
-                                            <a href="vistaProyectos.jsp"><span class="btn btn-default">Cancelar</span></a>
+                                            <a href="vistaProyectos.jsp"><span class="btn btn-default">Atrás</span></a>
                                             <%}%>
                                         </div>
                                     </form>
