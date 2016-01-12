@@ -157,4 +157,51 @@ public class TareaDB {
         }
     }
 
+    public static void delete(TareaPersonal tarea) {
+         ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        String query="DELETE FROM TareasPersonales WHERE id = ?";
+                
+                
+        try {
+            
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, tarea.getId());
+            int res = ps.executeUpdate();
+            ps.close();
+            pool.freeConnection(connection);
+            
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            
+        }
+    }
+
+    public static ArrayList<TareaPersonal> getTareas(String login) {
+       ArrayList<TareaPersonal> tareas = new ArrayList();
+       ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM TareasPersonales WHERE login=?";
+        
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, login);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                TareaPersonal t = new TareaPersonal(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4));
+                tareas.add(t);
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+       
+       return tareas;
+    }
 }

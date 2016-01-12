@@ -208,4 +208,57 @@ public class ParticipantesBD {
         return part;
   }
   
+  public static ArrayList<Participante> getParticipaciones(String login) {
+        System.out.println("Estamos dentro de participaciones");
+        ArrayList<Participante> participaciones = new ArrayList();
+       ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM Participaciones WHERE login=?";
+        
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, login);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Participante p = new Participante(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getString(4), rs.getString(5));
+                participaciones.add(p);
+            }
+            rs.close();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("vamos a salir de participaciones");
+        return participaciones;
+    }
+
+    public static void delete(String login) {
+        
+         ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        String query="DELETE FROM Participaciones WHERE login=? ";
+                
+                
+        try {
+            
+            ps = connection.prepareStatement(query);
+            ps.setString(1, login);
+            
+           
+            
+            
+            
+            int res = ps.executeUpdate();
+            ps.close();
+            pool.freeConnection(connection);
+            
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            
+        }
+    }
 }

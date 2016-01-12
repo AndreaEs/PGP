@@ -5,7 +5,11 @@
  */
 package Business;
 
+import Data.ActividadBD;
+import Data.ParticipantesBD;
+import Data.TareaDB;
 import Data.UserDB;
+import Data.VacacionesDB;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -109,6 +113,33 @@ public class User implements Serializable{
     }
     
     public static void delete(User user){
+        ArrayList<TareaPersonal> tareas = new ArrayList();
+        tareas = TareaDB.getTareas(user.getLogin()); 
+        for(int i =0; i<tareas.size(); i++){
+            TareaDB.delete(tareas.get(i));
+        }
+        ArrayList<Participante> participaciones = new ArrayList();
+        participaciones = ParticipantesBD.getParticipaciones(user.getLogin());
+        System.out.println("vamos a borrar a los participantes");
+        for(int i = 0; i<participaciones.size(); i++){
+           ParticipantesBD.delete(user.getLogin());
+        }
+        ArrayList<Actividad> actividades = new ArrayList();
+        actividades = ActividadBD.selectActividades(user.getLogin());
+        for(int i =0; i<actividades.size(); i++){
+            Actividad a = new Actividad( actividades.get(i).getIdentificador(),null,actividades.get(i).getDescripcion(),
+            actividades.get(i).getRolNecesario(), actividades.get(i).getDuracionEstimada(),actividades.get(i).getFechaInicio(),
+                    actividades.get(i).getFechaFin(), actividades.get(i).getDuracionReal(),actividades.get(i).getEstado(),actividades.get(i).getIdFase());
+            ActividadBD.updateActividadUsuario(a);
+        }
+        System.out.println("justo aqui");
+        
+        ArrayList<Vacaciones> vacaciones = new ArrayList();
+        vacaciones = (ArrayList) VacacionesDB.obtenerVacaciones(user.getLogin());
+        for(int i =0; i<vacaciones.size(); i++){
+            VacacionesDB.delete(vacaciones.get(i));
+        }
+        
         UserDB.delete(user);
     }
     public static void update(User user){

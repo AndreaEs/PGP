@@ -725,4 +725,42 @@ public class ActividadBD {
         }
         return fechaInicio;
     }
+    
+    public static void updateActividadUsuario(Actividad a) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        int diaInicio, mesInicio, anoInicio, diaFin, mesFin, anoFin;
+        //int[] fechaInicio = getFechaInt(a.getFechaInicio());
+        diaInicio = Integer.valueOf(a.getFechaInicio().substring(8));
+        mesInicio = Integer.valueOf(a.getFechaInicio().substring(5,7));
+        anoInicio = Integer.valueOf(a.getFechaInicio().substring(0,4));
+       // int[] fechaFin = getFechaInt(a.getFechaFin());
+        diaFin = Integer.valueOf(a.getFechaFin().substring(8));
+        mesFin = Integer.valueOf(a.getFechaFin().substring(5,7));
+        anoFin = Integer.valueOf(a.getFechaFin().substring(0,4));
+        String query = "UPDATE Actividades SET login=?, descripcion=?, rol=?, duracionEstimada=?, diaInicio=?, mesInicio=?, anoInicio=?, diaFin=?, mesFin=?, anoFin=?, duracionReal=?, estado=?, idFase=? WHERE id=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, a.getLogin());
+            ps.setString(2, a.getDescripcion());
+            ps.setString(3, a.getRolNecesario());
+            ps.setInt(4, a.getDuracionEstimada());
+            ps.setInt(5, diaInicio);
+            ps.setInt(6, mesInicio);
+            ps.setInt(7, anoInicio);
+            ps.setInt(8, diaFin);
+            ps.setInt(9, mesFin);
+            ps.setInt(10, anoFin);
+            ps.setInt(11, a.getDuracionReal());
+            ps.setString(12, String.valueOf(a.getEstado()));
+            ps.setInt(13, a.getIdFase());
+            ps.setInt(14, a.getIdentificador());
+            ps.executeUpdate();
+            ps.close();
+            pool.freeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

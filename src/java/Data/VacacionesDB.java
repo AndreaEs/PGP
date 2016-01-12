@@ -67,5 +67,27 @@ public class VacacionesDB {
             e.printStackTrace();
         }
     }
+    
+    public static void delete(Vacaciones v) {
+        System.out.println("borramos");
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        String query="DELETE FROM Vacaciones WHERE login = ?";
+                
+                
+        try {
+            
+            ps = connection.prepareStatement(query);
+            ps.setString(1, v.getUsuario());
+            int res = ps.executeUpdate();
+            ps.close();
+            pool.freeConnection(connection);
+            
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            
+        }
+    }
 
 }
