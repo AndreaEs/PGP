@@ -56,7 +56,7 @@
                     <h1>
                         Proyectos
                     </h1>
-                    
+
                 </section>
 
                 <!-- Main content -->
@@ -80,11 +80,11 @@
                                         String usuario = (String) session.getAttribute("user");
 
                                         ArrayList<Proyecto> proyectos = (ArrayList<Proyecto>) session.getAttribute("proyectos");
-                                        String colorClase = ""; 
-                                        if(session.getAttribute("mensaje")!=null){%>
-                                        <h1><%=session.getAttribute("mensaje")%> </h1>
-                                        <%
-                                        session.setAttribute("mensaje",null);
+                                        String colorClase = "";
+                                        if (session.getAttribute("mensaje") != null) {%>
+                                    <h1><%=session.getAttribute("mensaje")%> </h1>
+                                    <%
+                                            session.setAttribute("mensaje", null);
                                         }
                                         for (Proyecto p : proyectos) {
                                     %>
@@ -111,10 +111,13 @@
                                                 </div>
                                                 <%if (!session.getAttribute("tipo").equals("A")) {%>
                                                 <div class="btn pull-right">
-                                                    <%if(session.getAttribute("tipo").equals("J")){%>
-                                                    <a href="Proyectos?proyecto=finalizar&idProyecto=<%= p.getIdentificador()%>"><button type="button" class="btn btn-default">Finalizar</button></a>
-
-                                                    <%}%>
+                                                    <%if (session.getAttribute("tipo").equals("J")) {
+                                                        if(p.getEstado() != 'C'){
+                                                    %>
+                                                            <a href="Proyectos?proyecto=finalizar&idProyecto=<%= p.getIdentificador()%>"><button type="button" class="btn btn-default">Finalizar</button></a>
+                                                    <% 
+                                                        }
+                                                    }%>
                                                     <a href="Fases?fase=verFases&idProyecto=<%= p.getIdentificador()%>"><button type="button" class="btn btn-default">Fases</button></a>
                                                 </div>
                                                 <%}%>

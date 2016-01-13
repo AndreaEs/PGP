@@ -143,7 +143,7 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <input type="text" class="form-control pull-right" id="reservation" name="fechaInicioyFin" value="<%= f.getFechaInicio()%> - <%= f.getFechaFin()%>">
+                                                    <input <%if(f.getEstado() != 'C'){%> disabled<%}%> type="text" class="form-control pull-right" id="reservation" name="fechaInicioyFin" value="<%= f.getFechaInicio()%> - <%= f.getFechaFin()%>">
                                                 </div><!-- /.input group -->
                                             </div><!-- /.form group -->
                                             <div class="form-group">

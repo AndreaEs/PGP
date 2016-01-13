@@ -120,10 +120,12 @@
                                                 </div>
                                                 
                                             </a>
-                                                <%if(session.getAttribute("tipo").equals("J")){%>
+                                                <%if(session.getAttribute("tipo").equals("J")){
+                                                    if(a.getEstado() != 'C'){
+                                                %>
                                                     <a href="Actividades?actividad=finalizar&idActividad=<%= a.getIdentificador()%>&idFase=<%=a.getIdFase()%>"><button type="button" class="btn btn-default">Finalizar</button></a>
 
-                                                    <%}%>
+                                                    <%}}%>
                                             <% if (!session.getAttribute("tipo").equals("D")) {
                                                     boolean b = !ParticipantesBD.exist(a.getIdentificador());%>
                                             <a href="usuarios.jsp?participante=true&idActividad=<%=a.getIdentificador()%>">

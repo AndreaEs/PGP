@@ -89,6 +89,12 @@
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
+                    <%String mensaje = (String) session.getAttribute("mensaje");
+                        if (mensaje != null) {
+                    %>
+                    <h2><font color="#01DF01"><%=mensaje%></font></h2>
+                        <%}
+                        %>
                     <h1>
                         Proyecto
                         <small>Crear un nuevo proyecto</small>
@@ -267,12 +273,12 @@
                                         <div class="box-footer">
                                             <%if (p.getEstado() != 'C') {%>
                                             <button type="submit" class="btn btn-primary" name="actualizarProyecto" value="actualizarProyecto" onclick="return validar()">Actualizar Proyecto</button>
-                                            <a href="vistaProyectos.jsp"><span class="btn btn-default">Cancelar</span></a>
+                                            <a href="Proyectos?proyecto=verTodosProyectos"><span class="btn btn-default">Cancelar</span></a>
                                             <%} else {%>
                                             <%if(session.getAttribute("tipo").equals("J")){%>
-                                            <a href="Proyectos?proyecto=actualizarUnProyecto&usuario=<%=user%>&idProyecto=<%=p.getIdentificador()%>"><span class="btn btn-default">Cancelar</span></a>
+                                            <a href="Proyectos?proyecto=verProyectos"><span class="btn btn-default">Cancelar</span></a>
                                             <%} else {%>
-                                            <a href="vistaProyectos.jsp"><span class="btn btn-default">Atrás</span></a>
+                                            <a href="Proyectos?proyecto=verTodosProyectos"><span class="btn btn-default">Atrás</span></a>
                                             <%}}%>
                                         </div>
                                     </form>
