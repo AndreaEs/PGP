@@ -14,7 +14,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,6 +49,8 @@ public class InformeD extends HttpServlet {
         
         HttpSession sesion = request.getSession();
         String tipoI = request.getParameter("tipoI");
+        sesion.setAttribute("tipoI", tipoI);
+        System.err.println(tipoI);
         String fechaInicioyFin = request.getParameter("fechaInicioyFin");
         String fechaInicio = "";
         boolean encontrado = false;
@@ -121,7 +122,6 @@ public class InformeD extends HttpServlet {
         sesion.setAttribute("fechaI", fechaI);
         sesion.setAttribute("fechaF", fechaF);
         sesion.setAttribute("informe", inf);
-        
         return "/vistaInformeD.jsp";
     }
     

@@ -64,15 +64,13 @@
                         
                         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                         Date actual = new Date();
-                        Date f = formatter.parse(fechaF);
-                        
+                        Date f = formatter.parse(fechaF);%>
+                        <%
                         if(f.after(actual)){%>
                         <h1>Ha seleccionado una fecha que aún no ha ocurrido</h1>
                         <%} else {
-                        
-                            
-                            if(tipoI.equals("AS")){
-                        
+                            if(tipoI.equals("AS")){%>
+                        <%
                         HashMap<Integer, ArrayList<Actividad>> inf = (HashMap<Integer, ArrayList<Actividad>>) session.getAttribute("informe");
                         Iterator it = inf.entrySet().iterator();
                         while (it.hasNext()) {
