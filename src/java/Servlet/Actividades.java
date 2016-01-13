@@ -82,13 +82,18 @@ public class Actividades extends HttpServlet {
                     url = "/actividad.jsp";
                 } else if (accion.equals("actualizarActividad")) {
                     int idActividad = Integer.parseInt(request.getParameter("idActividad"));
+                    Actividad a = Actividad.getActivity(idActividad);
                     if(sesion.getAttribute("tipo").equals("D")){
                         Actividad.actualizarActividad(getActividadFromParameters(request, idActividad, idFase, user, tipo));
                     } else {
-                        if(!comprobarFechas(request)){
-                             sesion.setAttribute("mensaje","Las fechas no se encuentran dentro de la indicada, inténtelo de nuevo");
+                        if(a.getEstado()!='C'){
+                            if(!comprobarFechas(request)){
+                                 sesion.setAttribute("mensaje","Las fechas no se encuentran dentro de la indicada, inténtelo de nuevo");
+                            } else {
+                                Actividad.actualizarActividad(getActividadFromParameters(request, idActividad, idFase, user, tipo));
+                            }
                         } else {
-                            Actividad.actualizarActividad(getActividadFromParameters(request, idActividad, idFase, user, tipo));
+                            sesion.setAttribute("mensaje", "No se puede actualizar porque la actividad está cerrada.");
                         }
                     }
                     url = getActividades(idFase, sesion, user);

@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import Business.Actividad;
 import Business.Fase;
 import Business.Proyecto;
 import java.io.IOException;
@@ -73,8 +74,13 @@ public class Fases extends HttpServlet {
                 } else if(accion.equals("finalizar")){
                     int idFase = Integer.parseInt(request.getParameter("idFase"));
                     Fase f = Fase.getPhase(idFase);
-                    f.setEstado('C');
-                    Fase.actualizarFase(f);
+                    if(comprobarFinalizar(idFase)){
+                       f.setEstado('C');
+                        Fase.actualizarFase(f); 
+                    } else {
+                        sesion.setAttribute("mensaje","No estan cerradas todas las actividades.");
+                    }
+                    
                     url="/vistaFases.jsp";
                 }
 
@@ -158,6 +164,17 @@ public class Fases extends HttpServlet {
         return res;
     }
 
+    private boolean comprobarFinalizar(int idFase){
+        ArrayList<Actividad> act = Actividad.getFase(idFase);
+        for(Actividad act1 : act){
+            if(act1.getEstado()!='C'){
+                return false; 
+            }
+        }
+        
+        return true;
+    }
+    
     /**
      * 
      * @param sesion

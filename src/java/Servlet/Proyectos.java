@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import Business.Fase;
 import Business.Proyecto;
 import Business.TablaRoles;
 import Business.User;
@@ -90,8 +91,11 @@ public class Proyectos extends HttpServlet {
                     int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
                     Proyecto p = Proyecto.getProject(idProyecto);
                     Proyecto tmp = new Proyecto(p.getNombre(),p.getFechaInicio(),p.getFechaFin(),'C',p.getLogin(),p.getNumP());
-                   
+                   if(comprobarFinalizar(idProyecto)){
                     Proyecto.actualizarProyecto(tmp);
+                   } else {
+                       sesion.setAttribute("mensaje", "No puede finalizarlo porque no están cerradas todas las fases.");
+                   }
                     url="/vistaProyectos.jsp";
                 }
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
@@ -152,6 +156,17 @@ public class Proyectos extends HttpServlet {
         return !f1.before(actual);
      }
 
+     private boolean comprobarFinalizar(int idProyecto){
+        ArrayList<Fase> act = Fase.getFase(idProyecto);
+        for(Fase act1 : act){
+            if(act1.getEstado()!='C'){
+                return false; 
+            }
+        }
+        
+        return true;
+    }
+     
      /**
       * Obtener proyectos de los que un usuario es jefe
       * @param user
