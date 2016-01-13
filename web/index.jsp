@@ -51,17 +51,17 @@
     <body>
         <div class="login">
   <div class="heading">
-    <h2>Sign in</h2>
+    <h2>Inicio de sesión</h2>
     <form action="Acceder" method="post" onsubmit="return validar(user,pass)">
 
       <div class="input-group input-group-lg">
         <span class="input-group-addon"><i class="fa fa-user"></i></span>
-        <input type="text" class="form-control" name="user" placeholder="Username or email">
+        <input type="text" class="form-control" name="user" placeholder="Nombre de usuario">
           </div>
 
         <div class="input-group input-group-lg">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-          <input type="password" class="form-control" name="pass" placeholder="Password">
+          <input type="password" class="form-control" name="pass" placeholder="Contraseña">
         </div>
         <br>
         <div class="input-group input-group-lg"> 
@@ -77,7 +77,7 @@
          <%=session.getAttribute("msg")%>   
         <%}%>
         </div>
-        <button type="submit" class="float">Login</button>
+        <button type="submit" class="float">Iniciar sesión</button>
        </form>
  		
         </div>

@@ -146,7 +146,7 @@
                     <h4>Identificador: <%= act.get(i).getIdentificador()%></h4>
                     <h4>Fecha Inicio: <%= act.get(i).getFechaInicio()%></h4>
                     <h4>Fecha Fin: <%= act.get(i).getFechaFin()%></h4>
-                    <h4> Persona encargada de realizarla <%= act.get(i).getLogin()%></h4>
+                    <h4>Persona encargada de realizarla <%= act.get(i).getLogin()%></h4>
                     <h4>Duración estimada: <%= act.get(i).getDuracionEstimada()%></h4>
                     <h4>Duracion real  <%= act.get(i).getDuracionReal()%></h4>
 

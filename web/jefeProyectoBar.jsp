@@ -74,9 +74,6 @@
                             <!-- User Account: style can be found in dropdown.less -->
                             
                             <!-- Control Sidebar Toggle Button -->
-                            <li>
-                                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                            </li>
                         </ul>
                         <input type="submit" value="Cerrar Sesion" onclick = "location='/PGP/index.jsp'"/>
                     </div>
@@ -102,11 +99,11 @@
           <!-- /.search form -->
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
-            <li class="header">MAIN NAVIGATION</li>
+            <li class="header">Menú</li>
             
             <li>
               <a href="CalendarioD?accion=mostrarCalendario&user=<%=session.getAttribute("user")%>&tipo=<%=session.getAttribute("tipo")%>">
-                <i class="fa fa-calendar"></i> <span>Calendar</span>
+                <i class="fa fa-calendar"></i> <span>Calendario</span>
               </a>
             </li>
             

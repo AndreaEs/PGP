@@ -106,7 +106,7 @@
 
 
                                 %>
-                                <h3 class="box-title">add user</h3>
+                                <h3 class="box-title">Añadir usuario</h3>
                                 <form action="AddUser" method="post">
                                     <button type="submit" onclick="return confirm('Se eliminara el usuario y sus actividades asignadas pasaran a tener valor null')" class="btn btn-info pull-right" name="Accion" value="eliminar">Eliminar</button>
                                 </form>
@@ -131,7 +131,7 @@
 
 
                                     <div class="form-group">
-                                        <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Contraseña</label>
                                         <div class="col-sm-10">
                                             <input type="password" class="form-control" id="inputPassword3" name="pass" value= <%= usuario.getPass()%>/>
                                         </div>
