@@ -123,12 +123,12 @@
                                                     boolean b = !ParticipantesBD.exist(a.getIdentificador());%>
                                             <a href="usuarios.jsp?participante=true&idActividad=<%=a.getIdentificador()%>">
                                                 <% if (b && a.getEstado()!='C') { %> 
-                                                <button class="btn btn-block btn-info btn-flat">Add participantes</button>
+                                                <button class="btn btn-block btn-info btn-flat">Add participantes</button></a>
                                                 <%} else { %>
-                                                <button disabled="true" class="btn btn-block btn-info btn-flat">Add participantes</button>
+                                                <button disabled=""  class="btn btn-block btn-info btn-flat">Add participantes</button>
                                                 <%}%>
                                                 
-                                            </a>
+                                            
                                                 
                                             <%}%>
                                         </div>

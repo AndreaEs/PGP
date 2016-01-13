@@ -9,6 +9,7 @@ import Data.ParticipantesBD;
 import Data.VacacionesDB;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -41,10 +42,13 @@ public class Participantes extends HttpServlet {
         int idActividad = Integer.parseInt(request.getParameter("idActividad"));
         double porcentaje = Double.parseDouble(request.getParameter("porcentaje"));
         String url = null;
+        System.err.println(usuario);
+        System.err.println(request.getParameter("accion"));
         if (usuario != null) {
             String accion = request.getParameter("accion");
             if (accion != null) {
                 if (accion.equals("crearParticipacion")) {
+                    System.err.println("dentro participacion");
                     if (!comprobarLogin(usuario, idActividad)) {
                         sesion.setAttribute("mensaje", "El usuario ya tiene el maximo de proyecto asignado");
                     } else if (!comprobarPorcentaje(usuario, porcentaje)) {
@@ -119,16 +123,35 @@ public class Participantes extends HttpServlet {
      * @return 
      */
     private boolean comprobarLogin(String login, int idActividad) {
-        ArrayList<Proyecto> proy = Proyecto.getProyectos(login);
+        
+        System.err.println("dentro de login");
+        ArrayList<Proyecto> proy = Proyecto.getProyectosAbiertos(login);
+        Actividad a = Actividad.getActivity(idActividad);
+        Date i = new Date(a.getFechaInicio());
+        Date f = new Date(a.getFechaFin());
+        for(Proyecto proy1: proy){
+            if(new Date(proy1.getFechaInicio()).before(i) || new Date(proy1.getFechaFin()).after(f)){
+                proy.remove(proy1);
+            }
+        }
+        
         if (ParticipantesBD.exist(login) && proy.size() > 0) {
             return false;
         }
-        if (ParticipantesBD.getParticipaciones(login).size() > 2) {
+        
+        ArrayList<Participante> part = ParticipantesBD.getParticipaciones(login);
+        for(Participante part1: part){
+            if(new Date(Actividad.getActivity(part1.getIdActividad()).getFechaInicio()).before(i) 
+                    || new Date(Actividad.getActivity(part1.getIdActividad()).getFechaFin()).after(f)){
+                part.remove(part1);
+            }
+        }
+        if (part.size() > 2) {
             return false;
         }
-        return comprobarVacaciones(login, idActividad);
+        return true;
     }
-
+    
     /**
      * Comprobar si un usuario tiene asignadas vacaciones en la fecha de la
      * actividad a asignar

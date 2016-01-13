@@ -158,4 +158,8 @@ public class Proyecto implements Serializable {
         return ProyectoDB.selectProyectosSinOrdenar(u.getNif());
     }
 
+    public static ArrayList<Proyecto> getProyectosAbiertos(String usuario){
+        User u = UserDB.getUsuario(usuario);
+        return ProyectoDB.selectProyectosAbiertos(usuario);
+    }
 }
