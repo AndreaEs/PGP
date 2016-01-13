@@ -82,7 +82,15 @@ public class Actividades extends HttpServlet {
                     url = "/actividad.jsp";
                 } else if (accion.equals("actualizarActividad")) {
                     int idActividad = Integer.parseInt(request.getParameter("idActividad"));
-                    Actividad.actualizarActividad(getActividadFromParameters(request, idActividad, idFase, user, tipo));
+                    if(sesion.getAttribute("tipo").equals("D")){
+                        Actividad.actualizarActividad(getActividadFromParameters(request, idActividad, idFase, user, tipo));
+                    } else {
+                        if(!comprobarFechas(request)){
+                             sesion.setAttribute("mensaje","Las fechas no se encuentran dentro de la indicada, inténtelo de nuevo");
+                        } else {
+                            Actividad.actualizarActividad(getActividadFromParameters(request, idActividad, idFase, user, tipo));
+                        }
+                    }
                     url = getActividades(idFase, sesion, user);
                 } else if(accion.equals("finalizar")){
                     int idActividad = Integer.parseInt(request.getParameter("idActividad"));
@@ -204,6 +212,7 @@ public class Actividades extends HttpServlet {
     
     private boolean comprobarFechas(HttpServletRequest request){
         String fechaInicioyFin = request.getParameter("fechaInicioyFin");
+        System.err.println(fechaInicioyFin);
         String fechaInicio = "";
         boolean encontrado = false;
         int i = 0;

@@ -44,9 +44,7 @@ public class Fases extends HttpServlet {
             String accion = request.getParameter("fase");
             if (accion != null) {
                 if (accion.equals("crearFase")) {
-                    if(!comprobarFechas(request)){
-                        sesion.setAttribute("mensaje","Las fechas no se encuentran dentro del proyecto indicado");
-                    } else {
+                    if(comprobarFechas(request,sesion)){
                         Fase.crearNuevaFase(getFaseFromParameters(request, idProyecto, 0));
                     }
                     url = getFases(sesion, idProyecto);
@@ -68,7 +66,9 @@ public class Fases extends HttpServlet {
                     url = "/fase.jsp";
                 }else if(accion.equals("actualizarFase")){
                     int idFase = Integer.parseInt(request.getParameter("idFase"));
-                    Fase.actualizarFase(getFaseFromParameters(request, idProyecto, idFase));
+                    if(comprobarFechas(request,sesion)){
+                        Fase.actualizarFase(getFaseFromParameters(request, idProyecto, idFase));
+                    }
                     url = getFases(sesion, idProyecto);
                 } else if(accion.equals("finalizar")){
                     int idFase = Integer.parseInt(request.getParameter("idFase"));
@@ -117,7 +117,7 @@ public class Fases extends HttpServlet {
         }
     }
     
-    private boolean comprobarFechas(HttpServletRequest request){
+    private boolean comprobarFechas(HttpServletRequest request, HttpSession sesion){
         String fechaInicioyFin = request.getParameter("fechaInicioyFin");
         String fechaInicio = "";
         boolean encontrado = false;
@@ -135,9 +135,27 @@ public class Fases extends HttpServlet {
         Date f1 = new Date(fechaInicio);
         Date f2 = new Date(fechaFin);
         Proyecto p = Proyecto.getProject(Integer.parseInt(request.getParameter("idProyecto")));
+        ArrayList<Fase> fases = Fase.getFase(p.getIdentificador());
         Date p1 = new Date(p.getFechaInicio());
         Date p2 = new Date(p.getFechaFin());
-        return !(f1.before(p1) || f2.after(p2));
+        boolean res = false;
+        
+        if(f1.before(p1) || f2.after(p2)){
+            sesion.setAttribute("mensaje", "Las fechas no se encuentran dentro del proyecto indicado");
+            res = false;
+        } else {
+            if(fases.isEmpty()){
+            res = f1.equals(p1);
+            if(!res) sesion.setAttribute("mensaje", "La primera fase debe coincidir con el inicio del proyecto.");
+            } else {
+            Fase f = Fase.getPhase(fases.get(fases.size()-1).getId());
+            Date fa1 = new Date(f.getFechaFin());
+            res = f1.equals(fa1);
+            if(!res) sesion.setAttribute("mensaje", "La fecha inicial de la fase debe ser la final de la fase anterior");
+            }
+        }
+        
+        return res;
     }
 
     /**

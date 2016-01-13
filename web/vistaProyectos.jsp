@@ -80,7 +80,12 @@
                                         String usuario = (String) session.getAttribute("user");
 
                                         ArrayList<Proyecto> proyectos = (ArrayList<Proyecto>) session.getAttribute("proyectos");
-                                        String colorClase = "";
+                                        String colorClase = ""; 
+                                        if(session.getAttribute("mensaje")!=null){%>
+                                        <h1><%=session.getAttribute("mensaje")%> </h1>
+                                        <%
+                                        session.setAttribute("mensaje",null);
+                                        }
                                         for (Proyecto p : proyectos) {
                                     %>
                                     <ul class="nav nav-pills nav-stacked">

@@ -10,6 +10,7 @@ import Business.TablaRoles;
 import Business.User;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,7 +47,11 @@ public class Proyectos extends HttpServlet {
                    sesion.setAttribute("proyecto-nif",(String)request.getParameter("jefe-proyecto") );
                     String user =  (String)request.getParameter("jefe-proyecto");
                     String numero = (String) request.getParameter("numero-participantes");
-                    Proyecto.guardarNuevoProyecto(getProyectoFromParameters(request, 0, user,Integer.valueOf(numero)));
+                    if(!comprobarFechas(request)){
+                        sesion.setAttribute("mensaje","La fecha es posterior a la fecha actual");
+                    } else {
+                        Proyecto.guardarNuevoProyecto(getProyectoFromParameters(request, 0, user,Integer.valueOf(numero)));
+                    }
                     url = getTodosProyectos(sesion);
                 } else if (accion.equals("verTodosProyectos")) {
                     url = getTodosProyectos(sesion);
@@ -67,7 +72,11 @@ public class Proyectos extends HttpServlet {
                     String user = User.getJefe( (String)request.getParameter("jefe-proyecto"));
                     int idProyecto = Integer.parseInt(request.getParameter("idProyecto"));
                     Proyecto p = Proyecto.getProject(idProyecto);
-                    Proyecto.actualizarProyecto(getProyectoFromParameters(request, idProyecto, p.getLogin(),p.getNumP()));
+                    if(!comprobarFechas(request)){
+                        sesion.setAttribute("mensaje","La fecha es posterior a la fecha actual");
+                    } else {
+                        Proyecto.actualizarProyecto(getProyectoFromParameters(request, idProyecto, p.getLogin(),p.getNumP()));
+                    }
                     if(!TablaRoles.exist(idProyecto)){
                     
                     for(int i =0; i<p.getNumP();i++){
@@ -123,6 +132,25 @@ public class Proyectos extends HttpServlet {
             return new Proyecto(idProyecto, nombre, fechaInicio, fechaFin, estado, user,numP);
         }
     }
+     
+     private boolean comprobarFechas(HttpServletRequest request){
+         String fechaInicioyFin = request.getParameter("fechaInicioyFin");
+        String fechaInicio = "";
+        boolean encontrado = false;
+        int i = 0;
+        while (i < fechaInicioyFin.length() && !encontrado) {
+            if (fechaInicioyFin.charAt(i) != ' ') {
+                fechaInicio += fechaInicioyFin.charAt(i);
+            } else {
+                encontrado = true;
+            }
+            i++;
+        }
+        
+        Date f1 = new Date(fechaInicio);
+        Date actual = new Date();
+        return !f1.before(actual);
+     }
 
      /**
       * Obtener proyectos de los que un usuario es jefe

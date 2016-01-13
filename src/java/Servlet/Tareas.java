@@ -86,7 +86,7 @@ public class Tareas extends HttpServlet {
                     List<Actividad> actFecha = new ArrayList<Actividad>();
                     for (int i = 0; i < actividades.size(); i++) {
                         Actividad a = actividades.get(i);
-                        if (a.comprobarFechaEntreFechas(fecha, a)) {
+                        if (a.comprobarFechaEntreFechas(fecha, a) && a.getEstado()!='C') {
                             actFecha.add(a);
                         }
                     }
@@ -131,8 +131,60 @@ public class Tareas extends HttpServlet {
                     url = "/tarea.jsp";
                 } else if (accion.equals("actualizarTarea")) {
                     int idTarea = Integer.parseInt(request.getParameter("idTarea"));
-                    TareaPersonal.actualizarTarea(getTareaFromParameter(request, idTarea, usuario));
-                    url = getTareas(usuario, sesion);
+                    TareaPersonal tp = TareaPersonal.getTarea(idTarea);
+                    boolean correcto=false;
+                    String fecha = request.getParameter("fecha");
+                    System.err.println("FECHA: "+fecha);
+                    String mensaje="";
+                    try {
+                        System.err.println("dentro del primer try");
+                        //Comprobaciones de un evento tipo Tarea Personal
+                        //Comprobar que no quiere asignar una tarea en fin de semana
+                        if (!tp.tareaFinSemana(fecha)) {
+                            mensaje = "No puedes asignar una tarea en fin de semana, inténtelo de nuevo";
+                        }
+                    } catch (ParseException ex) {
+                        Logger.getLogger(Tareas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    //Obtener actividades de ese usuario
+                    List<Actividad> actividades = new ArrayList<Actividad>();
+                    actividades = ActividadBD.selectActividades(usuario);
+
+                    //Comprobar que en esa fecha hay al menos una actividad
+                    List<Actividad> actFecha = new ArrayList<Actividad>();
+                    for (int i = 0; i < actividades.size(); i++) {
+                        Actividad a = actividades.get(i);
+                        if (a.comprobarFechaEntreFechas(fecha, a) && a.getEstado()!='C') {
+                            actFecha.add(a);
+                        }
+                    }
+
+                    //Si no había ninguna actividad asignada --> avisar usuario
+                    //no hacer insert
+                    if (actFecha.isEmpty()) {
+                        mensaje = "No hay ninguna actividad en esa fecha, inténtelo de nuevo";
+                    }
+                    //Si solo había una actividad --> asignar tarea a esa actividad
+                    if (actFecha.size() >= 1) {
+                        if(comprobarFechaActual(fecha)){
+                        //Anadir tp a la bbdd
+                        TareaPersonal.actualizarTarea(getTareaFromParameter(request, idTarea, usuario));
+                        correcto = true;
+                        mensaje="¡Todo correcto! Tarea actualizada";
+                        } else {
+                            mensaje="La fecha es posterior a la actual, inténtelo de nuevo";
+                        }
+                    } 
+
+                    
+                        ArrayList<TareaPersonal> tareas = TareaPersonal.getTareas(usuario);
+                        sesion.setAttribute("tareas", tareas);
+                        url = "/vistaTareas.jsp";
+                    
+                    request.setAttribute("mensaje", mensaje);
+                    sesion.setAttribute("user", (String) sesion.getAttribute("user"));
+                    
                 }
                 RequestDispatcher respuesta = getServletContext().getRequestDispatcher(url);
                 respuesta.forward(request, response);

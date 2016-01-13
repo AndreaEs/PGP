@@ -78,9 +78,10 @@
                                     <h3 class="box-title">Lista de actividades</h3>
                                     <div class="pull-right">
                                         <small class="text-light-blue">Sin comenzar.</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <small class="text-red">En curso.</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <small class="text-orange">En curso.</small>&nbsp;&nbsp;&nbsp;&nbsp;
                                         <small class="text-yellow">Finalizada.</small>&nbsp;&nbsp;&nbsp;&nbsp;
                                         <small class="text-muted">Cerrada.</small>
+                                        <small class="text-red">Sobreasignada</small>
                                     </div>
                                 </div>
                                 <div class="box-body no-padding">
@@ -102,11 +103,15 @@
                                                 <% if (a.getEstado() == 'S') {
                                                         colorClase = "text-light-blue";
                                                     } else if (a.getEstado() == 'E') {
-                                                        colorClase = "text-red";
+                                                        colorClase = "text-orange";
                                                     } else if (a.getEstado() == 'F') {
                                                         colorClase = "text-yellow";
                                                     } else if (a.getEstado() == 'C') {
                                                         colorClase = "text-muted";
+                                                    } 
+                                                    
+                                                    if (a.getDuracionReal()>a.getDuracionEstimada()){
+                                                        colorClase = "text-red";
                                                     }
                                                 %>
                                                 <div class="<%=colorClase%>">
