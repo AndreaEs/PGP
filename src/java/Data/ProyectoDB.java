@@ -326,7 +326,7 @@ public class ProyectoDB {
                 String fechaFinA = String.format("%04d-%02d-%02d", rs.getInt("afA"), rs.getInt("mfA"), rs.getInt("dfA"));
 
                 Proyecto p = new Proyecto(rs.getInt("idProyecto"), rs.getString("nombreP"), fechaInicioP, fechaFinP, rs.getString("estadoP").charAt(0), rs.getString("loginP"), rs.getInt("numP"));
-                Fase f = new Fase(rs.getInt("idFase"), rs.getString("nombreF"), fechaInicioA, fechaFinA, rs.getString("estadoF").charAt(0), rs.getInt("idPf"));
+                Fase f = new Fase(rs.getInt("idFase"), rs.getString("nombreF"), fechaInicioF, fechaFinA, rs.getString("estadoF").charAt(0), rs.getInt("idPf"));
                 Actividad a = new Actividad(rs.getInt("idActividad"), rs.getString("loginA"), rs.getString("descripcionA"), rs.getString("rol"), rs.getInt("duracionestimada"), fechaInicioA, fechaFinA, rs.getInt("duracionreal"), rs.getString("estadoA").charAt(0), rs.getInt("idFa"));
 
                 //Comprobar si la actividad obtenida está entre el rango de fechas introducido por el usuario
