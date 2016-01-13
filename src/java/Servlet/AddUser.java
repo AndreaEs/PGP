@@ -6,9 +6,7 @@
 package Servlet;
 
 import Business.User;
-import Data.UserDB;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,12 +48,11 @@ public class AddUser extends HttpServlet {
             User user = new User(login, pass, rol.charAt(0), nif, informacion,maxProy);
 
             if (User.exist(login)) {
-                request.setAttribute("msg", "El usuario ya existe");
-                
+                sesion.setAttribute("msg", "El usuario ya existe");
                 url = "/add.jsp";
             } else {
                 User.insert(user);
-                url = "/usuarios.jsp"; //cambiar por donde tenga q ir
+                url = "/usuarios.jsp";
             }
         } else if (request.getParameter("Accion").equals("eliminar")) {
             

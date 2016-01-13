@@ -7,7 +7,6 @@ package Servlet;
 
 import Business.Actividad;
 import Business.Fase;
-import Business.Proyecto;
 import Data.ActividadBD;
 import Data.PredecesorasDB;
 import java.io.IOException;

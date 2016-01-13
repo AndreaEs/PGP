@@ -49,10 +49,20 @@
             <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <script type="text/javascript">
+        <script language="Javascript" type="text/javascript">
             function url() {
             <% session.setAttribute("urlAnterior", "Actividades?actividad=verActividades&idFase=" + session.getAttribute("idFase"));%>
 
+            }
+            
+            function validar(porcentaje){
+                var part = porcentaje.value;
+                if(part=="" || part=" "){
+                    window.alert("Porcentaje erroneo");
+                    return false;
+                } else {
+                    return true;
+                }
             }
         </script>
     </head>
@@ -83,7 +93,7 @@
                             participantes = Participante.getParticipantesDisponibles(idProyecto);
                     %>
                     <br><br>
-                    <form action="Participantes?accion=crearParticipacion&idActividad=<%=request.getParameter("idActividad")%>" method="post">
+                    <form name="participante" action="Participantes?accion=crearParticipacion&idActividad=<%=request.getParameter("idActividad")%>" method="post">
                         <table class="table table-striped text-center">
 
                             <tr>
@@ -104,7 +114,7 @@
                                             <%}%>
                                         </select>
                                     </td>
-                                    <td><input type="submit" class="btn btn-block btn-info btn-flat" value="Add"></td>
+                                    <td><button type="submit" class="btn btn-block btn-info btn-flat" onclick="return validar(porcentaje)">Add</button></td>
                                     <td></td>
 
                                 </div>

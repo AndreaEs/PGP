@@ -46,14 +46,13 @@
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
         <SCRIPT language="Javascript" type="text/JavaScript"> 
-            funcion alertar(){
+            function alertar(){
             if(confirm('Confirma')){
-            return true;
+                return true;
             }else{
-            return false;
+                return false;
             }
             }
-
         </script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
@@ -174,7 +173,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">InformaciÃ³n general</label>
+                                        <label class="col-sm-2 control-label">Información general</label>
                                         <textarea class="form-control-static" rows="3"  name="informacion"><%= usuario.getInfoGeneral()%></textarea>
                                     </div>
                                 </div><!-- /.box-body -->

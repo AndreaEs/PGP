@@ -24,20 +24,20 @@
             numero = nif.value.substr(0,nif.value.length-1);
             let = nif.value.substr(nif.value.length-1,1);
             numero = numero % 23;
-
+                return true;
             }else{
-            alert('Dni erroneo, formato no vÃ¡lido');
-            return 0;
+            alert('Dni erroneo, formato no válido');
+            return false;
             }
             }
 
             function validarLogin(login) {
             var usuario = login.value;
-            if (alfanumerico(usuario)==0) {
-            alert ("Introduzca su login");
-            return 0;
+            if (alfanumerico(usuario)) {
+                alert ("Introduzca su login");
+                return false;
             }else {
-            return 1;
+                return true;
             }
             }
 
@@ -45,38 +45,46 @@
             // Devuelve 0 si la cadena esta vacia, 1 si es numerica 
             //o 2 si es alfanumerica
             var i;
-            if (txt.length!=0) {
-            for (i=0;i<txt.length;i++){
-            if (txt.substr(i,1)<"0" || txt.substr(i,1)>"9") {
-            return 2;
+                if (txt.length!=0) {
+                    for (i=0;i<txt.length;i++){
+                        if (txt.substr(i,1)<"0" || txt.substr(i,1)>"9") {
+                            return false;
+                        }
+                    }
+                return false;
+                }
+                    else {
+                        return true;
+                    }
             }
-            }
-            return 1;
-            }
-            else
-            return 0;
+
+            function validarPass(pass, repass){
+                if(pass.value=="" || pass.value==" "){
+                    alert ("Contraseña incorrecta");
+                    return false;
+                }
+                
+                if(repass.value=="" || repass.value==" "){
+                    alert("Repite la contraseña");
+                    return false;
+                }
+                
+                if(repass.value!=pass.value){
+                    alert("Las constraseñas no coinciden");
+                    return false;
+                }
+                return true;
             }
 
             function verificar(nif, login, pass, repass){
-            if(validarLogin(login)==1 && validarDni(nif)==1){
-            if(pass.value.length!=0){
-            if(pass.value==repass.value){
-            System.out.println("devolvemos true;");
-            return true;
-            } else {
-            alert('Las contraseÃ±as no coinciden');
-            return false;
-            }
-            } else {
-            alert('Introduce password');
-            return false;
-            }
-            } else {
-            System.out.println("devolver false");
-            return false;
-            }
-            System.out.println("devolver false");
-            return false;
+            
+                if(validarLogin(login) && validarDni(nif) && validarPass(pass,repass)){
+                    alert("todo ok");
+                    return true;
+                } else {
+                    alert("mal");
+                    return false;
+                }
             }
 
         </script>
@@ -145,7 +153,10 @@
 
                 <!-- Main content -->
                 <section class="content">
-
+                     <%if(session.getAttribute("msg")!=null){%>
+                     <h1><%=session.getAttribute("msg")%></h1>
+                     <%}
+                     session.setAttribute("msg",null);%>
                     <!-- Main row -->
                     <div class="row">
                         <div class="box box-info">
@@ -153,7 +164,7 @@
                                 <h3 class="box-title">add user</h3>
                             </div><!-- /.box-header -->
                             <!-- form start -->
-                            <form class="form-horizontal" action="AddUser" method="post">
+                            <form class="form-horizontal" action="AddUser?Accion=anadir" method="post">
                                 <div class="box-body">
                                     <div class="form-group">
                                         <label for="inputUser3" class="col-sm-2 control-label">Login</label>
@@ -209,8 +220,8 @@
                                     </div>
                                 </div><!-- /.box-body -->
                                 <div class="box-footer">
-                                    <button type="submit" class="btn btn-default" name = "Accion" value="cancelar">Cancelar</button>
-                                    <button type="submit" class="btn btn-info pull-right" name="Accion" value="anadir" onclick="verificar(nif, login, pass, repass,Accion)">Add</button>
+                                    <a href="/usuarios.jsp"><button type="button" class="btn btn-default" name = "Accion" value="cancelar">Cancelar</button></a>
+                                    <button type="submit" class="btn btn-info pull-right" name="Accion" value="Add" onclick="return verificar(nif, login, pass, repass,Accion)">Add</button>
                                 </div><!-- /.box-footer -->
                             </form>
                         </div><!-- /.box -->
