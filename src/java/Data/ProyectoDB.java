@@ -41,7 +41,7 @@ public class ProyectoDB {
         diaFin = fechaFin[0];
         mesFin = fechaFin[1];
         anoFin = fechaFin[2];
-        String query = "INSERT INTO Proyectos (nombre, diaInicio, mesInicio, anoInicio, diaFin, mesFin, anoFin, estado, login) VALUES ('"
+        String query = "INSERT INTO Proyectos (nombre, diaInicio, mesInicio, anoInicio, diaFin, mesFin, anoFin, estado, login , numP) VALUES ('"
                 + proyecto.getNombre() + "',"
                 + diaInicio + ","
                 + mesInicio + ","
@@ -50,7 +50,8 @@ public class ProyectoDB {
                 + mesFin + ","
                 + anoFin + ",'"
                 + proyecto.getEstado() + "','"
-                + proyecto.getLogin() + "')";
+                + proyecto.getLogin() + "','"
+                + proyecto.getNumP()+"')";
         try {
             ps = connection.prepareStatement(query);
             ps.executeUpdate();
@@ -80,7 +81,7 @@ public class ProyectoDB {
             while (rs.next()) {
                 String fechaInicio = String.format("%02d/%02d/%04d", rs.getInt(3), rs.getInt(4), rs.getInt(5));
                 String fechaFin = String.format("%02d/%02d/%04d", rs.getInt(6), rs.getInt(7), rs.getInt(8));
-                Proyecto p = new Proyecto(rs.getInt(1), rs.getString(2), fechaInicio, fechaFin, rs.getString(9).charAt(0), usuario);
+                Proyecto p = new Proyecto(rs.getInt(1), rs.getString(2), fechaInicio, fechaFin, rs.getString(9).charAt(0), usuario,rs.getInt(11));
                 proyectos.add(p);
             }
             rs.close();
@@ -106,7 +107,7 @@ public class ProyectoDB {
             while (rs.next()) {
                 String fechaInicio = String.format("%02d/%02d/%04d", rs.getInt(3), rs.getInt(4), rs.getInt(5));
                 String fechaFin = String.format("%02d/%02d/%04d", rs.getInt(6), rs.getInt(7), rs.getInt(8));
-                Proyecto p = new Proyecto(rs.getInt(1), rs.getString(2), fechaInicio, fechaFin, rs.getString(9).charAt(0), usuario);
+                Proyecto p = new Proyecto(rs.getInt(1), rs.getString(2), fechaInicio, fechaFin, rs.getString(9).charAt(0), usuario , rs.getInt(11));
                 proyectos.add(p);
             }
             rs.close();
@@ -139,7 +140,7 @@ public class ProyectoDB {
             while (rs.next()) {
                 String fechaInicio = String.format("%04d-%02d-%02d", rs.getInt(5), rs.getInt(4), rs.getInt(3));
                 String fechaFin = String.format("%04d-%02d-%02d", rs.getInt(8), rs.getInt(7), rs.getInt(6));
-                Proyecto p = new Proyecto(rs.getInt(1), rs.getString(2), fechaInicio, fechaFin, rs.getString(9).charAt(0), usuario);
+                Proyecto p = new Proyecto(rs.getInt(1), rs.getString(2), fechaInicio, fechaFin, rs.getString(9).charAt(0), usuario,rs.getInt(11));
                 proyectos.add(p);
             }
             rs.close();
@@ -170,7 +171,7 @@ public class ProyectoDB {
             if (rs.next()) {
                 String fechaInicio = String.format("%02d/%02d/%04d", rs.getInt(4), rs.getInt(3), rs.getInt(5));
                 String fechaFin = String.format("%02d/%02d/%04d", rs.getInt(7), rs.getInt(6), rs.getInt(8));
-                p = new Proyecto(idProyecto, rs.getString(2), fechaInicio, fechaFin, rs.getString(9).charAt(0), rs.getString(10));
+                p = new Proyecto(idProyecto, rs.getString(2), fechaInicio, fechaFin, rs.getString(9).charAt(0), rs.getString(10),rs.getInt(11));
             }
             rs.close();
             ps.close();
@@ -201,7 +202,7 @@ public class ProyectoDB {
         diaFin = fechaFin[0];
         mesFin = fechaFin[1];
         anoFin = fechaFin[2];
-        String query = "UPDATE Proyectos SET nombre=?, diaInicio=?, mesInicio=?, anoInicio=?, diaFin=?, mesFin=?, anoFin=?, estado=?, login=? WHERE id=?";
+        String query = "UPDATE Proyectos SET nombre=?, diaInicio=?, mesInicio=?, anoInicio=?, diaFin=?, mesFin=?, anoFin=?, estado=?, login=?, numP=? WHERE id=?";
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1, p.getNombre());
@@ -213,7 +214,8 @@ public class ProyectoDB {
             ps.setInt(7, anoFin);
             ps.setString(8, "" + p.getEstado());
             ps.setString(9, p.getLogin());
-            ps.setInt(10, p.getIdentificador());
+            ps.setInt(10, p.getNumP());
+            ps.setInt(11, p.getIdentificador());
             ps.executeUpdate();
             ps.close();
             pool.freeConnection(connection);
@@ -271,7 +273,7 @@ public class ProyectoDB {
             while (rs.next()) {
                 String fechaInicio = String.format("%02d/%02d/%04d", rs.getInt(3), rs.getInt(4), rs.getInt(5));
                 String fechaFin = String.format("%02d/%02d/%04d", rs.getInt(6), rs.getInt(7), rs.getInt(8));
-                Proyecto p = new Proyecto(rs.getInt(1), rs.getString(2), fechaInicio, fechaFin, rs.getString(9).charAt(0), rs.getString("login"));
+                Proyecto p = new Proyecto(rs.getInt(1), rs.getString(2), fechaInicio, fechaFin, rs.getString(9).charAt(0), rs.getString("login"), rs.getInt(11));
                 proyectos.add(p);
             }
             rs.close();

@@ -48,11 +48,11 @@ public class Proyectos extends HttpServlet {
                    sesion.setAttribute("proyecto-nif",(String)request.getParameter("jefe-proyecto") );
                     String user =  (String)request.getParameter("jefe-proyecto");
                     String numero = (String) request.getParameter("numero-participantes");
-                    if(!comprobarFechas(request)){
+                    /*if(comprobarFechas(request)){
                         sesion.setAttribute("mensaje","La fecha es posterior a la fecha actual");
-                    } else {
+                    } else {*/
                         Proyecto.guardarNuevoProyecto(getProyectoFromParameters(request, 0, user,Integer.valueOf(numero)));
-                    }
+                    /*}*/
                     url = getTodosProyectos(sesion);
                 } else if (accion.equals("verTodosProyectos")) {
                     url = getTodosProyectos(sesion);
@@ -153,7 +153,7 @@ public class Proyectos extends HttpServlet {
         
         Date f1 = new Date(fechaInicio);
         Date actual = new Date();
-        return !f1.before(actual);
+        return f1.after(actual);
      }
 
      private boolean comprobarFinalizar(int idProyecto){

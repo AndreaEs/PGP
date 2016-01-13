@@ -60,6 +60,7 @@
                         String login = (String) session.getAttribute("login");
                         String fechaI = (String) session.getAttribute("fechaI");
                         String fechaF = (String) session.getAttribute("fechaF");
+                         String tipoI = (String) session.getAttribute("tipoI");
                         
                         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                         Date actual = new Date();
@@ -69,6 +70,8 @@
                         <h1>Ha seleccionado una fecha que aún no ha ocurrido</h1>
                         <%} else {
                         
+                            
+                            if(tipoI.equals("AS")){
                         
                         HashMap<Integer, ArrayList<Actividad>> inf = (HashMap<Integer, ArrayList<Actividad>>) session.getAttribute("informe");
                         Iterator it = inf.entrySet().iterator();
@@ -113,7 +116,68 @@
                         }
                     %>
                     <div class="row no-print">
-                    <%}%>
+                    <% } else if(tipoI.equals("PC")){
+                        
+                        
+                        
+                        
+                        
+                        
+                         %>   
+
+                    <h3>Los proyectos que se han cerrado entre <%=fechaI%> y <%=fechaF%> son :</h3>
+
+                    <%
+                        HashMap<String, HashMap<String, ArrayList<Actividad>>> inf = (HashMap<String, HashMap<String, ArrayList<Actividad>>>) session.getAttribute("informe");
+                        System.out.println("inf " + inf);
+                        if (inf != null) {
+                            Iterator it1 = inf.entrySet().iterator();
+                            while (it1.hasNext()) {
+                                Entry par = (Entry) it1.next();
+                                String valor = (String) par.getKey();
+                    %>
+                    <h2>El proyecto <%= valor%></h2>
+
+                    <%
+                        Iterator it2 = inf.get(valor).entrySet().iterator();
+                        while (it2.hasNext()) {
+                            Entry par2 = (Entry) it2.next();
+                            String valor2 = (String) par2.getKey();
+                    %>
+                    <h3> Fase : <%= valor2%></h3>
+
+                    <% if (!inf.get(valor).get(valor2).isEmpty()) {
+                            for (int i = 0; i < inf.get(valor).get(valor2).size(); i++) {
+
+
+                    %>
+                    <h4> </h4>
+                    <h4>----------------Actividad <%= inf.get(valor).get(valor2).get(i).getIdentificador()%>-----------</h4>
+                    <h4>Descripcion: <%= inf.get(valor).get(valor2).get(i).getDescripcion()%></h4>
+                    <h4>Rol: <%= inf.get(valor).get(valor2).get(i).getRolNecesario()%></h4>
+                    <h4>Fecha Inicio: <%= inf.get(valor).get(valor2).get(i).getFechaInicio()%></h4>
+                    <h4>Fecha Fin: <%= inf.get(valor).get(valor2).get(i).getFechaFin()%></h4>
+                    <h4>Duración real: <%= inf.get(valor).get(valor2).get(i).getDuracionReal()%></h4>
+                    <h4>Predecesoras: </h4>
+                    <%
+                        if (inf.get(valor).get(valor2).get(i).getPredecesoras() != null) {
+
+                            for (int j = 0; j < inf.get(valor).get(valor2).get(i).getPredecesoras().size(); j++) {
+                    %>
+                    <h4>** <%= inf.get(valor).get(valor2).get(i).getPredecesoras().get(j)%></h4>
+
+
+                    <% }
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        
+                    }
+                        }%>
                         <div class="col-xs-12">
                             <div>
                                 <a href="informesD.jsp"><button type="button" class="btn btn-default pull-right">Cancelar</button></a>

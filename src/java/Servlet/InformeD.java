@@ -143,7 +143,7 @@ public class InformeD extends HttpServlet {
         }
         System.out.println("hola llegamos hasta aqui");
 
-        return "/vistaInformeJP.jsp";
+        return "/vistaInformeD.jsp";
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

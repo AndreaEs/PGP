@@ -121,7 +121,7 @@
                                         <div class="box-body">
                                             <div class="form-group">
                                                 <label for="nombreProyecto">Nombre del proyecto</label>
-                                                <input type="text" class="form-control" id="nombreProyecto" placeholder="Introduzca el nombre del proyecto" name="nombre">
+                                                <input type="text" class="form-control" id="nombreProyecto" placeholder="Introduzca el nombre del proyecto" name="nombreProyecto">
                                             </div>
                                             <!-- Date range -->
                                             <div class="form-group">
@@ -162,7 +162,7 @@
                                         <div class="box-footer">
                                             <% session.setAttribute("actualizar", true); %>
 
-                                            <button type="submit" class="btn btn-primary" name="crearProyecto" value="crearProyecto" onclick="return validar()">Crear Proyecto</button>
+                                            <button type="submit" class="btn btn-primary" name="crearProyecto" value="crearProyecto" >Crear Proyecto</button>
                                             <a href="vistaProyectos.jsp"><span class="btn btn-default">Cancelar</span></a>
                                         </div>
 
@@ -176,9 +176,9 @@
                                         <div class="box-body">
                                             <div class="form-group">
                                                 <label for="nombreProyecto">Nombre del proyecto</label>
-                                                <input  <%if (p.getEstado() == 'C') {%>
+                                                <input  <%if (p.getEstado() == 'C') { %>
                                                     readonly
-                                                    <%}%>
+                                                    <% } %>
                                                     type="text" class="form-control" disabled id="nombreProyecto" name="nombre" value="<%= p.getNombre()%>">
                                             </div>
                                             <!-- Date range -->
@@ -231,20 +231,19 @@
                                                     %>
                                                 </select>
                                             </div>
-                                            <% if (!TablaRoles.exist(p.getIdentificador())) {
+                                            <% if (TablaRoles.exist(p.getIdentificador())== false) {
                                             %>
                                             <div class="form-group">
                                                 <label>Participantes en el proyecto </label>
                                                 <br>
                                                 <%
-                                                    int num = p.getNumP();
+                                                    int num = p.getNumP(); 
 
-                                                    for (int i = 0; i < num; i++) {
+                                                    for (int i=0;i<num;i++){
                                                 %>
                                                 <input disabled type="text" name="desarrollador<%=i%>" value="desarrollador<%=i%>">
-                                                <select  <%if (p.getEstado() == 'C') {%>
-                                                    disabled
-                                                    <%}%>name="categoria<%=i%>">
+                                                <select >
+                                                    
 
                                                     <option class="option-control" value="AN">AN</option>
                                                     <option class="option-control" value="DI">DI</option>
@@ -267,7 +266,11 @@
                                         <div class="box-footer">
                                             <%if (p.getEstado() != 'C') {%>
                                             <button type="submit" class="btn btn-primary" name="actualizarProyecto" value="actualizarProyecto" onclick="return validar()">Actualizar Proyecto</button>
-                                            <a href="vistaProyectos.jsp"><span class="btn btn-default">Cancelar</span></a>
+                                            <% if(session.getAttribute("tipo").equals("A")){ %>
+                                            <a href="Proyectos?proyecto=verTodosProyectos"><span class="btn btn-default">Cancelar</span></a>
+                                            <% }else { %>
+                                            <a href="Proyectos?proyecto=verProyectos"><span class="btn btn-default">Cancelar</span></a>
+                                            <% } %>
                                             <%} else {%>
                                             <%if(session.getAttribute("tipo").equals("J")){%>
                                             <a href="Proyectos?proyecto=actualizarUnProyecto&usuario=<%=user%>&idProyecto=<%=p.getIdentificador()%>"><span class="btn btn-default">Cancelar</span></a>

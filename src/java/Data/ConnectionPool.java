@@ -12,8 +12,7 @@ import javax.sql.DataSource;
 
 /**
  *
- * @author grupo06
- * Pool de conexión a la BBDD
+ * @author Jennifer
  */
 public class ConnectionPool {
 
@@ -23,7 +22,7 @@ public class ConnectionPool {
     private ConnectionPool() {
         try {
             InitialContext ic = new InitialContext();
-            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/gtpros");
+            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/PGP_grupo06");
         } catch (Exception e) {
             e.printStackTrace();
         }

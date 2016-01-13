@@ -83,6 +83,7 @@
                     <% if (!inf.get(valor).isEmpty()) {
                             for (int i = 0; i < inf.get(valor).size(); i++) {
                     %>
+                    <h4>-----------------------------------------------------------</h4>
                     <h4>Descripcion: <%= inf.get(valor).get(i).getDescripcion()%></h4>
                     <h4>Rol: <%= inf.get(valor).get(i).getRolNecesario()%></h4>
                     <h4>Fecha Inicio: <%= inf.get(valor).get(i).getFechaInicio()%></h4>
@@ -91,7 +92,17 @@
                     <h4>Duración estimada: <%= inf.get(valor).get(i).getDuracionEstimada()%></h4>
                     <h4>Duración real <%= inf.get(valor).get(i).getDuracionReal()%></h4>
                     <h4>Fase: <%= inf.get(valor).get(i).getIdFase()%></h4>
+                    <h4>Predecesoras: </h4>
                     <%
+                        if (inf.get(valor).get(i).getPredecesoras() != null) {
+                            for (int j = 0; j < inf.get(valor).get(i).getPredecesoras().size(); j++) {
+                    %>
+                    <h4>** <%= inf.get(valor).get(i).getPredecesoras().get(j)%></h4>
+
+
+                    <%
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -108,13 +119,22 @@
                         ArrayList<Actividad> act = (ArrayList<Actividad>) session.getAttribute("informe");
                         for (int i = 0; i < act.size(); i++) {
                     %>
+                    <h4>-----------------------------------------------------------</h4>
                     <h4>Identificador: <%= act.get(i).getIdentificador()%></h4>
                     <h4>Fecha Inicio: <%= act.get(i).getFechaInicio()%></h4>
                     <h4>Fecha Fin: <%= act.get(i).getFechaFin()%></h4>
                     <h4>Estado: <%= act.get(i).getEstado()%></h4>
                     <h4>Duración estimada: <%= act.get(i).getDuracionEstimada()%></h4>
                     <h4>Duración Real: <%= act.get(i).getDuracionReal()%></h4>
+                    <h4>Predecesoras: </h4>
                     <%
+                        if (act.get(i).getPredecesoras() != null) {
+                            for (int j = 0; j < act.get(i).getPredecesoras().size(); j++) {
+                    %>
+                    <h4>** <%= act.get(i).getPredecesoras().get(j)%></h4>
+
+                    <% }
+                            }
                         }
                     } else if (tipoI.equals("AAR")) {
                     %>
@@ -124,6 +144,7 @@
                         if (!act.isEmpty()) {
                             for (int i = 0; i < act.size(); i++) {
                     %>
+                    <h4>-----------------------------------------------------------</h4>
                     <h4>Identificador: <%= act.get(i).getIdentificador()%></h4>
                     <h4>Fecha Inicio: <%= act.get(i).getFechaInicio()%></h4>
                     <h4>Fecha Fin: <%= act.get(i).getFechaFin()%></h4>
@@ -131,7 +152,13 @@
                     <h4>Recursos...</h4>
                     <h4>Duración estimada: <%= act.get(i).getDuracionEstimada()%></h4>
                     <h4>Rol: <%= act.get(i).getRolNecesario()%></h4>
+                    <h4>Predecesoras: </h4>
                     <%
+                        for (int j = 0; j < act.get(i).getPredecesoras().size(); j++) {
+                    %>
+                    <h4>** <%= act.get(i).getPredecesoras().get(j)%></h4>
+                    <%
+                                }
                             }
                         }
                     } else if (tipoI.equals("CA")) {
@@ -146,11 +173,19 @@
                     <h4>Identificador: <%= act.get(i).getIdentificador()%></h4>
                     <h4>Fecha Inicio: <%= act.get(i).getFechaInicio()%></h4>
                     <h4>Fecha Fin: <%= act.get(i).getFechaFin()%></h4>
-                    <h4>Persona encargada de realizarla <%= act.get(i).getLogin()%></h4>
+                    <h4> Persona encargada de realizarla <%= act.get(i).getLogin()%></h4>
                     <h4>Duración estimada: <%= act.get(i).getDuracionEstimada()%></h4>
                     <h4>Duracion real  <%= act.get(i).getDuracionReal()%></h4>
-
+                    <h4>Predecesoras: </h4>
                     <%
+                        if (act.get(i).getPredecesoras() != null) {
+
+                            for (int j = 0; j < act.get(i).getPredecesoras().size(); j++) {
+                    %>
+                    <h4>** <%= act.get(i).getPredecesoras().get(j)%></h4>
+
+                    <% }
+                                }
                             }
                         }
                     } else if (tipoI.equals("AF")) {
@@ -177,9 +212,16 @@
                     <h4>Fecha Fin: <%= inf.get(valor).get(i).getFechaFin()%></h4>
                     <h4>Duración estimada: <%= inf.get(valor).get(i).getDuracionEstimada()%></h4>
                     <h4>Fase: <%= inf.get(valor).get(i).getIdFase()%></h4>
-
+                    <h4>Predecesoras: </h4>
+                    <%
+                        if (inf.get(valor).get(i).getPredecesoras() != null) {
+                            for (int j = 0; j < inf.get(valor).get(i).getPredecesoras().size(); j++) {
+                    %>
+                    <h4>** <%= inf.get(valor).get(i).getPredecesoras().get(j)%></h4>
 
                     <%  }
+                                    }
+                                }
                             }
                         }
                     } else if (tipoI.equals("PC")) {
@@ -189,7 +231,7 @@
 
                     <%
                         HashMap<String, HashMap<String, ArrayList<Actividad>>> inf = (HashMap<String, HashMap<String, ArrayList<Actividad>>>) session.getAttribute("informe");
-                        System.err.println("inf " + inf);
+                        System.out.println("inf " + inf);
                         if (inf != null) {
                             Iterator it1 = inf.entrySet().iterator();
                             while (it1.hasNext()) {
@@ -218,9 +260,19 @@
                     <h4>Fecha Inicio: <%= inf.get(valor).get(valor2).get(i).getFechaInicio()%></h4>
                     <h4>Fecha Fin: <%= inf.get(valor).get(valor2).get(i).getFechaFin()%></h4>
                     <h4>Duración real: <%= inf.get(valor).get(valor2).get(i).getDuracionReal()%></h4>
+                    <h4>Predecesoras: </h4>
+                    <%
+                        if (inf.get(valor).get(valor2).get(i).getPredecesoras() != null) {
+
+                            for (int j = 0; j < inf.get(valor).get(valor2).get(i).getPredecesoras().size(); j++) {
+                    %>
+                    <h4>** <%= inf.get(valor).get(valor2).get(i).getPredecesoras().get(j)%></h4>
 
 
                     <% }
+                                                }
+
+                                            }
                                         }
                                     }
                                 }
@@ -230,15 +282,10 @@
                     <div class="row no-print">
                         <div class="col-xs-12">
                             <div>
-                                <%if(session.getAttribute("tipo").equals("JP")){%>
                                 <a href="informesJP.jsp"><button type="button" class="btn btn-default pull-right">Cancelar</button></a>
-                                <%} else {%>
-                                <a href="informesD.jsp"><button type="button" class="btn btn-default pull-right">Cancelar</button></a>
-
-                                <%}%>
                             </div>
                             <button class="btn btn-primary pull-right" style="margin-right: 5px;" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
-                            
+
                         </div>
                     </div>
                 </section>
